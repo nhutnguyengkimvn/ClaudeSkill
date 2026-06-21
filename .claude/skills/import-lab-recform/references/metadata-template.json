@@ -1,0 +1,61 @@
+{
+  "test": true,
+  "diagnosis": {
+    "test": true,
+    "min_select": 1,
+    "min_all_select": 0,
+    "icdcode_serializer": [
+      {
+        "title": "Suggested codes for PGX Counseling",
+        "field_type": "icdcode",
+        "sub_category": []
+      }
+    ],
+    "other_code_required": false,
+    "sub_cate_min_select": 0,
+    "default_required_fields": [],
+    "non_essential_min_select": 0
+  },
+  "dnavisit_test_type": "PGx",
+  "diagnosis_rejection": {
+    "min_select": 0,
+    "min_all_select": 0,
+    "icdcode_serializer": [
+      {
+        "title": "Suggested rejection codes for PGX Counseling",
+        "field_type": "icdcode",
+        "sub_category": []
+      }
+    ],
+    "other_code_required": false,
+    "sub_cate_min_select": 0,
+    "default_required_fields": [],
+    "non_essential_min_select": 0
+  },
+  "encounter_tooltip_configs": {
+    "s_and_c_flow": {
+      "pss": {
+        "default": "Connect for PGX Results Consultation",
+        "required_wellness": "Connect for PGX Results Consultation"
+      },
+      "doctor": {
+        "default": "Complete PGX Results Consultation",
+        "required_wellness": "Complete PGX Results Consultation"
+      }
+    }
+  },
+  "VALIDATE_FAMILY_HISTORY_DATA": {
+    "role": "sale",
+    "error_msg": "<test_name> requires at least 1 Family Member is filled out",
+    "section_key": "family_history",
+    "warning_msg": "",
+    "maximum_family_members": 5,
+    "valid_family_members_number": 0
+  },
+  "case_duplication_checking_rule": {
+    "within_days": 8,
+    "medical_specialities_list": [
+      "pgx"
+    ]
+  }
+}

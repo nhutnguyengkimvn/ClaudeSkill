@@ -1,0 +1,104 @@
+{
+  "Combined Immunodeficiency": {
+    "primary": [
+      "D83.0",
+      "D83.1",
+      "D80.1",
+      "D81.6",
+      "D81.7",
+      "D81.82"
+    ],
+    "secondary": [
+      "J47.1",
+      "D69.3",
+      "D72.810",
+      "B25.9",
+      "B27.90",
+      "J47.0"
+    ]
+  },
+  "Antibody Deficiency And Cvid": {
+    "primary": [
+      "D83.0",
+      "D83.1",
+      "D81.82",
+      "D80.0",
+      "D80.1",
+      "D80.6"
+    ],
+    "secondary": [
+      "J47.0",
+      "J47.1",
+      "J39.9",
+      "K90.4",
+      "D59.10",
+      "K90.4"
+    ]
+  },
+  "Immune Dysregulation": {
+    "primary": [
+      "D83.1",
+      "D81.82",
+      "D83.0",
+      "M04.1",
+      "E31.0",
+      "D89.82",
+      "D84.81"
+    ],
+    "secondary": [
+      "R59.1",
+      "K52.9",
+      "K50.90",
+      "K51.90",
+      "K90.4",
+      "E27.1",
+      "E20.812"
+    ]
+  },
+  "Adult-onset Severe Inherited Immunodeficiency": {
+    "primary": [
+      "D83.0",
+      "D83.1",
+      "D81.82",
+      "D80.0",
+      "D80.1",
+      "D80.6"
+    ],
+    "secondary": [
+      "J47.0",
+      "J84.89",
+      "B25.9",
+      "D72.818",
+      "D59.10",
+      "D69.3"
+    ]
+  },
+  "_dropped": {
+    "Severe Combined Immunodeficiency (NOT FOR ELDERLY PATIENTS)": {
+      "primary": [
+        "D81.0",
+        "D81.1",
+        "D81.2",
+        "D81.31",
+        "D81.32",
+        "D81.4",
+        "D81.5",
+        "D82.0",
+        "D82.1",
+        "D80.5"
+      ],
+      "secondary": [
+        "B25.9",
+        "B00.9",
+        "B27.90",
+        "B37.0",
+        "R63.4",
+        "A49.9",
+        "D69.3",
+        "D59.10",
+        "L20.84",
+        "D72.810"
+      ]
+    }
+  }
+}

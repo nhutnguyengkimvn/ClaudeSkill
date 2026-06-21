@@ -1,0 +1,65 @@
+{
+  "recform_name": "IMMUNO - Amedix 2026 (from cgx.pdf — duplicate)",
+  "slug": "immuno-amedix-2026-from-cgx",
+  "mss": "Genetic 2026",
+  "test_type": "Immunodeficiency",
+  "lab": "Amedix",
+  "source_pdf": "/Users/nhut/Downloads/backup/cgx.pdf",
+  "dashboard_url": "https://dev-dashboard.dnainsights.ai",
+  "steps": [
+    {
+      "n": 1,
+      "title": "Create Medical Specialty",
+      "done": "Pre-check: 'IMMUNODEFICIENCY 2026' (tt-immuno-2026) already exists. Creation skipped.",
+      "outcome": "skipped",
+      "screenshots": ["01-create-specialty.png"],
+      "note": "Screenshot reused from the earlier run — specialty state unchanged."
+    },
+    {
+      "n": 2,
+      "title": "Create ReqForm",
+      "done": "Filename 'cgx.pdf' is misleading: pypdf detection returned nothing (image-only flattened PDF), so the PDF was read VISUALLY with Claude's Read tool. Content is the AMEDiX Immunodeficiency requisition form -> Short Code IMMUNO, Lab Amedix. Created ReqForm 'IMMUNO - Amedix 2026' (id 76017aff), gid 429018889, Is Default off. Name set to full Description directly (avoids the known HTTP 500 when Name = Lab).",
+      "outcome": "success",
+      "screenshots": ["02-create-reqform.png", "02b-reqform-saved.png"],
+      "note": "Intentional DUPLICATE: an identical 'IMMUNO - Amedix 2026' ReqForm already existed from earlier this session. User chose 'Process anyway'. Name corrected from PDF content, NOT from the 'cgx' filename."
+    },
+    {
+      "n": 3,
+      "title": "Sync CSV",
+      "done": "Ran 'Sync CSV' on the new ReqForm (id 76017aff).",
+      "outcome": "success",
+      "screenshots": ["03-sync-csv.png"],
+      "note": "Confirmation: 'Syncing process has been started! You can look over it from Sequence Tracker'."
+    },
+    {
+      "n": 4,
+      "title": "Flatten PDF",
+      "done": "Flattened cgx.pdf with Ghostscript 10.05 (pdfimage24 @300dpi, 2 pages) to 'cgx-flatten-pdf.pdf'. (Source was already rasterized; re-flatten is harmless.)",
+      "outcome": "success",
+      "screenshots": [],
+      "note": "Method: Ghostscript (reused batch choice)."
+    },
+    {
+      "n": 5,
+      "title": "Import PDF",
+      "done": "Uploaded 'cgx-flatten-pdf.pdf' via Import PDF against the new ReqForm. The uploader listed only the new ReqForm (the older one already had a PDF, so it was filtered out) -> unambiguous selection. Verified Medical PDF record (Type Reqform) with S3 URL.",
+      "outcome": "success",
+      "screenshots": ["05-import-pdf.png"]
+    },
+    {
+      "n": 6,
+      "title": "Create Form.io order services form",
+      "done": "Content identical to the earlier recform, so the order-services form '[DEV] [AI] order services Immuno Amedix' (4 panels, SCID dropped) already covers it. Kept as-is (no new form). Linked its schema URL into the new ReqForm metadata (order_form_link).",
+      "outcome": "changes-confirmed",
+      "screenshots": ["06-formio-form.png", "06b-reqform-metadata.png"],
+      "note": "Preview-form screenshot reused (byte-identical form). Schema: https://dev-rce-dashboard.firebaseio.com/forms/-Ov98tTzVFWPM0Sq3DhI/schema.json"
+    },
+    {
+      "n": 7,
+      "title": "Final confirm",
+      "done": "Reviewed: new ReqForm (id 76017aff) with order_form_link metadata saved, and the uploaded Medical PDF 'cgx-flatten-pdf.pdf' present.",
+      "outcome": "success",
+      "screenshots": ["07-final-confirm-before.png", "07-final-confirm-after.png"]
+    }
+  ]
+}

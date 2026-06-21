@@ -1,0 +1,211 @@
+- generic [ref=e1]:
+  - navigation [ref=e2]:
+    - link "DNAInsights Dashboard" [ref=e3] [cursor=pointer]:
+      - /url: /admin/
+      - img "DNAInsights Dashboard" [ref=e4]
+    - button [ref=e5] [cursor=pointer]:
+      - img [ref=e6]
+    - list [ref=e7]:
+      - listitem [ref=e8]:
+        - button [ref=e9] [cursor=pointer]:
+          - img [ref=e10]
+  - generic [ref=e11]:
+    - navigation [ref=e13]:
+      - generic [ref=e15]:
+        - generic [ref=e16]: Main Menu
+        - generic [ref=e17]:
+          - searchbox "Search" [ref=e18]: form
+          - img [ref=e21]
+        - link "MG Analysis" [ref=e24] [cursor=pointer]:
+          - /url: "javascript:void(0); "
+          - img [ref=e26]
+          - text: MG Analysis
+          - img [ref=e28]
+        - link "Provider Analysis" [ref=e38] [cursor=pointer]:
+          - /url: "javascript:void(0); "
+          - img [ref=e40]
+          - text: Provider Analysis
+          - img [ref=e42]
+        - navigation [ref=e45]:
+          - link "Performance" [ref=e46] [cursor=pointer]:
+            - /url: /admin/analytics/quicksight-report/dashboard/9ce57a61-8e91-4748-b638-0c54e3b2b513/
+            - img [ref=e48]
+            - text: Performance
+        - link "RCE Analytics" [ref=e49] [cursor=pointer]:
+          - /url: "javascript:void(0); "
+          - img [ref=e51]
+          - text: RCE Analytics
+          - img [ref=e53]
+        - navigation [ref=e56]:
+          - link "Providers Performance v2" [ref=e57] [cursor=pointer]:
+            - /url: /admin/analytics/quicksight-report/dashboard/cdfe0d26-1442-4e38-af05-84bc19ed0955/
+            - img [ref=e59]
+            - text: Providers Performance v2
+          - link "Providers Performance Report" [ref=e60] [cursor=pointer]:
+            - /url: /admin/analytics/quicksight-report/dashboard/0c22bbf3-fc87-407f-8363-3d1684868739?directory_alias=rcelive-prod
+            - img [ref=e62]
+            - text: Providers Performance Report
+        - link "Medical Form" [expanded] [ref=e63] [cursor=pointer]:
+          - /url: "javascript:void(0); "
+          - img [ref=e65]
+          - text: Medical Form
+          - img [ref=e67]
+        - navigation [ref=e70]:
+          - link "Medical rec forms" [ref=e71] [cursor=pointer]:
+            - /url: /admin/ehealth/medicalrecform/
+            - img [ref=e73]
+            - text: Medical rec forms
+          - link "Builder Form IO" [ref=e74] [cursor=pointer]:
+            - /url: /admin/formio-dev-builder/
+            - img [ref=e76]
+            - text: Builder Form IO
+      - generic [ref=e78]:
+        - generic [ref=e79]: "Logged in as:"
+        - generic [ref=e80]: Nhut Nguyen
+    - generic [ref=e81]:
+      - main [ref=e82]:
+        - iframe [active] [ref=e84]:
+          - generic [ref=f2e1]:
+            - generic [ref=f2e2]:
+              - generic [ref=f2e5]:
+                - generic [ref=f2e6]: "Forms:"
+                - generic [ref=f2e9]:
+                  - generic [ref=f2e10]:
+                    - generic [ref=f2e41]: "[DEV] order services PGX Amedix"
+                    - textbox [ref=f2e14]
+                  - generic [ref=f2e15]:
+                    - img [ref=f2e43]
+                    - img [ref=f2e18]
+                - button "Create new schema form" [ref=f2e21] [cursor=pointer]
+              - generic [ref=f2e45]:
+                - 'heading "Form Name: [DEV] order services PGX Amedix" [level=3] [ref=f2e46]'
+                - paragraph [ref=f2e47]:
+                  - text: "Apis to Get Schema:"
+                  - link "https://dev-rce-dashboard.firebaseio.com/forms/-Oukz3CkVsFGUgKcAHqa/schema.json" [ref=f2e48] [cursor=pointer]:
+                    - /url: https://dev-rce-dashboard.firebaseio.com/forms/-Oukz3CkVsFGUgKcAHqa/schema.json
+                - generic [ref=f2e49]: "Reactjs: <Form src=\"https://dev-rce-dashboard.firebaseio.com/forms/-Oukz3CkVsFGUgKcAHqa/schema.json\" onSubmit={console.log} /> Pure JS: window.onload = function() { Formio.createForm(document.getElementById('formio'), 'https://dev-rce-dashboard.firebaseio.com/forms/-Oukz3CkVsFGUgKcAHqa/schema.json'); };"
+                - generic [ref=f2e50]:
+                  - heading "Save Clone Edit Json Schema" [level=5] [ref=f2e285]:
+                    - generic [ref=f2e54]:
+                      - button "Save" [ref=f2e55] [cursor=pointer]
+                      - button "Clone" [ref=f2e56] [cursor=pointer]
+                      - combobox [ref=f2e57]:
+                        - option "Builder"
+                        - option "Edit Json Schema" [selected]
+                        - option "Preview Form"
+                  - code [ref=f2e289]:
+                    - generic [ref=f2e290]:
+                      - textbox "Editor content" [active]
+                      - textbox [ref=f2e291]
+                      - generic [ref=f2e293]:
+                        - generic [ref=f2e294]:
+                          - generic [ref=f2e296] [cursor=pointer]: 
+                          - generic [ref=f2e297]: "1"
+                        - generic [ref=f2e298]:
+                          - generic [ref=f2e299] [cursor=pointer]: 
+                          - generic [ref=f2e300]: "2"
+                        - generic [ref=f2e301]:
+                          - generic [ref=f2e302] [cursor=pointer]: 
+                          - generic [ref=f2e303]: "3"
+                        - generic [ref=f2e305]: "4"
+                        - generic [ref=f2e307]: "5"
+                        - generic [ref=f2e309]: "6"
+                        - generic [ref=f2e311]: "7"
+                        - generic [ref=f2e313]: "8"
+                        - generic [ref=f2e315]: "9"
+                        - generic [ref=f2e317]: "10"
+                        - generic [ref=f2e319]: "11"
+                        - generic [ref=f2e320]:
+                          - generic [ref=f2e321] [cursor=pointer]: 
+                          - generic [ref=f2e322]: "12"
+                        - generic [ref=f2e324]: "13"
+                        - generic [ref=f2e326]: "14"
+                        - generic [ref=f2e328]: "15"
+                        - generic [ref=f2e330]: "16"
+                        - generic [ref=f2e332]: "17"
+                        - generic [ref=f2e334]: "18"
+                        - generic [ref=f2e336]: "19"
+                        - generic [ref=f2e338]: "20"
+                        - generic [ref=f2e339]:
+                          - generic [ref=f2e340] [cursor=pointer]: 
+                          - generic [ref=f2e341]: "21"
+                        - generic [ref=f2e343]: "22"
+                        - generic [ref=f2e345]: "23"
+                        - generic [ref=f2e347]: "24"
+                        - generic [ref=f2e349]: "25"
+                        - generic [ref=f2e350]:
+                          - generic [ref=f2e351] [cursor=pointer]: 
+                          - generic [ref=f2e352]: "26"
+                        - generic [ref=f2e353]:
+                          - generic [ref=f2e354] [cursor=pointer]: 
+                          - generic [ref=f2e355]: "27"
+                        - generic [ref=f2e357]: "28"
+                        - generic [ref=f2e359]: "29"
+                        - generic [ref=f2e361]: "30"
+                        - generic [ref=f2e362]:
+                          - generic [ref=f2e363] [cursor=pointer]: 
+                          - generic [ref=f2e364]: "31"
+                        - generic [ref=f2e366]: "32"
+                        - generic [ref=f2e368]: "33"
+                        - generic [ref=f2e370]: "34"
+                        - generic [ref=f2e371]:
+                          - generic [ref=f2e372] [cursor=pointer]: 
+                          - generic [ref=f2e373]: "35"
+                        - generic [ref=f2e375]: "36"
+                        - generic [ref=f2e377]: "37"
+                        - generic [ref=f2e379]: "38"
+                        - generic [ref=f2e380]:
+                          - generic [ref=f2e381] [cursor=pointer]: 
+                          - generic [ref=f2e382]: "39"
+                      - generic [ref=f2e577]:
+                        - generic [ref=f2e579]: "{"
+                        - generic [ref=f2e581]: "\"components\": ["
+                        - generic [ref=f2e583]: "{"
+                        - generic [ref=f2e585]: "\"allowCalculateOverride\": false,"
+                        - generic [ref=f2e587]: "\"allowMultipleMasks\": false,"
+                        - generic [ref=f2e589]: "\"authenticate\": false,"
+                        - generic [ref=f2e591]: "\"autofocus\": false,"
+                        - generic [ref=f2e593]: "\"calculateServer\": false,"
+                        - generic [ref=f2e595]: "\"calculateValue\": \"\","
+                        - generic [ref=f2e597]: "\"clearOnHide\": true,"
+                        - generic [ref=f2e599]: "\"clearOnRefresh\": false,"
+                        - generic [ref=f2e601]: "\"conditional\": {"
+                        - generic [ref=f2e603]: "\"eq\": \"\","
+                        - generic [ref=f2e605]: "\"json\": \"\","
+                        - generic [ref=f2e607]: "\"show\": null,"
+                        - generic [ref=f2e609]: "\"when\": null"
+                        - generic [ref=f2e611]: "},"
+                        - generic [ref=f2e613]: "\"customClass\": \"\","
+                        - generic [ref=f2e615]: "\"customConditional\": \"\","
+                        - generic [ref=f2e617]: "\"customDefaultValue\": \"\","
+                        - generic [ref=f2e619]: "\"data\": {"
+                        - generic [ref=f2e621]: "\"custom\": \"\","
+                        - generic [ref=f2e623]: "\"json\": \"\","
+                        - generic [ref=f2e625]: "\"resource\": \"\","
+                        - generic [ref=f2e627]: "\"url\": \"\","
+                        - generic [ref=f2e629]: "\"values\": ["
+                        - generic [ref=f2e631]: "{"
+                        - generic [ref=f2e633]: "\"label\": \"Focused PGx\","
+                        - generic [ref=f2e635]: "\"value\": \"Focused PGx\""
+                        - generic [ref=f2e637]: "},"
+                        - generic [ref=f2e639]: "{"
+                        - generic [ref=f2e641]: "\"label\": \"Comprehensive PGx\","
+                        - generic [ref=f2e643]: "\"value\": \"Comprehensive PGx\""
+                        - generic [ref=f2e645]: "},"
+                        - generic [ref=f2e647]: "{"
+                        - generic [ref=f2e649]: "\"label\": \"Pain Management\","
+                        - generic [ref=f2e651]: "\"value\": \"Pain Management\""
+                        - generic [ref=f2e653]: "},"
+                        - generic [ref=f2e655]: "{"
+            - generic [ref=f2e662]:
+              - alert
+              - alert
+      - contentinfo [ref=e85]:
+        - generic [ref=e87]:
+          - generic [ref=e88]: Copyright © DNAInsights Dashboard 2020
+          - generic [ref=e89]:
+            - link "Privacy Policy" [ref=e90] [cursor=pointer]:
+              - /url: "#!"
+            - text: ·
+            - link "Terms & Conditions" [ref=e91] [cursor=pointer]:
+              - /url: "#!"

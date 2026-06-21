@@ -1,0 +1,72 @@
+{
+  "recform": "Metabolic - Amedix 2026",
+  "lab": "Amedix",
+  "test_type": "Metabolic",
+  "source_pdf": "Metabolic Disorders Panel - Amedix Inc.pdf",
+  "map_type": "per-panel",
+  "model": "single Test Panel select over 4 Dx groups; each group's Test Parameters = NGS gene panel + Adult/Elderly standalone PCR options",
+  "note": "ICD-10 codes per the PDF disclaimer are reference/routing only (42 CFR 410.32); the ordering physician selects diagnosis codes. NOT rendered as form options; Relevant Diagnosis is system-fed. Pediatric-restricted PCR blocks and Extended-peds panels were dropped from the form per the adults/elderly deployment rule but are retained here.",
+  "panels": [
+    {
+      "panel": "METACORE-Dx",
+      "title": "Adult IEM, Lysosomal & Glycogen Storage Disorders",
+      "rendered": true,
+      "ngs_genes": "GAA, GLA, GBA, ATP7B, IDUA, IDS, NPC1, NPC2, ARSA, LIPA, GCK, HNF1A, HNF4A, HNF1B, OTC, ASL, ASS1, NAGS, CBS, MMACHC, CYP27A1, IVD, AGL, PYGM, PYGL, PHKA1, PHKA2, PHKB, PHKG2, HEXA, HEXB, BTD, ABCD1, CPT2, SLC22A5, ACADVL, ACADM, ETFDH, PAH",
+      "adult_pcr": ["HFE | PCR — common variants", "GBA | PCR — common variants", "ACADM | PCR — single variant (K304E)", "SMPD1 | PCR — common variants"],
+      "ngs_primary_icd10": ["E53.8", "E70.0", "E71.522", "E72.11", "E72.29", "E74.02", "E74.03", "E74.09", "E75.02", "E75.22", "E75.242", "E75.5", "E83.01"],
+      "ngs_secondary_icd10": ["D58.9", "D72.829", "E11.9", "F32.9", "F70", "G47.33", "G93.41", "I42.0", "J84.10", "K59.1", "M62.81", "N18.1", "R73.09"],
+      "adult_pcr_primary_icd10": ["E71.311", "E75.22", "E75.241", "E83.110"],
+      "adult_pcr_secondary_icd10": ["D69.6", "E11.9", "I42.0", "M62.81", "M25.50"],
+      "dropped_pediatric": {
+        "pcr": ["GALT | PCR", "BCKDHB | PCR", "ASPA | PCR", "MCOLN1 | PCR"],
+        "extended_panel_genes": "GALNS, ARSB, GUSB, GALC, CTNS, CPS1, ARG1, MUT, MMAA, MMAB, GALT"
+      }
+    },
+    {
+      "panel": "HEPATOMET-Dx",
+      "title": "Hepatic, Iron, Porphyria, Bile Acid, FAO & CDG",
+      "rendered": true,
+      "ngs_genes": "HMBS, PPOX, CPOX, ALAD, UROD, FECH, ALAS2, HAMP, HJV, TFR2, SLC40A1, CP, CPT1A, ACADS, HADHA, HADHB, ETFA, ETFB, HADH, ACAD9, PMM2, MPI, DPAGT1, AGXT, GRHPR, HOGA1, AKR1D1, CYP7B1, HPRT1, XDH, HGD, FAH, NR1H4, ABCB4, NOTCH2, ATP8B1",
+      "adult_pcr": ["HFE | PCR — common variants", "SMPD1 | PCR — common variants", "SERPINA1 | PCR — S/Z alleles"],
+      "ngs_primary_icd10": ["D64.0", "E70.21", "E71.310", "E71.313", "E71.314", "E72.530"],
+      "ngs_secondary_icd10": ["K76.0", "K74.69", "K76.89", "R94.5", "R74.01", "C22.0"],
+      "adult_pcr_primary_icd10": ["E75.241", "E83.110", "E88.01"],
+      "adult_pcr_secondary_icd10": ["E11.9", "E83.118", "I42.0", "K74.69", "M10.9", "R94.5", "Z83.49"],
+      "dropped_pediatric": {
+        "pcr": [],
+        "extended_panel_genes": "UROS, ATP7A, ALG6, DPM1, HSD3B7, ABCB11, JAG1, MLYCD, SLC25A20"
+      }
+    },
+    {
+      "panel": "NEUROMYO-PLEX",
+      "title": "Hereditary Neuromuscular & Metabolic Myopathy",
+      "rendered": true,
+      "ngs_genes": "CAPN3, SGCA, SGCB, SGCD, SGCG, ANO5, FKRP, LMNA, EMD, SCN4A, CACNA1S, CLCN1, RYR1, LAMP2, GNE, CAV3, MYOT, DES, TCAP, TTN, BAG3, CRYAB, BIN1, DNM2",
+      "adult_pcr": ["DMPK | Fragment analysis and PCR repeat expansion", "FXN | Fragment analysis and PCR repeat expansion", "CNBP | PCR repeat expansion"],
+      "ngs_primary_icd10": ["I42.0", "G60.0", "G71.0341", "I42.1", "G71.29", "T88.3XXA", "G71.12", "G71.032", "I42.5"],
+      "ngs_secondary_icd10": ["M62.81", "R29.6", "M62.82", "G60.0", "I42.1", "T88.3XXA", "I44.2", "R26.89", "G93.41"],
+      "adult_pcr_primary_icd10": ["G11.11", "G71.11"],
+      "adult_pcr_secondary_icd10": ["E11.9", "G47.33", "I42.2", "M62.81", "R25.2"],
+      "dropped_pediatric": {
+        "pcr": ["SMN1 Del/Dup | MLPA", "DMD Del/Dup | MLPA", "FXN | PCR repeat expansion"],
+        "extended_panel_genes": "DYSF, FKTN, COL6A1, COL6A2, COL6A3, NEB, ACTA1, MTM1"
+      }
+    },
+    {
+      "panel": "MITOGENOME-3600",
+      "title": "Comprehensive Mitochondrial Disorders",
+      "rendered": true,
+      "ngs_genes": "POLG, POLG2, TWNK, TK2, OPA1, PDSS2, RRM2B, SLC25A4, TYMP, BCS1L, COQ2, SDHA, COQ8A, COQ8B, AARS2, DARS2, HARS2, LARS2, MARS2, YARS2, ISCU, GLRX5, MFF, DNM1L, MFN2, OPA3, PDHA1, TIMM8A",
+      "adult_pcr": ["mtDNA (full gene sequence) | NGS — whole mt genome", "mtDNA (large deletion) | Long-range PCR", "FXN | PCR repeat expansion", "POLG | NGS Full gene sequencing"],
+      "ngs_primary_icd10": ["E88.49", "G71.3", "H49.40", "G60.0", "H47.22", "E88.43", "G31.82", "E74.4", "D64.0"],
+      "ngs_secondary_icd10": ["H49.40", "H47.22", "I42.0", "M62.81", "G31.82", "H90.41", "R26.89", "G93.41", "I44.2"],
+      "adult_pcr_primary_icd10": ["E88.41", "E88.42", "E88.49", "G11.11", "H49.40"],
+      "adult_pcr_secondary_icd10": ["G71.3", "H47.22", "I42.0", "K76.89", "R56.9"],
+      "dropped_pediatric": {
+        "pcr": ["mtDNA (full gene sequencing) | NGS", "POLG | NGS Full gene sequencing"],
+        "extended_panel_genes": "DGUOK, MPV17, SCO1, SCO2, SUCLA2, SUCLG1, TAZ, COX10, COX15, NDUFS1, NDUFS4, NDUFV1, SURF1, COQ4, COQ9, NFU1, BOLA3, EARS2, FARS2, PDHB, PDHX, DLD, SERAC1, LIAS"
+      }
+    }
+  ],
+  "reflex_testing_notice": "When both a standalone single-gene/repeat-expansion test and the comprehensive NGS panel are selected for the same patient, testing is stepwise/reflex: single-gene first; NGS panel only as reflex if single-gene is negative (CMS medical necessity / NCCI Chapter 10)."
+}

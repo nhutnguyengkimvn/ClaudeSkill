@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Report — PGX - Amedix 2026</title>
+<style>
+  body{font:15px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:#1f2328;max-width:920px;margin:0 auto;padding:24px}
+  h1{font-size:22px;margin:0 0 4px}
+  .sub{color:#6e7781;margin:0 0 20px}
+  table.meta{border-collapse:collapse;width:100%;margin-bottom:20px}
+  table.meta th{text-align:left;width:140px;color:#6e7781;font-weight:600;padding:4px 8px;vertical-align:top}
+  table.meta td{padding:4px 8px;word-break:break-all}
+  .summary{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+  .card{background:#f6f8fa;border:1px solid #d0d7de;border-radius:8px;padding:10px 16px;text-align:center;min-width:90px}
+  .card .big{font-size:24px;font-weight:700}
+  .card .lbl{font-size:12px;color:#6e7781}
+  .tbc{background:#fff8c5;border:1px solid #d4a72c;border-radius:8px;padding:10px 16px;margin-bottom:20px}
+  .tbc ul{margin:6px 0 0;padding-left:20px}
+  .step{border:1px solid #d0d7de;border-radius:8px;padding:14px 18px;margin-bottom:16px}
+  .step h3{margin:0 0 8px;font-size:17px;display:flex;align-items:center;gap:8px}
+  .num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#0969da;color:#fff;font-size:14px;flex:none}
+  .badge{font-size:12px;font-weight:600;padding:2px 8px;border-radius:12px;margin-left:auto}
+  .muted{color:#6e7781;font-style:italic}
+  .note{color:#6e7781;font-size:13px}
+  .shots{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+  .thumb img{height:120px;border:1px solid #d0d7de;border-radius:6px;cursor:zoom-in;object-fit:cover}
+  .lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99;align-items:center;justify-content:center;padding:20px;cursor:zoom-out}
+  .lightbox:target{display:flex}
+  .lightbox img{max-width:100%;max-height:100%;box-shadow:0 0 40px #000}
+</style></head>
+<body>
+  <h1>Import Lab Recform — Report</h1>
+  <p class="sub">PGX - Amedix 2026</p>
+  <table class="meta"><tr><th>Recform</th><td>PGX - Amedix 2026</td></tr><tr><th>MSS</th><td>Genetic 2026</td></tr><tr><th>Test Type</th><td>PGX</td></tr><tr><th>Lab</th><td>Amedix</td></tr><tr><th>Source PDF</th><td>/Users/nhut/Downloads/backup/Pharmacogenomics (PGx) Panel - Amedix Inc.pdf</td></tr><tr><th>Dashboard</th><td>https://dev-dashboard.dnainsights.ai</td></tr><tr><th>Run at</th><td>2026-06-15 13:38 (GMT+7)</td></tr></table>
+  <div class="summary">
+    <div class="card"><div class="big">7</div><div class="lbl">Steps</div></div>
+    <div class="card"><div class="big">6</div><div class="lbl">Succeeded</div></div>
+    <div class="card"><div class="big">2</div><div class="lbl">User-confirmed</div></div>
+    <div class="card"><div class="big">0</div><div class="lbl">TBC / Failed</div></div>
+  </div>
+  
+  
+      <section class="step" id="step-1">
+        <h3><span class="num">1</span> Create Medical Specialty <span class="badge" style="color:#6e7781;background:#eaeef2">⏭️ Skipped</span></h3>
+        <p>Pre-check found existing Test Type &#x27;PGX 2026&#x27;; creation skipped.</p>
+        <p class="note">Display Name PGX, active. No new specialty created.</p>
+        <div class="shots">
+          <a class="thumb" href="#img-1-01-create-specialty-png"><img src="./screenshots/01-create-specialty.png" alt="01-create-specialty.png" loading="lazy"></a>
+          <a class="lightbox" id="img-1-01-create-specialty-png" href="#close-1">
+            <img src="./screenshots/01-create-specialty.png" alt="01-create-specialty.png">
+          </a></div>
+      </section>
+      <section class="step" id="step-2">
+        <h3><span class="num">2</span> Create ReqForm <span class="badge" style="color:#0969da;background:#ddf4ff">✔️ Changes confirmed</span></h3>
+        <p>Created medical rec form &#x27;PGX - Amedix 2026&#x27; (Test Type PGX 2026, Lab Amedix, Sheet gid 1679554457).</p>
+        <p class="note">First Save returned HTTP 500 with Name=&#x27;Amedix&#x27;. Per workflow, retried with Name set to full Description &#x27;PGX - Amedix 2026&#x27; -&gt; saved successfully.</p>
+        <div class="shots">
+          <a class="thumb" href="#img-2-02-create-reqform-before-png"><img src="./screenshots/02-create-reqform-before.png" alt="02-create-reqform-before.png" loading="lazy"></a>
+          <a class="lightbox" id="img-2-02-create-reqform-before-png" href="#close-2">
+            <img src="./screenshots/02-create-reqform-before.png" alt="02-create-reqform-before.png">
+          </a>
+          <a class="thumb" href="#img-2-02-create-reqform-after-png"><img src="./screenshots/02-create-reqform-after.png" alt="02-create-reqform-after.png" loading="lazy"></a>
+          <a class="lightbox" id="img-2-02-create-reqform-after-png" href="#close-2">
+            <img src="./screenshots/02-create-reqform-after.png" alt="02-create-reqform-after.png">
+          </a></div>
+      </section>
+      <section class="step" id="step-3">
+        <h3><span class="num">3</span> Sync CSV <span class="badge" style="color:#1a7f37;background:#dafbe1">✅ Success</span></h3>
+        <p>Triggered Sync CSV action on the new reqform.</p>
+        <p class="note">Confirmation: &#x27;Syncing process has been started! You can look over it from Sequence Tracker&#x27;.</p>
+        <div class="shots">
+          <a class="thumb" href="#img-3-03-sync-csv-png"><img src="./screenshots/03-sync-csv.png" alt="03-sync-csv.png" loading="lazy"></a>
+          <a class="lightbox" id="img-3-03-sync-csv-png" href="#close-3">
+            <img src="./screenshots/03-sync-csv.png" alt="03-sync-csv.png">
+          </a></div>
+      </section>
+      <section class="step" id="step-4">
+        <h3><span class="num">4</span> Flatten PDF <span class="badge" style="color:#1a7f37;background:#dafbe1">✅ Success</span></h3>
+        <p>Flattened the original PDF via Ghostscript (pdfimage24, 300 dpi) -&gt; Pharmacogenomics (PGx) Panel - Amedix Inc-flatten-pdf.pdf (448 KB, 2 pages).</p>
+        <p class="note">Local step (Ghostscript 10.05.0).</p>
+        <p class="muted">No screenshot.</p>
+      </section>
+      <section class="step" id="step-5">
+        <h3><span class="num">5</span> Import PDF <span class="badge" style="color:#1a7f37;background:#dafbe1">✅ Success</span></h3>
+        <p>Uploaded the flattened PDF to the dashboard against reqform &#x27;PGX - Amedix 2026&#x27;.</p>
+        <p class="note">Verified stored as Medical PDF (Type Reqform) on S3: top-virginia-05112023.s3.amazonaws.com/medicalform/Pharmacogenomics (PGx) Panel - Amedix Inc-flatten-pdf.pdf</p>
+        <div class="shots">
+          <a class="thumb" href="#img-5-05-import-pdf-png"><img src="./screenshots/05-import-pdf.png" alt="05-import-pdf.png" loading="lazy"></a>
+          <a class="lightbox" id="img-5-05-import-pdf-png" href="#close-5">
+            <img src="./screenshots/05-import-pdf.png" alt="05-import-pdf.png">
+          </a></div>
+      </section>
+      <section class="step" id="step-6">
+        <h3><span class="num">6</span> Create Form.io order services form <span class="badge" style="color:#0969da;background:#ddf4ff">✔️ Changes confirmed</span></h3>
+        <p>Built and overwrote &#x27;[DEV] [AI] order services PGX Amedix&#x27; (22 components). Confirmed persisted + opened after fresh reload. Screenshot is the Preview Form (full height to Submit). Linked the form&#x27;s schema URL into the ReqForm Metadata (order_form_link) and saved (no sync).</p>
+        <p class="note">Field list confirmed with user before build. Fields: Test Panel (required) + 8 conditional gene-parameter selectboxes + hidden aggregator; adverse-drug-reaction &amp; family-history radios; medications datagrid (+ &#x27;list attached?&#x27; flag); fixed fields Additional Clinical Context, Relevant Diagnosis (system-fed, required), Instructions; Submit. Excluded by EMR-prepopulation: patient/provider info, specimen, submission checklist, consent. Dropped by Medicare-only billing rule: all payment fields. ICD-10 (48 codes: 25 primary + 23 secondary) captured into flat routing map, not rendered. ReqForm Metadata set to {list_medication:[{Other}], order_form_link: https://dev-rce-dashboard.firebaseio.com/forms/-Ov8Vavs3tFMwv0oT6nU/schema.json}.</p>
+        <div class="shots">
+          <a class="thumb" href="#img-6-06-formio-form-png"><img src="./screenshots/06-formio-form.png" alt="06-formio-form.png" loading="lazy"></a>
+          <a class="lightbox" id="img-6-06-formio-form-png" href="#close-6">
+            <img src="./screenshots/06-formio-form.png" alt="06-formio-form.png">
+          </a>
+          <a class="thumb" href="#img-6-06b-reqform-metadata-png"><img src="./screenshots/06b-reqform-metadata.png" alt="06b-reqform-metadata.png" loading="lazy"></a>
+          <a class="lightbox" id="img-6-06b-reqform-metadata-png" href="#close-6">
+            <img src="./screenshots/06b-reqform-metadata.png" alt="06b-reqform-metadata.png">
+          </a></div>
+      </section>
+      <section class="step" id="step-7">
+        <h3><span class="num">7</span> Final confirm <span class="badge" style="color:#1a7f37;background:#dafbe1">✅ Success</span></h3>
+        <p>User confirmed the finished recform. Verified reqform, uploaded PDF (S3), and the saved/opened Form.io form.</p>
+        <p class="note">Routing map: pgx-amedix-2026_routing_map.json (flat, primary/secondary tags).</p>
+        <div class="shots">
+          <a class="thumb" href="#img-7-07-final-confirm-before-png"><img src="./screenshots/07-final-confirm-before.png" alt="07-final-confirm-before.png" loading="lazy"></a>
+          <a class="lightbox" id="img-7-07-final-confirm-before-png" href="#close-7">
+            <img src="./screenshots/07-final-confirm-before.png" alt="07-final-confirm-before.png">
+          </a>
+          <a class="thumb" href="#img-7-07-final-confirm-after-png"><img src="./screenshots/07-final-confirm-after.png" alt="07-final-confirm-after.png" loading="lazy"></a>
+          <a class="lightbox" id="img-7-07-final-confirm-after-png" href="#close-7">
+            <img src="./screenshots/07-final-confirm-after.png" alt="07-final-confirm-after.png">
+          </a></div>
+      </section>
+</body></html>

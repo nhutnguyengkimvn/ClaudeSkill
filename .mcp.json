@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest",
+        "--browser",
+        "chromium",
+        "--user-data-dir",
+        "/Users/nhut/.cache/import-lab-recform/pw-profile",
+        "--allow-unrestricted-file-access"
+      ]
+    }
+  }
+}

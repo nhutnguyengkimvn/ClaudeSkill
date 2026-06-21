@@ -1,0 +1,91 @@
+{
+  "recform_name": "IMMUNO - Amedix 2026",
+  "slug": "immuno-amedix-2026",
+  "mss": "Genetic 2026",
+  "test_type": "IMMUNO",
+  "lab": "Amedix",
+  "source_pdf": "/Users/nhut/Downloads/backup/Immunodeficiency Panel - Amedix Inc.pdf",
+  "dashboard_url": "https://dev-dashboard.dnainsights.ai",
+  "steps": [
+    {
+      "n": 1,
+      "title": "Create Medical Specialty",
+      "done": "Pre-check found IMMUNODEFICIENCY 2026 (tt-immuno-2026, Active) — skipped creation.",
+      "outcome": "skipped",
+      "screenshots": ["02-specialty-precheck.png"],
+      "note": ""
+    },
+    {
+      "n": 2,
+      "title": "Create Req Form",
+      "done": "First attempt with Name='Amedix' returned 500. Retried with Name='IMMUNO - Amedix 2026' — saved. Speciality: IMMUNODEFICIENCY 2026, Lab: Amedix, Sheet gid: 429018889, Is Default: unchecked.",
+      "outcome": "changes-confirmed",
+      "screenshots": ["03-reqform-filled.png", "04-reqform-saved.png"],
+      "decisions": [
+        {
+          "question": "Name='Amedix' caused 500. How to recover?",
+          "options": ["Retry with full Description as Name", "Abort"],
+          "recommended": "Retry with full Description as Name",
+          "chosen": "Retry with full Description as Name",
+          "note": "W02 fallback: change Name to full Description. Save succeeded."
+        }
+      ]
+    },
+    {
+      "n": 3,
+      "title": "Sync CSV",
+      "done": "Checked IMMUNO - Amedix 2026, ran Sync CSV action. Response: 'Syncing process has been started! You can look over it from Sequence Tracker'.",
+      "outcome": "success",
+      "screenshots": ["05-sync-csv-success.png"],
+      "note": ""
+    },
+    {
+      "n": 4,
+      "title": "Flatten PDF",
+      "done": "Flattened via Ghostscript (gs -sDEVICE=pdfimage24 -r300). Output: Immunodeficiency Panel - Amedix Inc-flatten-pdf.pdf (2 pages).",
+      "outcome": "success",
+      "screenshots": [],
+      "decisions": [
+        {
+          "question": "Which flatten method for all PDFs?",
+          "options": ["Use existing flattened file", "Option B — Ghostscript (local)", "Option A — sejda.com (browser)"],
+          "recommended": "Use existing flattened file",
+          "chosen": "Option B — Ghostscript (local)",
+          "note": "User chose to re-flatten the backup copy via Ghostscript rather than reuse the existing file."
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "title": "Import (Upload) PDF",
+      "done": "Used /admin/ehealth/medicalrecform/import-asset/. Selected IMMUNO - Amedix 2026, uploaded flattened PDF. Confirmed 1 Medical PDF record created.",
+      "outcome": "success",
+      "screenshots": ["06-import-pdf-page.png", "07-upload-ready.png", "09-pdf-uploaded-confirmed.png"],
+      "note": ""
+    },
+    {
+      "n": 6,
+      "title": "Create Form.io order services form",
+      "done": "Found '[DEV] [AI] order services Immuno Amedix' already exists. User chose to skip — existing form kept as-is.",
+      "outcome": "skipped",
+      "screenshots": ["10-formio-builder.png"],
+      "decisions": [
+        {
+          "question": "[DEV] [AI] order services Immuno Amedix already exists. How to proceed?",
+          "options": ["Edit the existing form", "Skip Form.io step", "Overwrite with new form"],
+          "recommended": "Skip Form.io step",
+          "chosen": "Skip Form.io step",
+          "note": "Existing AI form kept; ReqForm metadata schema link not updated this run."
+        }
+      ]
+    },
+    {
+      "n": 7,
+      "title": "Final Confirm",
+      "done": "User reviewed and confirmed: ReqForm saved, Sync CSV triggered, PDF uploaded, Form.io skipped (existing form).",
+      "outcome": "success",
+      "screenshots": ["11-final-confirm-before.png", "12-final-confirm-after.png"],
+      "note": ""
+    }
+  ]
+}

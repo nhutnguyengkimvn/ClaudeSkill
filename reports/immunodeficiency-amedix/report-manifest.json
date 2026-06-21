@@ -1,0 +1,67 @@
+{
+  "recform_name": "Immunodeficiency - Amedix",
+  "slug": "immunodeficiency-amedix",
+  "mss": "Genetic 2026",
+  "test_type": "Immunodeficiency",
+  "lab": "Amedix",
+  "source_pdf": "/Users/nhut/Downloads/backup/Immunodeficiency Panel - Amedix Inc.pdf",
+  "dashboard_url": "https://dev-dashboard.dnainsights.ai",
+  "steps": [
+    {
+      "n": 1,
+      "title": "Create Medical Specialty",
+      "done": "Pre-check found 'IMMUNODEFICIENCY 2026' (key tt-immuno-2026, Active). Skipped creation.",
+      "outcome": "skipped",
+      "screenshots": [],
+      "note": "Medical Specialty already existed; Workflow 01 not run."
+    },
+    {
+      "n": 2,
+      "title": "Create ReqForm",
+      "done": "ReqForm 'Immunodeficiency - Amedix' already existed (id 73eca2f4-b2f8-455c-8eb2-e25b0d3378a9). Reused existing per user choice; no duplicate created.",
+      "outcome": "changes-confirmed",
+      "screenshots": [],
+      "note": "Existing Name='Immunodeficiency - Amedix' differs from skill naming convention (Name=Amedix) but represents the same Amedix Immunodeficiency reqform."
+    },
+    {
+      "n": 3,
+      "title": "Sync CSV",
+      "done": "Selected the ReqForm and ran the Sync CSV admin action. Confirmation: 'Syncing process has been started! You can look over it from Sequence Tracker'.",
+      "outcome": "success",
+      "screenshots": ["03-sync-csv.png"],
+      "note": ""
+    },
+    {
+      "n": 4,
+      "title": "Flatten PDF",
+      "done": "Flattened the source PDF locally with Ghostscript (pdfimage24, 300dpi, 2 pages) to 'Immunodeficiency Panel - Amedix Inc-flatten-pdf.pdf'.",
+      "outcome": "success",
+      "screenshots": [],
+      "note": "gs 10.05.0; output 449 KB."
+    },
+    {
+      "n": 5,
+      "title": "Import PDF",
+      "done": "Uploaded the flattened PDF via Import PDF (Recform=Immunodeficiency - Amedix). Verified the medicalpdf record (Type=Reqform, S3-hosted) attached to the ReqForm.",
+      "outcome": "success",
+      "screenshots": ["05-import-pdf.png"],
+      "note": "An older Reqform-type PDF 'AMEDIX FINAL - Primary Immunodeficiency Testing Requisition Form.pdf' also remains attached to this recform."
+    },
+    {
+      "n": 6,
+      "title": "Create Form.io order services form",
+      "done": "Target form '[DEV] [AI] order services Immuno Amedix' already existed and, on full-PDF review, already matched the approved field list: 4 Test Panels (Combined Immunodeficiency, Antibody Deficiency And Cvid, Immune Dysregulation, Adult-onset Severe Inherited Immunodeficiency) with verbatim gene lists, full Clinical History section, and the 3 fixed fields (Additional Clinical Context, Relevant Diagnosis via dataSrc:custom, Instructions). Kept as-is (cleaner than the manual reference, which carries a stray hidden PGx medications datagrid). Linked schema URL into ReqForm Metadata order_form_link.",
+      "outcome": "changes-confirmed",
+      "screenshots": ["06-formio-form.png", "06b-reqform-metadata.png"],
+      "note": "SCID 'NOT FOR ELDERLY PATIENTS' panel dropped per user approval (matches manual reference). Schema URL: https://dev-rce-dashboard.firebaseio.com/forms/-Ov98tTzVFWPM0Sq3DhI/schema.json"
+    },
+    {
+      "n": 7,
+      "title": "Final confirm",
+      "done": "Reviewed the finished ReqForm change page (Description, Medical speciality Immunodeficiency-Genetic, Lab Amedix, Metadata order_form_link). User confirmed it looks correct.",
+      "outcome": "success",
+      "screenshots": ["07-final-confirm-before.png", "07-final-confirm-after.png"],
+      "note": ""
+    }
+  ]
+}

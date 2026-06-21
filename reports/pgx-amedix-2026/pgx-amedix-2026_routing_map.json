@@ -1,0 +1,259 @@
+{
+  "reqform": "PGX - Amedix 2026",
+  "lab": "Amedix",
+  "test_type": "PGX",
+  "map_type": "flat",
+  "panels_offered": [
+    "Focused PGx",
+    "Comprehensive PGx",
+    "Pain Management",
+    "Psychiatry",
+    "Cardiology",
+    "Neurology",
+    "Oncology",
+    "Addiction Medicine"
+  ],
+  "icd10": [
+    {
+      "code": "B20",
+      "description": "Human immunodeficiency virus [HIV] disease",
+      "category": "primary"
+    },
+    {
+      "code": "C18.9",
+      "description": "Malignant neoplasm of colon, unspecified",
+      "category": "primary"
+    },
+    {
+      "code": "C50.919",
+      "description": "Malignant neoplasm of unspecified site of unspecified female breast",
+      "category": "primary"
+    },
+    {
+      "code": "C91.00",
+      "description": "Acute lymphoblastic leukemia not having achieved remission",
+      "category": "primary"
+    },
+    {
+      "code": "E78.00",
+      "description": "Pure hypercholesterolemia, unspecified",
+      "category": "primary"
+    },
+    {
+      "code": "E78.2",
+      "description": "Mixed hyperlipidemia",
+      "category": "primary"
+    },
+    {
+      "code": "F11.23",
+      "description": "Opioid dependence with withdrawal",
+      "category": "primary"
+    },
+    {
+      "code": "F20.0",
+      "description": "Paranoid schizophrenia",
+      "category": "primary"
+    },
+    {
+      "code": "F31.4",
+      "description": "Bipolar disorder, current episode depressed, severe, without psychotic features",
+      "category": "primary"
+    },
+    {
+      "code": "F32.1",
+      "description": "Major depressive disorder, single episode, moderate",
+      "category": "primary"
+    },
+    {
+      "code": "F32.2",
+      "description": "Major depressive disorder, single episode, severe without psychotic features",
+      "category": "primary"
+    },
+    {
+      "code": "F33.1",
+      "description": "Major depressive disorder, recurrent, moderate",
+      "category": "primary"
+    },
+    {
+      "code": "F33.2",
+      "description": "Major depressive disorder, recurrent, severe without psychotic features",
+      "category": "primary"
+    },
+    {
+      "code": "F41.1",
+      "description": "Generalized anxiety disorder",
+      "category": "primary"
+    },
+    {
+      "code": "F43.12",
+      "description": "Post-traumatic stress disorder, chronic",
+      "category": "primary"
+    },
+    {
+      "code": "F90.2",
+      "description": "Attention-deficit hyperactivity disorder, combined type",
+      "category": "primary"
+    },
+    {
+      "code": "G40.209",
+      "description": "Localization-related (focal) (partial) symptomatic epilepsy and epileptic syndromes with complex partial seizures, not intractable, without status epilepticus",
+      "category": "primary"
+    },
+    {
+      "code": "G89.29",
+      "description": "Other chronic pain",
+      "category": "primary"
+    },
+    {
+      "code": "I25.10",
+      "description": "Atherosclerotic heart disease of native coronary artery without angina pectoris",
+      "category": "primary"
+    },
+    {
+      "code": "I48.0",
+      "description": "Paroxysmal atrial fibrillation",
+      "category": "primary"
+    },
+    {
+      "code": "K21.9",
+      "description": "Gastro-esophageal reflux disease without esophagitis",
+      "category": "primary"
+    },
+    {
+      "code": "M10.9",
+      "description": "Gout, unspecified",
+      "category": "primary"
+    },
+    {
+      "code": "Z94.0",
+      "description": "Kidney transplant status",
+      "category": "primary"
+    },
+    {
+      "code": "Z94.1",
+      "description": "Heart transplant status",
+      "category": "primary"
+    },
+    {
+      "code": "Z94.4",
+      "description": "Liver transplant status",
+      "category": "primary"
+    },
+    {
+      "code": "F17.210",
+      "description": "Nicotine dependence, cigarettes, uncomplicated",
+      "category": "secondary"
+    },
+    {
+      "code": "G47.00",
+      "description": "Insomnia, unspecified",
+      "category": "secondary"
+    },
+    {
+      "code": "R45.851",
+      "description": "Suicidal ideations",
+      "category": "secondary"
+    },
+    {
+      "code": "R52",
+      "description": "Pain, unspecified",
+      "category": "secondary"
+    },
+    {
+      "code": "Z16.32",
+      "description": "Resistance to antifungal drug(s)",
+      "category": "secondary"
+    },
+    {
+      "code": "Z17.0",
+      "description": "Estrogen receptor positive [ER+] status",
+      "category": "secondary"
+    },
+    {
+      "code": "Z51.11",
+      "description": "Encounter for antineoplastic chemotherapy",
+      "category": "secondary"
+    },
+    {
+      "code": "Z51.12",
+      "description": "Encounter for antineoplastic immunotherapy",
+      "category": "secondary"
+    },
+    {
+      "code": "Z79.01",
+      "description": "Long-term (current) use of anticoagulants",
+      "category": "secondary"
+    },
+    {
+      "code": "Z79.02",
+      "description": "Long-term (current) use of antithrombotics/antiplatelets",
+      "category": "secondary"
+    },
+    {
+      "code": "Z79.1",
+      "description": "Long term (current) use of non-steroidal anti-inflammatories (NSAID)",
+      "category": "secondary"
+    },
+    {
+      "code": "Z79.4",
+      "description": "Long term (current) use of insulin",
+      "category": "secondary"
+    },
+    {
+      "code": "Z79.621",
+      "description": "Long term (current) use of immunosuppressant",
+      "category": "secondary"
+    },
+    {
+      "code": "Z79.810",
+      "description": "Long term (current) use of selective estrogen receptor modulators (SERMs)",
+      "category": "secondary"
+    },
+    {
+      "code": "Z79.84",
+      "description": "Long term (current) use of oral hypoglycemic drugs",
+      "category": "secondary"
+    },
+    {
+      "code": "Z79.891",
+      "description": "Long-term (current) use of opiate analgesic",
+      "category": "secondary"
+    },
+    {
+      "code": "Z79.899",
+      "description": "Other long-term (current) drug therapy",
+      "category": "secondary"
+    },
+    {
+      "code": "Z85.038",
+      "description": "Personal history of other malignant neoplasm of large intestine",
+      "category": "secondary"
+    },
+    {
+      "code": "Z85.3",
+      "description": "Personal history of malignant neoplasm of breast",
+      "category": "secondary"
+    },
+    {
+      "code": "Z86.59",
+      "description": "Personal history of other mental and behavioral disorders",
+      "category": "secondary"
+    },
+    {
+      "code": "Z92.21",
+      "description": "Personal history of antineoplastic chemotherapy",
+      "category": "secondary"
+    },
+    {
+      "code": "Z95.1",
+      "description": "Presence of aortocoronary bypass graft",
+      "category": "secondary"
+    },
+    {
+      "code": "Z95.5",
+      "description": "Presence of coronary angioplasty implant and graft",
+      "category": "secondary"
+    }
+  ],
+  "note": "Codes extracted verbatim from the reqform's single Primary/Secondary list. Used for routing only; they do NOT populate the form's Relevant Diagnosis field (which is system-fed from the case). Medical-necessity/coding responsibility stays with the ordering physician per 42 CFR 410.32."
+}

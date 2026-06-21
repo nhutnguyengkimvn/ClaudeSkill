@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Report — METABOLIC - Amedix 2026</title>
+<style>
+  body{font:15px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:#1f2328;max-width:920px;margin:0 auto;padding:24px}
+  h1{font-size:22px;margin:0 0 4px}
+  .sub{color:#6e7781;margin:0 0 20px}
+  table.meta{border-collapse:collapse;width:100%;margin-bottom:20px}
+  table.meta th{text-align:left;width:140px;color:#6e7781;font-weight:600;padding:4px 8px;vertical-align:top}
+  table.meta td{padding:4px 8px;word-break:break-all}
+  .summary{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+  .card{background:#f6f8fa;border:1px solid #d0d7de;border-radius:8px;padding:10px 16px;text-align:center;min-width:90px}
+  .card .big{font-size:24px;font-weight:700}
+  .card .lbl{font-size:12px;color:#6e7781}
+  .tbc{background:#fff8c5;border:1px solid #d4a72c;border-radius:8px;padding:10px 16px;margin-bottom:20px}
+  .tbc ul{margin:6px 0 0;padding-left:20px}
+  .step{border:1px solid #d0d7de;border-radius:8px;padding:14px 18px;margin-bottom:16px}
+  .step h3{margin:0 0 8px;font-size:17px;display:flex;align-items:center;gap:8px}
+  .num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:#0969da;color:#fff;font-size:14px;flex:none}
+  .badge{font-size:12px;font-weight:600;padding:2px 8px;border-radius:12px;margin-left:auto}
+  .muted{color:#6e7781;font-style:italic}
+  .note{color:#6e7781;font-size:13px}
+  .decisions{margin:10px 0}
+  .decision{background:#ddf4ff;border:1px solid #54aeff;border-radius:8px;padding:10px 14px;margin:8px 0}
+  .decision-q{font-weight:600;margin-bottom:6px}
+  table.dtab{border-collapse:collapse;width:100%}
+  table.dtab th{text-align:left;width:180px;color:#0969da;font-weight:600;padding:3px 8px;vertical-align:top}
+  table.dtab td{padding:3px 8px}
+  ul.opts{margin:0;padding-left:18px}
+  .tag{font-size:11px;font-weight:600;padding:1px 6px;border-radius:10px;margin-left:4px}
+  .tag.rec{background:#fff8c5;color:#9a6700}
+  .tag.chosen{background:#dafbe1;color:#1a7f37}
+  .shots{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+  .thumb img{height:120px;border:1px solid #d0d7de;border-radius:6px;cursor:zoom-in;object-fit:cover}
+  .lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99;align-items:center;justify-content:center;padding:20px;cursor:zoom-out}
+  .lightbox:target{display:flex}
+  .lightbox img{max-width:100%;max-height:100%;box-shadow:0 0 40px #000}
+</style></head>
+<body>
+  <h1>Import Lab Recform — Report</h1>
+  <p class="sub">METABOLIC - Amedix 2026</p>
+  <table class="meta"><tr><th>Recform</th><td>METABOLIC - Amedix 2026</td></tr><tr><th>MSS</th><td>Genetic 2026</td></tr><tr><th>Test Type</th><td>METABOLIC</td></tr><tr><th>Lab</th><td>Amedix</td></tr><tr><th>Source PDF</th><td>/Users/nhut/Downloads/backup/Metabolic Disorders Panel - Amedix Inc.pdf</td></tr><tr><th>Dashboard</th><td>https://dev-dashboard.dnainsights.ai</td></tr><tr><th>Run at</th><td>2026-06-17 13:29 (GMT+7)</td></tr></table>
+  <div class="summary">
+    <div class="card"><div class="big">7</div><div class="lbl">Steps</div></div>
+    <div class="card"><div class="big">7</div><div class="lbl">Succeeded</div></div>
+    <div class="card"><div class="big">2</div><div class="lbl">User-confirmed</div></div>
+    <div class="card"><div class="big">0</div><div class="lbl">TBC / Failed</div></div>
+  </div>
+  
+  
+      <section class="step" id="step-1">
+        <h3><span class="num">1</span> Create Medical Specialty <span class="badge" style="color:#1a7f37;background:#dafbe1">✅ Success</span></h3>
+        <p>Pre-check found no METABOLIC-2026; created Test Type &#x27;METABOLIC-2026&#x27; (MSS Genetic 2026, display METABOLIC, sheet tab gid 1062009916). SOAP Note Template copied from IMMUNODEFICIENCY 2026; metadata template applied as-is.</p>
+        <p class="note">Canonical key tt-metabolic-2026 was held by a soft-deleted/admin-hidden record and could not be reused; per user approval the alt key tt-metabolic-2026-amedix was used for both Key and Git Sync Key.</p>
+        <div class="decisions">
+        <div class="decision">
+          <div class="decision-q">❓ Which dashboard base URL to use?</div>
+          <table class="dtab"><tr><th>Options</th><td><ul class="opts"><li>dev-dashboard (https://dev-dashboard.dnainsights.ai) <span class="tag rec">recommended</span> <span class="tag chosen">✓ chosen</span></li><li>Production </li></ul></td></tr><tr><th>Proposed / recommended</th><td>dev-dashboard (https://dev-dashboard.dnainsights.ai)</td></tr><tr><th>User chose</th><td><strong>dev-dashboard (https://dev-dashboard.dnainsights.ai)</strong></td></tr></table>
+          
+        </div>
+        <div class="decision">
+          <div class="decision-q">❓ Title &#x27;METABOLIC DISORDERS&#x27; has no Short Code table match — which Short Code?</div>
+          <table class="dtab"><tr><th>Options</th><td><ul class="opts"><li>METABOLIC <span class="tag rec">recommended</span> <span class="tag chosen">✓ chosen</span></li><li>META </li><li>METAB </li></ul></td></tr><tr><th>Proposed / recommended</th><td>METABOLIC</td></tr><tr><th>User chose</th><td><strong>METABOLIC</strong></td></tr></table>
+          <p class="note">First-word fallback; drives METABOLIC-2026 / tt-metabolic-... / &#x27;METABOLIC Amedix&#x27;.</p>
+        </div>
+        <div class="decision">
+          <div class="decision-q">❓ Key &#x27;tt-metabolic-2026&#x27; is taken by a hidden record — how to proceed?</div>
+          <table class="dtab"><tr><th>Options</th><td><ul class="opts"><li>Use alt key tt-metabolic-2026-amedix <span class="tag rec">recommended</span> <span class="tag chosen">✓ chosen</span></li><li>Abort S0, mark PDF failed </li><li>Use suffix -v2 </li></ul></td></tr><tr><th>Proposed / recommended</th><td>Use alt key tt-metabolic-2026-amedix</td></tr><tr><th>User chose</th><td><strong>Use alt key tt-metabolic-2026-amedix</strong></td></tr></table>
+          <p class="note">Canonical key held by a soft-deleted/admin-hidden Test Type (not editable via UI).</p>
+        </div></div>
+        <div class="shots">
+          <a class="thumb" href="#img-1-01-create-specialty-png"><img src="./screenshots/01-create-specialty.png" alt="01-create-specialty.png" loading="lazy"></a>
+          <a class="lightbox" id="img-1-01-create-specialty-png" href="#close-1">
+            <img src="./screenshots/01-create-specialty.png" alt="01-create-specialty.png">
+          </a></div>
+      </section>
+      <section class="step" id="step-2">
+        <h3><span class="num">2</span> Create ReqForm <span class="badge" style="color:#0969da;background:#ddf4ff">✔️ Changes confirmed</span></h3>
+        <p>Created Medical Rec Form &#x27;METABOLIC - Amedix 2026&#x27; (Lab Amedix, Medical Speciality METABOLIC-2026, sheet tab &#x27;Metabolic Amedix&#x27; gid 1838619590, Is Default unchecked).</p>
+        <p class="note">First save with Name=&#x27;Amedix&#x27; returned HTTP 500 (rolled back). Per workflow retry, Name was set to the full Description &#x27;METABOLIC - Amedix 2026&#x27; and the save succeeded.</p>
+        
+        <div class="shots">
+          <a class="thumb" href="#img-2-02-create-reqform-png"><img src="./screenshots/02-create-reqform.png" alt="02-create-reqform.png" loading="lazy"></a>
+          <a class="lightbox" id="img-2-02-create-reqform-png" href="#close-2">
+            <img src="./screenshots/02-create-reqform.png" alt="02-create-reqform.png">
+          </a></div>
+      </section>
+      <section class="step" id="step-3">
+        <h3><span class="num">3</span> Sync CSV <span class="badge" style="color:#1a7f37;background:#dafbe1">✅ Success</span></h3>
+        <p>Selected the new ReqForm and ran the Sync CSV admin action. Confirmation shown: &#x27;Syncing process has been started! You can look over it from Sequence Tracker&#x27;.</p>
+        
+        
+        <div class="shots">
+          <a class="thumb" href="#img-3-03-sync-csv-png"><img src="./screenshots/03-sync-csv.png" alt="03-sync-csv.png" loading="lazy"></a>
+          <a class="lightbox" id="img-3-03-sync-csv-png" href="#close-3">
+            <img src="./screenshots/03-sync-csv.png" alt="03-sync-csv.png">
+          </a></div>
+      </section>
+      <section class="step" id="step-4">
+        <h3><span class="num">4</span> Flatten PDF <span class="badge" style="color:#1a7f37;background:#dafbe1">✅ Success</span></h3>
+        <p>Flattened the original PDF locally with Ghostscript (pdfimage24, 300dpi, 4 pages) -&gt; &#x27;Metabolic Disorders Panel - Amedix Inc-flatten-pdf.pdf&#x27; (850 KB).</p>
+        
+        <div class="decisions">
+        <div class="decision">
+          <div class="decision-q">❓ Which flatten method for the batch?</div>
+          <table class="dtab"><tr><th>Options</th><td><ul class="opts"><li>Ghostscript (local, v10.05.0) <span class="tag rec">recommended</span> <span class="tag chosen">✓ chosen</span></li><li>sejda.com (online) </li></ul></td></tr><tr><th>Proposed / recommended</th><td>Ghostscript (local, v10.05.0)</td></tr><tr><th>User chose</th><td><strong>Ghostscript (local, v10.05.0)</strong></td></tr></table>
+          
+        </div></div>
+        <p class="muted">No screenshot.</p>
+      </section>
+      <section class="step" id="step-5">
+        <h3><span class="num">5</span> Import PDF <span class="badge" style="color:#1a7f37;background:#dafbe1">✅ Success</span></h3>
+        <p>Uploaded the flattened PDF via Import PDF, mapped to ReqForm &#x27;METABOLIC - Amedix 2026&#x27;. Verified it appears in Medical PDFs.</p>
+        
+        
+        <div class="shots">
+          <a class="thumb" href="#img-5-05-import-pdf-png"><img src="./screenshots/05-import-pdf.png" alt="05-import-pdf.png" loading="lazy"></a>
+          <a class="lightbox" id="img-5-05-import-pdf-png" href="#close-5">
+            <img src="./screenshots/05-import-pdf.png" alt="05-import-pdf.png">
+          </a></div>
+      </section>
+      <section class="step" id="step-6">
+        <h3><span class="num">6</span> Create Form.io order services form <span class="badge" style="color:#0969da;background:#ddf4ff">✔️ Changes confirmed</span></h3>
+        <p>Form &#x27;[DEV] [AI] order services Metabolic Amedix&#x27; (id -OvDN5ZeZl-E7Ce8A6WJ). Final structure has 8 Test Panels — each disease area split by methodology: METACORE-Dx / HEPATOMET-Dx / NEUROMYO-PLEX / MITOGENOME-360, each as &#x27;PCR/MLPA / Repeat Expansion — Adult/Elderly Patients&#x27; AND &#x27;NGS Panel&#x27;, with matching per-panel Test Parameters, conditional show/validate, and an 8-arm aggregator. Restrict-to-Pediatrics options + extended pediatric panels excluded. 8 Clinical Indications, clinical-history fields, and the 3 fixed fields (Additional Clinical Context, Relevant Diagnosis system-fed dataSrc:custom, Instructions) retained. Schema URL linked into the ReqForm Metadata (order_form_link).</p>
+        <p class="note">Schema URL: https://dev-rce-dashboard.firebaseio.com/forms/-OvDN5ZeZl-E7Ce8A6WJ/schema.json. Relevant Diagnosis kept optional (Medicare &#x27;required&#x27; enhancement not applied, per user choice).</p>
+        <div class="decisions">
+        <div class="decision">
+          <div class="decision-q">❓ Target AI order-services form already exists — edit or skip?</div>
+          <table class="dtab"><tr><th>Options</th><td><ul class="opts"><li>Keep as-is, link it <span class="tag rec">recommended</span> <span class="tag chosen">✓ chosen</span></li><li>Make Relevant Diagnosis required </li><li>Rebuild from scratch </li></ul></td></tr><tr><th>Proposed / recommended</th><td>Keep as-is, link it</td></tr><tr><th>User chose</th><td><strong>Keep as-is, link it</strong></td></tr></table>
+          <p class="note">Initial decision; form was already complete and accurate.</p>
+        </div>
+        <div class="decision">
+          <div class="decision-q">❓ Test Panel structure (label/value confirmation, step 4a)?</div>
+          <table class="dtab"><tr><th>Options</th><td><ul class="opts"><li>4 panels (one per disease area, NGS+PCR combined) <span class="tag rec">recommended</span></li><li>8 panels (split each disease area by methodology) <span class="tag chosen">✓ chosen</span></li></ul></td></tr><tr><th>Proposed / recommended</th><td>4 panels (one per disease area, NGS+PCR combined)</td></tr><tr><th>User chose</th><td><strong>8 panels (split each disease area by methodology)</strong></td></tr></table>
+          <p class="note">User-requested split: e.g. METACORE-Dx | PCR/MLPA … + METACORE-Dx | NGS Panel. Restrict-to-Pediatrics dropped. Conditionals + aggregator re-synced.</p>
+        </div>
+        <div class="decision">
+          <div class="decision-q">❓ Mitochondrial panel disease name?</div>
+          <table class="dtab"><tr><th>Options</th><td><ul class="opts"><li>MITOGENOME-360 <span class="tag rec">recommended</span> <span class="tag chosen">✓ chosen</span></li><li>MITOGENOME-3600 </li></ul></td></tr><tr><th>Proposed / recommended</th><td>MITOGENOME-360</td></tr><tr><th>User chose</th><td><strong>MITOGENOME-360</strong></td></tr></table>
+          <p class="note">PDF prints &#x27;MITOGENOME-360&#x27; with a superscript degree sign (the trailing 0 was an OCR artifact).</p>
+        </div>
+        <div class="decision">
+          <div class="decision-q">❓ Panel value separator?</div>
+          <table class="dtab"><tr><th>Options</th><td><ul class="opts"><li> |  <span class="tag rec">recommended</span> <span class="tag chosen">✓ chosen</span></li><li> -  </li></ul></td></tr><tr><th>Proposed / recommended</th><td> | </td></tr><tr><th>User chose</th><td><strong> | </strong></td></tr></table>
+          
+        </div></div>
+        <div class="shots">
+          <a class="thumb" href="#img-6-06-formio-form-png"><img src="./screenshots/06-formio-form.png" alt="06-formio-form.png" loading="lazy"></a>
+          <a class="lightbox" id="img-6-06-formio-form-png" href="#close-6">
+            <img src="./screenshots/06-formio-form.png" alt="06-formio-form.png">
+          </a>
+          <a class="thumb" href="#img-6-06c-test-panels-png"><img src="./screenshots/06c-test-panels.png" alt="06c-test-panels.png" loading="lazy"></a>
+          <a class="lightbox" id="img-6-06c-test-panels-png" href="#close-6">
+            <img src="./screenshots/06c-test-panels.png" alt="06c-test-panels.png">
+          </a>
+          <a class="thumb" href="#img-6-06b-reqform-metadata-png"><img src="./screenshots/06b-reqform-metadata.png" alt="06b-reqform-metadata.png" loading="lazy"></a>
+          <a class="lightbox" id="img-6-06b-reqform-metadata-png" href="#close-6">
+            <img src="./screenshots/06b-reqform-metadata.png" alt="06b-reqform-metadata.png">
+          </a></div>
+      </section>
+      <section class="step" id="step-7">
+        <h3><span class="num">7</span> Final confirm <span class="badge" style="color:#1a7f37;background:#dafbe1">✅ Success</span></h3>
+        <p>Reviewed the finished recform (ReqForm change page with linked metadata, and the 8-panel Form.io order services form). User confirmed it looks correct.</p>
+        
+        <div class="decisions">
+        <div class="decision">
+          <div class="decision-q">❓ Does the finished METABOLIC - Amedix 2026 recform look correct?</div>
+          <table class="dtab"><tr><th>Options</th><td><ul class="opts"><li>Yes, looks correct <span class="tag rec">recommended</span> <span class="tag chosen">✓ chosen</span></li><li>Needs a fix </li></ul></td></tr><tr><th>Proposed / recommended</th><td>Yes, looks correct</td></tr><tr><th>User chose</th><td><strong>Yes, looks correct</strong></td></tr></table>
+          
+        </div></div>
+        <div class="shots">
+          <a class="thumb" href="#img-7-07-final-confirm-before-png"><img src="./screenshots/07-final-confirm-before.png" alt="07-final-confirm-before.png" loading="lazy"></a>
+          <a class="lightbox" id="img-7-07-final-confirm-before-png" href="#close-7">
+            <img src="./screenshots/07-final-confirm-before.png" alt="07-final-confirm-before.png">
+          </a>
+          <a class="thumb" href="#img-7-07-final-confirm-after-png"><img src="./screenshots/07-final-confirm-after.png" alt="07-final-confirm-after.png" loading="lazy"></a>
+          <a class="lightbox" id="img-7-07-final-confirm-after-png" href="#close-7">
+            <img src="./screenshots/07-final-confirm-after.png" alt="07-final-confirm-after.png">
+          </a></div>
+      </section>
+</body></html>

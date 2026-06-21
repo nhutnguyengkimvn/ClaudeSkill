@@ -1,0 +1,67 @@
+{
+  "recform_name": "PGX - Amedix 2026",
+  "slug": "pgx-amedix-2026",
+  "mss": "Genetic 2026",
+  "test_type": "PGX",
+  "lab": "Amedix",
+  "source_pdf": "/Users/nhut/Downloads/backup/Pharmacogenomics (PGx) Panel - Amedix Inc.pdf",
+  "dashboard_url": "https://dev-dashboard.dnainsights.ai",
+  "steps": [
+    {
+      "n": 1,
+      "title": "Create Medical Specialty",
+      "done": "Pre-check found existing Test Type 'PGX 2026'; creation skipped.",
+      "outcome": "skipped",
+      "screenshots": ["01-create-specialty.png"],
+      "note": "Display Name PGX, active. No new specialty created."
+    },
+    {
+      "n": 2,
+      "title": "Create ReqForm",
+      "done": "Created medical rec form 'PGX - Amedix 2026' (Test Type PGX 2026, Lab Amedix, Sheet gid 1679554457).",
+      "outcome": "changes-confirmed",
+      "screenshots": ["02-create-reqform-before.png", "02-create-reqform-after.png"],
+      "note": "First Save returned HTTP 500 with Name='Amedix'. Per workflow, retried with Name set to full Description 'PGX - Amedix 2026' -> saved successfully."
+    },
+    {
+      "n": 3,
+      "title": "Sync CSV",
+      "done": "Triggered Sync CSV action on the new reqform.",
+      "outcome": "success",
+      "screenshots": ["03-sync-csv.png"],
+      "note": "Confirmation: 'Syncing process has been started! You can look over it from Sequence Tracker'."
+    },
+    {
+      "n": 4,
+      "title": "Flatten PDF",
+      "done": "Flattened the original PDF via Ghostscript (pdfimage24, 300 dpi) -> Pharmacogenomics (PGx) Panel - Amedix Inc-flatten-pdf.pdf (448 KB, 2 pages).",
+      "outcome": "success",
+      "screenshots": [],
+      "note": "Local step (Ghostscript 10.05.0)."
+    },
+    {
+      "n": 5,
+      "title": "Import PDF",
+      "done": "Uploaded the flattened PDF to the dashboard against reqform 'PGX - Amedix 2026'.",
+      "outcome": "success",
+      "screenshots": ["05-import-pdf.png"],
+      "note": "Verified stored as Medical PDF (Type Reqform) on S3: top-virginia-05112023.s3.amazonaws.com/medicalform/Pharmacogenomics (PGx) Panel - Amedix Inc-flatten-pdf.pdf"
+    },
+    {
+      "n": 6,
+      "title": "Create Form.io order services form",
+      "done": "Built and overwrote '[DEV] [AI] order services PGX Amedix' (22 components). Confirmed persisted + opened after fresh reload. Screenshot is the Preview Form (full height to Submit). Linked the form's schema URL into the ReqForm Metadata (order_form_link) and saved (no sync).",
+      "outcome": "changes-confirmed",
+      "screenshots": ["06-formio-form.png", "06b-reqform-metadata.png"],
+      "note": "Field list confirmed with user before build. Fields: Test Panel (required) + 8 conditional gene-parameter selectboxes + hidden aggregator; adverse-drug-reaction & family-history radios; medications datagrid (+ 'list attached?' flag); fixed fields Additional Clinical Context, Relevant Diagnosis (system-fed, required), Instructions; Submit. Excluded by EMR-prepopulation: patient/provider info, specimen, submission checklist, consent. Dropped by Medicare-only billing rule: all payment fields. ICD-10 (48 codes: 25 primary + 23 secondary) captured into flat routing map, not rendered. ReqForm Metadata set to {list_medication:[{Other}], order_form_link: https://dev-rce-dashboard.firebaseio.com/forms/-Ov8Vavs3tFMwv0oT6nU/schema.json}."
+    },
+    {
+      "n": 7,
+      "title": "Final confirm",
+      "done": "User confirmed the finished recform. Verified reqform, uploaded PDF (S3), and the saved/opened Form.io form.",
+      "outcome": "success",
+      "screenshots": ["07-final-confirm-before.png", "07-final-confirm-after.png"],
+      "note": "Routing map: pgx-amedix-2026_routing_map.json (flat, primary/secondary tags)."
+    }
+  ]
+}

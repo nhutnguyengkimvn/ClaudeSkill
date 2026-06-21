@@ -1,0 +1,134 @@
+{
+  "recform_name": "METABOLIC - Amedix 2026",
+  "slug": "metabolic-amedix-2026",
+  "mss": "Genetic 2026",
+  "test_type": "METABOLIC",
+  "lab": "Amedix",
+  "source_pdf": "/Users/nhut/Downloads/backup/Metabolic Disorders Panel - Amedix Inc.pdf",
+  "dashboard_url": "https://dev-dashboard.dnainsights.ai",
+  "steps": [
+    {
+      "n": 1,
+      "title": "Create Medical Specialty",
+      "done": "Pre-check found no METABOLIC-2026; created Test Type 'METABOLIC-2026' (MSS Genetic 2026, display METABOLIC, sheet tab gid 1062009916). SOAP Note Template copied from IMMUNODEFICIENCY 2026; metadata template applied as-is.",
+      "outcome": "success",
+      "screenshots": ["01-create-specialty.png"],
+      "note": "Canonical key tt-metabolic-2026 was held by a soft-deleted/admin-hidden record and could not be reused; per user approval the alt key tt-metabolic-2026-amedix was used for both Key and Git Sync Key.",
+      "decisions": [
+        {
+          "question": "Which dashboard base URL to use?",
+          "options": ["dev-dashboard (https://dev-dashboard.dnainsights.ai)", "Production"],
+          "recommended": "dev-dashboard (https://dev-dashboard.dnainsights.ai)",
+          "chosen": "dev-dashboard (https://dev-dashboard.dnainsights.ai)"
+        },
+        {
+          "question": "Title 'METABOLIC DISORDERS' has no Short Code table match — which Short Code?",
+          "options": ["METABOLIC", "META", "METAB"],
+          "recommended": "METABOLIC",
+          "chosen": "METABOLIC",
+          "note": "First-word fallback; drives METABOLIC-2026 / tt-metabolic-... / 'METABOLIC Amedix'."
+        },
+        {
+          "question": "Key 'tt-metabolic-2026' is taken by a hidden record — how to proceed?",
+          "options": ["Use alt key tt-metabolic-2026-amedix", "Abort S0, mark PDF failed", "Use suffix -v2"],
+          "recommended": "Use alt key tt-metabolic-2026-amedix",
+          "chosen": "Use alt key tt-metabolic-2026-amedix",
+          "note": "Canonical key held by a soft-deleted/admin-hidden Test Type (not editable via UI)."
+        }
+      ]
+    },
+    {
+      "n": 2,
+      "title": "Create ReqForm",
+      "done": "Created Medical Rec Form 'METABOLIC - Amedix 2026' (Lab Amedix, Medical Speciality METABOLIC-2026, sheet tab 'Metabolic Amedix' gid 1838619590, Is Default unchecked).",
+      "outcome": "changes-confirmed",
+      "screenshots": ["02-create-reqform.png"],
+      "note": "First save with Name='Amedix' returned HTTP 500 (rolled back). Per workflow retry, Name was set to the full Description 'METABOLIC - Amedix 2026' and the save succeeded."
+    },
+    {
+      "n": 3,
+      "title": "Sync CSV",
+      "done": "Selected the new ReqForm and ran the Sync CSV admin action. Confirmation shown: 'Syncing process has been started! You can look over it from Sequence Tracker'.",
+      "outcome": "success",
+      "screenshots": ["03-sync-csv.png"],
+      "note": ""
+    },
+    {
+      "n": 4,
+      "title": "Flatten PDF",
+      "done": "Flattened the original PDF locally with Ghostscript (pdfimage24, 300dpi, 4 pages) -> 'Metabolic Disorders Panel - Amedix Inc-flatten-pdf.pdf' (850 KB).",
+      "outcome": "success",
+      "screenshots": [],
+      "note": "",
+      "decisions": [
+        {
+          "question": "Which flatten method for the batch?",
+          "options": ["Ghostscript (local, v10.05.0)", "sejda.com (online)"],
+          "recommended": "Ghostscript (local, v10.05.0)",
+          "chosen": "Ghostscript (local, v10.05.0)"
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "title": "Import PDF",
+      "done": "Uploaded the flattened PDF via Import PDF, mapped to ReqForm 'METABOLIC - Amedix 2026'. Verified it appears in Medical PDFs.",
+      "outcome": "success",
+      "screenshots": ["05-import-pdf.png"],
+      "note": ""
+    },
+    {
+      "n": 6,
+      "title": "Create Form.io order services form",
+      "done": "Form '[DEV] [AI] order services Metabolic Amedix' (id -OvDN5ZeZl-E7Ce8A6WJ). Final structure has 8 Test Panels — each disease area split by methodology: METACORE-Dx / HEPATOMET-Dx / NEUROMYO-PLEX / MITOGENOME-360, each as 'PCR/MLPA / Repeat Expansion — Adult/Elderly Patients' AND 'NGS Panel', with matching per-panel Test Parameters, conditional show/validate, and an 8-arm aggregator. Restrict-to-Pediatrics options + extended pediatric panels excluded. 8 Clinical Indications, clinical-history fields, and the 3 fixed fields (Additional Clinical Context, Relevant Diagnosis system-fed dataSrc:custom, Instructions) retained. Schema URL linked into the ReqForm Metadata (order_form_link).",
+      "outcome": "changes-confirmed",
+      "screenshots": ["06-formio-form.png", "06c-test-panels.png", "06b-reqform-metadata.png"],
+      "note": "Schema URL: https://dev-rce-dashboard.firebaseio.com/forms/-OvDN5ZeZl-E7Ce8A6WJ/schema.json. Relevant Diagnosis kept optional (Medicare 'required' enhancement not applied, per user choice).",
+      "decisions": [
+        {
+          "question": "Target AI order-services form already exists — edit or skip?",
+          "options": ["Keep as-is, link it", "Make Relevant Diagnosis required", "Rebuild from scratch"],
+          "recommended": "Keep as-is, link it",
+          "chosen": "Keep as-is, link it",
+          "note": "Initial decision; form was already complete and accurate."
+        },
+        {
+          "question": "Test Panel structure (label/value confirmation, step 4a)?",
+          "options": ["4 panels (one per disease area, NGS+PCR combined)", "8 panels (split each disease area by methodology)"],
+          "recommended": "4 panels (one per disease area, NGS+PCR combined)",
+          "chosen": "8 panels (split each disease area by methodology)",
+          "note": "User-requested split: e.g. METACORE-Dx | PCR/MLPA … + METACORE-Dx | NGS Panel. Restrict-to-Pediatrics dropped. Conditionals + aggregator re-synced."
+        },
+        {
+          "question": "Mitochondrial panel disease name?",
+          "options": ["MITOGENOME-360", "MITOGENOME-3600"],
+          "recommended": "MITOGENOME-360",
+          "chosen": "MITOGENOME-360",
+          "note": "PDF prints 'MITOGENOME-360' with a superscript degree sign (the trailing 0 was an OCR artifact)."
+        },
+        {
+          "question": "Panel value separator?",
+          "options": [" | ", " - "],
+          "recommended": " | ",
+          "chosen": " | "
+        }
+      ]
+    },
+    {
+      "n": 7,
+      "title": "Final confirm",
+      "done": "Reviewed the finished recform (ReqForm change page with linked metadata, and the 8-panel Form.io order services form). User confirmed it looks correct.",
+      "outcome": "success",
+      "screenshots": ["07-final-confirm-before.png", "07-final-confirm-after.png"],
+      "note": "",
+      "decisions": [
+        {
+          "question": "Does the finished METABOLIC - Amedix 2026 recform look correct?",
+          "options": ["Yes, looks correct", "Needs a fix"],
+          "recommended": "Yes, looks correct",
+          "chosen": "Yes, looks correct"
+        }
+      ]
+    }
+  ]
+}

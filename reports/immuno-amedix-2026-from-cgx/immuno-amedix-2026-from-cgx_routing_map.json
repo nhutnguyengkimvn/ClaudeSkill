@@ -1,0 +1,46 @@
+{
+  "recform": "Immunodeficiency - Amedix 2026",
+  "lab": "Amedix",
+  "test_type": "Immuno",
+  "source_pdf": "Immunodeficiency Panel - Amedix Inc.pdf",
+  "map_type": "per-panel",
+  "note": "ICD-10 codes are for routing/reference only. Per the PDF disclaimer and 42 CFR §410.32, the ordering physician selects the diagnosis codes. These codes are NOT rendered as form options; the Relevant Diagnosis field is system-fed from the case.",
+  "panels": [
+    {
+      "panel": "Combined Immunodeficiency",
+      "rendered": true,
+      "genes": "PIK3CD, STK4, ATM, DOCK8, STAT5B, CARD11, STAT3 (LOF), NFKB2, ICOS, TERT, BTK, MYD88, PLCG2",
+      "primary_icd10": ["D83.0", "D83.1", "D80.1", "D81.6", "D81.7", "D81.82"],
+      "secondary_icd10": ["J47.1", "D69.3", "D72.810", "B25.9", "B27.90", "J47.0"]
+    },
+    {
+      "panel": "Antibody Deficiency And Cvid",
+      "rendered": true,
+      "genes": "TNFRSF13B, NFKB2, CD40, ICOS, ATM, PIK3CD, CTLA4, LRBA, CARD11, TERT, BTK, MYD88, PLCG2",
+      "primary_icd10": ["D83.0", "D83.1", "D81.82", "D80.0", "D80.1", "D80.6"],
+      "secondary_icd10": ["J47.0", "J47.1", "J39.9", "K90.4", "D59.10"]
+    },
+    {
+      "panel": "Severe Combined Immunodeficiency",
+      "rendered": false,
+      "dropped_reason": "PDF marks 'NOT FOR ELDERLY PATIENTS'; adults/elderly-only deployment. Reference form also omits it.",
+      "genes": "IL2RG, JAK3, IL7R, ADA, DCLRE1C, LIG4, NHEJ1, PTPRC, CD3D, CD3E, CD3G, ZAP70 (LOF), RFXANK, CD40LG, CD40, AICDA, IKBKG/NEMO, FOXP3, WAS, PRF1, UNC13D, STX11, STXBP2, SH2D1A, XIAP/BIRC4",
+      "primary_icd10": ["D81.0", "D81.1", "D81.2", "D81.31", "D81.32", "D81.4", "D81.5", "D82.0", "D82.1", "D80.5"],
+      "secondary_icd10": ["B25.9", "B00.9", "B27.90", "B37.0", "R63.4", "A49.9", "D69.3", "D59.10", "L20.84", "D72.810"]
+    },
+    {
+      "panel": "Immune Dysregulation",
+      "rendered": true,
+      "genes": "CTLA4, LRBA, PIK3CD, STK4, DOCK8, STAT3 (GOF), STAT5B (GOF), ZAP70 (GOF), CARD11 (GOF), NFKB2, STAT1 (GOF), TERT, BTK, MYD88, PLCG2",
+      "primary_icd10": ["D83.1", "D81.82", "D83.0", "M04.1", "E31.0", "D89.82", "D84.81"],
+      "secondary_icd10": ["R59.1", "K52.9", "K50.90", "K51.90", "K90.4", "E27.1", "E20.812"]
+    },
+    {
+      "panel": "Adult-onset Severe Inherited Immunodeficiency",
+      "rendered": true,
+      "genes": "BTK, CARD11, STAT3 (LOF), STAT3 (GOF), CTLA4, LRBA, PIK3CD, NFKB2, TNFRSF13B, MYD88, PLCG2, TERT",
+      "primary_icd10": ["D83.0", "D83.1", "D81.82", "D80.0", "D80.1", "D80.6"],
+      "secondary_icd10": ["J47.0", "J84.89", "B25.9", "D72.818", "D59.10", "D69.3"]
+    }
+  ]
+}

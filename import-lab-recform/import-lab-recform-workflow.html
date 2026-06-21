@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>import-lab-recform · Skill Workflow (current)</title>
+<style>
+  :root { --bg:#f6f8fa; --card:#ffffff; --ink:#1f2328; --muted:#6e7781; --accent:#1f6feb; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+         background:var(--bg); color:var(--ink); padding:24px; }
+  .wrap { max-width:1500px; margin:0 auto; }
+  header h1 { margin:0 0 4px; font-size:21px; color:var(--accent); }
+  header p { margin:0 0 14px; color:var(--muted); font-size:13.5px; }
+  .card { background:var(--card); border:1px solid #d0d7de; border-radius:12px; padding:16px;
+          box-shadow:0 1px 3px rgba(31,35,40,.08); }
+  .legend { display:flex; gap:16px; flex-wrap:wrap; margin:10px 0 18px; font-size:12.5px; }
+  .legend span { display:inline-flex; align-items:center; gap:6px; }
+  .chip { width:14px; height:14px; border-radius:4px; display:inline-block; border:1px solid rgba(0,0,0,.15); }
+  .c-start{background:#9be9a8;} .c-proc{background:#cfe6ff;} .c-dec{background:#ffe2a8;}
+  .c-stop{background:#ffc9c2;} .c-note{background:#fff3cf;}
+  footer { color:var(--muted); font-size:12px; margin-top:12px; }
+  /* scale the diagram to fit the card width in one frame */
+  .mermaid { display:flex; justify-content:center; }
+  .mermaid svg { max-width:100%; height:auto; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>import-lab-recform · Skill Workflow (current)</h1>
+    <p>5-workflow pipeline per SKILL.md. Phase 0 runs once; then each PDF loops through W01–W05 until the user stops.</p>
+  </header>
+
+  <div class="legend">
+    <span><i class="chip c-start"></i> Start / End</span>
+    <span><i class="chip c-proc"></i> Workflow step</span>
+    <span><i class="chip c-dec"></i> Decision / gate</span>
+    <span><i class="chip c-stop"></i> Stop (error)</span>
+    <span><i class="chip c-note"></i> Annotation</span>
+  </div>
+
+  <div class="card">
+<pre class="mermaid">
+flowchart LR
+  A(["Invoke<br/>import-lab-recform<br/>path1 path2 ..."]):::start --> B{"All paths<br/>valid?"}:::dec
+  B -- "no" --> Bx["Report bad<br/>path(s) · STOP"]:::stop
+  B -- "yes" --> P0["<b>Phase 0</b> (once)<br/>Dashboard URL + login<br/>detect Test Type + Lab<br/>report queue"]:::proc
+
+  P0 --> W1["<b>W01 · Medical Specialty</b><br/>create if missing<br/>(sheet gid · metadata · SOAP)<br/>else skip"]:::proc
+  W1 --> W2["<b>W02 · ReqForm</b><br/>create (sheet gid) · Save<br/>then Sync CSV"]:::proc
+  W2 --> W3["<b>W03 · Flatten + Import</b><br/>Ghostscript / sejda<br/>upload flattened · verify"]:::proc
+  W3 --> W4["<b>W04 · Form.io order-services</b><br/>full-read PDF · classify + rules + routing<br/>confirm list → build JSON → approve<br/>Save · link schema URL into Metadata"]:::proc
+  W4 --> W5["<b>W05 · Confirm + Report</b><br/>final confirm<br/>build per-recform HTML report"]:::proc
+
+  W5 --> G{"Continue to<br/>next recform?"}:::dec
+  G -- "stop" --> FIN(["Final report"]):::start
+  G -- "yes → next PDF" --> W1
+
+  nGate["W04 has 2 user gates:<br/>confirm field list + approve form<br/>not OK → revise &amp; re-confirm"]:::note
+  nLoop["loop: next requested PDF<br/>(Phase 0 not repeated)"]:::note
+  W4 -.- nGate
+  G -.- nLoop
+
+  classDef start fill:#9be9a8,stroke:#1a7f37,stroke-width:1px,color:#08300f;
+  classDef proc fill:#cfe6ff,stroke:#1f6feb,stroke-width:1px,color:#0a2540;
+  classDef dec fill:#ffe2a8,stroke:#bf8700,stroke-width:1px,color:#5c3d00;
+  classDef stop fill:#ffc9c2,stroke:#cf222e,stroke-width:1px,color:#5c0a02;
+  classDef note fill:#fff3cf,stroke:#bf8700,stroke-width:1px,color:#7a5200,font-style:italic;
+</pre>
+  </div>
+
+  <footer>
+    The "yes → next PDF" arrow returns to W01 for the next PDF. Each recform produces its own
+    <code>&lt;recform-slug&gt;/</code> folder (screenshots + HTML report) before the next PDF starts.
+  </footer>
+</div>
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({ startOnLoad: true, theme: 'base', securityLevel: 'loose',
+    flowchart: { curve: 'basis', htmlLabels: true, nodeSpacing: 35, rankSpacing: 55 } });
+</script>
+</body>
+</html>
