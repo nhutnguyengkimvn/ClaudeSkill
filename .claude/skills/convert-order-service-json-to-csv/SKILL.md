@@ -20,7 +20,9 @@ get their own rows.
 
 ## How to run
 ```bash
-python3 scripts/convert.py INPUT.json OUTPUT.csv
+~/.claude/skills/.venv/bin/python3 \
+  ~/.claude/skills/convert-order-service-json-to-csv/scripts/convert.py \
+  INPUT.json OUTPUT.csv
 ```
 Optional flags (defaults shown):
 ```bash
@@ -31,12 +33,16 @@ Optional flags (defaults shown):
 ```
 Output is UTF-8 **with BOM** so Excel / Numbers open it with correct accents.
 
-## Workflow (IMPORTANT — always follow in exact order)
+## Standalone workflow (IMPORTANT — always follow in exact order)
+
+> When called from **import-lab-recform W04**, skip Step 1 entirely — the schema URL
+> is already known. Jump straight to Step 2 with the URL from W04 step 8, and use
+> `<recform-slug>/order-services-<slug>.csv` as the output path.
 
 **Step 1 — Ask for the schema link (always stop and ask first; do nothing else until you have the link):**
 > *"Please provide the JSON schema link for the form."*
 
-**Step 2 — Fetch the JSON:** when the user provides the link (e.g.
+**Step 2 — Fetch the JSON:** when the URL is known (e.g.
 `https://dev-rce-dashboard.firebaseio.com/forms/-Oukz3CkVsFGUgKcAHqa/schema.json`),
 use **WebFetch** to download it, then save the JSON to a file (e.g. `/tmp/form.json`).
 (Firebase links cannot be fetched directly by the container — use Claude's WebFetch
@@ -44,7 +50,9 @@ then write to file; the script only reads from a local file.)
 
 **Step 3 — First run (WITHOUT `--schema-url`):**
 ```bash
-python3 scripts/convert.py /tmp/form.json OUTPUT.csv
+~/.claude/skills/.venv/bin/python3 \
+  ~/.claude/skills/convert-order-service-json-to-csv/scripts/convert.py \
+  /tmp/form.json OUTPUT.csv
 ```
 - If the form **has no datagrid** → CSV is produced immediately. Done.
 - If **datagrids are found** → script exits with code 2 and prints to stderr:
@@ -57,8 +65,10 @@ python3 scripts/convert.py /tmp/form.json OUTPUT.csv
 **Step 5 — Second run with datagrid links** (repeat `--datagrid-link` in the exact
 field order the script listed):
 ```bash
-python3 scripts/convert.py /tmp/form.json OUTPUT.csv \
-    --datagrid-link "https://.../schema/components/15.json"
+~/.claude/skills/.venv/bin/python3 \
+  ~/.claude/skills/convert-order-service-json-to-csv/scripts/convert.py \
+  /tmp/form.json OUTPUT.csv \
+  --datagrid-link "https://.../schema/components/15.json"
 ```
 Each datagrid produces **1 `__json__` row**: skip=`__json__`,
 Sale/PSS/Provider=VIEW, link placed in the **JSON** column, child fields not expanded.

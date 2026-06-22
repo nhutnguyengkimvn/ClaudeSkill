@@ -203,8 +203,38 @@ back to the ReqForm created in Workflow 02:
    ```
    where `order_form_link` = the schema URL from step 1 (**dynamic** per form).
 4. Click **Save**. **No CSV/form sync is needed** for this step.
-- Then report `✅ Workflow 04 done: order services form saved, opened, and linked
-  into the ReqForm metadata`.
+
+### 11. Convert Form.io schema to req-form mapping CSV
+
+Use the `convert-order-service-json-to-csv` skill inline — schema URL is already
+known from step 8. Do NOT ask the user for the link again.
+
+1. **Fetch the schema JSON** via WebFetch using `<SCHEMA_URL>` (the "Apis to Get Schema"
+   URL from step 8). Save the response body to `/tmp/form-<slug>.json`.
+
+2. **First pass** — run the converter:
+   ```bash
+   ~/.claude/skills/.venv/bin/python3 \
+     ~/.claude/skills/convert-order-service-json-to-csv/scripts/convert.py \
+     /tmp/form-<slug>.json \
+     "<recform-slug>/order-services-<slug>.csv"
+   ```
+   - Script exits 0 → report `✅ CSV: <recform-slug>/order-services-<slug>.csv (N rows)` and continue.
+   - Script exits 2 + `DATAGRID_FOUND` stderr → go to step 3.
+
+3. **Datagrid links (only when DATAGRID_FOUND)** — for each key listed by the script, ask:
+   > *"Found datagrid `<key>`. Please provide the JSON link for this field."*
+   Re-run with one `--datagrid-link` per datagrid, **in the order the script listed them**:
+   ```bash
+   ~/.claude/skills/.venv/bin/python3 \
+     ~/.claude/skills/convert-order-service-json-to-csv/scripts/convert.py \
+     /tmp/form-<slug>.json \
+     "<recform-slug>/order-services-<slug>.csv" \
+     --datagrid-link "<url1>" [--datagrid-link "<url2>" ...]
+   ```
+
+4. Report the CSV path + row count. Then report:
+   `✅ Workflow 04 done: Form.io form saved, schema linked, CSV exported.`
 
 ---
 
