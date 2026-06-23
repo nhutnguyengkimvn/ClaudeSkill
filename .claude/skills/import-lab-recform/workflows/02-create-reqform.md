@@ -1,7 +1,18 @@
-# Workflow 02 — Create Req Form + Sync CSV
+# Workflow 02 — Create Req Form
 
 > Load `references/abbreviation-map.md` before starting.
 > `<DASHBOARD_URL>` = the base URL the user supplied in Phase 0.
+
+## Year to use
+
+Before filling any form fields, determine `<YEAR>`:
+1. Use the current calendar year by default.
+2. Ask the user once per batch run (not per PDF):
+   ```
+   Which year should be used for Medical Specialty and Req Form names? (default: <current year>)
+   ```
+3. Wait for the answer; use their reply (or the current year if they confirm the default).
+4. Substitute `<YEAR>` everywhere `2026` appeared in earlier instructions.
 
 ## Steps
 
@@ -13,11 +24,11 @@
 | Field | Value |
 |-------|-------|
 | Name | Lab name (e.g. `Amedix`) |
-| Description | e.g. `CGX - Amedix 2026` |
+| Description | e.g. `CGX - Amedix <YEAR>` |
 
 ### 3. Medical Specific dropdown
 - Click dropdown → type Short Code (e.g. `CGX`, `IMMUNO`, `PGX`)
-- Wait for results → select option containing `2026`
+- Wait for results → select option containing `<YEAR>`
 - **Not found** → mark ❌, skip entire cycle for this PDF
 
 ### 4. Lab dropdown
@@ -50,18 +61,11 @@ Make sure checkbox is **UNCHECKED**
 - Click `Save`
 - **If 500 error:**
   - Go back to form
-  - Change `Name` field → full Description (e.g. `CGX - Amedix 2026`)
+  - Change `Name` field → full Description (e.g. `CGX - Amedix <YEAR>`)
   - Click `Save` again
   - **Still 500** → mark ❌, skip entire cycle
 - Wait for success confirmation
-- Report `✅ ReqForm saved`
+- Report `✅ Workflow 02 done: ReqForm saved`
+- Continue to Workflow 03
 
-### 9. Verify & Sync CSV
-1. Navigate to: `<DASHBOARD_URL>/admin/ehealth/medicalrecform/`
-2. Find the newly created form (match by Description e.g. `CGX - Amedix 2026`)
-3. Check the checkbox next to it
-4. Open `Action` dropdown → select `Sync CSV`
-5. Click `Go`
-6. Wait for message: `Syncing process has been started! You can look over it from Sequence Tracker`
-7. Report `✅ Workflow 02 done + Sync CSV triggered`
-8. Continue to Workflow 03
+> **Sync CSV runs after Workflow 04**, not here. Do not trigger it now.

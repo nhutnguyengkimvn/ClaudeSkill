@@ -89,3 +89,35 @@ generic standalone-assays field.
 - This produces an order-entry form, not medical advice. It never decides which
   panel or ICD-10 a patient should get — the provider does. Medical-necessity /
   coding responsibility stays with the ordering physician per 42 CFR §410.32.
+
+## Clinical Symptom Sections — radio, not selectboxes
+
+**Applies to:** General, Head & Neck, Skin, Hematologic History, Oncologic
+History, Infectious Disease History, Laboratory Findings.
+
+- Use `radio` (single-select), NOT `selectboxes`. Clinicians select the **one**
+  primary presenting symptom per category.
+- For any option whose label contains "Other" (e.g. "Other; specify"):
+  - Set `value: "Other"` (not the full label string).
+  - Add a conditional `textfield` immediately after the radio, shown when the
+    radio value === `"Other"`.
+  - Key convention: `test_requirements_<section>_other_specify`
+
+Example shape:
+```json
+{
+  "type": "radio",
+  "key": "test_requirements_general_symptoms",
+  "label": "General",
+  "values": [
+    {"label": "Acute liver failure", "value": "Acute liver failure"},
+    {"label": "Other; specify", "value": "Other"}
+  ]
+},
+{
+  "type": "textfield",
+  "key": "test_requirements_general_symptoms_other_specify",
+  "label": "Specify",
+  "conditional": {"show": true, "when": "test_requirements_general_symptoms", "eq": "Other"}
+}
+```

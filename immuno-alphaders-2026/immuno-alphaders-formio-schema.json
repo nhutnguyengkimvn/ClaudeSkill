@@ -1,0 +1,2876 @@
+{
+  "components": [
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "authenticate": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "clearOnRefresh": false,
+      "conditional": {
+        "eq": ""
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "data": {
+        "custom": "",
+        "json": "",
+        "resource": "",
+        "url": "",
+        "values": [
+          {
+            "label": "CUSTOM PANEL",
+            "value": "CUSTOM PANEL"
+          },
+          {
+            "label": "COMPREHENSIVE PANEL",
+            "value": "COMPREHENSIVE PANEL"
+          }
+        ]
+      },
+      "dataGridLabel": false,
+      "dataSrc": "values",
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "encrypted": false,
+      "errorLabel": "",
+      "filter": "",
+      "fuseOptions": {
+        "include": "score",
+        "threshold": 0.3
+      },
+      "hidden": false,
+      "hideLabel": false,
+      "id": "erwq7m8",
+      "idPath": "id",
+      "ignoreCache": false,
+      "input": true,
+      "key": "order_service_test_panel",
+      "label": "Test Panel",
+      "labelPosition": "top",
+      "lazyLoad": true,
+      "limit": 100,
+      "minSearch": 0,
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "Select Test Panel",
+      "prefix": "",
+      "protected": false,
+      "readOnlyValue": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "searchDebounce": 0.3,
+      "searchEnabled": true,
+      "searchField": "",
+      "selectFields": "",
+      "selectThreshold": 0.3,
+      "showCharCount": false,
+      "showWordCount": false,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": true,
+      "template": "<span>{{ item.label }}</span>",
+      "tooltip": "",
+      "type": "select",
+      "unique": false,
+      "uniqueOptions": false,
+      "useExactSearch": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "multiple": false,
+        "onlyAvailableItems": false,
+        "required": true,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "valueProperty": "",
+      "widget": "choicesjs"
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": ""
+      },
+      "content": "<p class=\"fs-14 fw-500 text-gray-3\"><i>Gene parameters will appear here once you select a Test Panel.</i></p>",
+      "customClass": "",
+      "customConditional": "show= !data.order_service_test_panel",
+      "customDefaultValue": "",
+      "dataGridLabel": false,
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "encrypted": false,
+      "errorLabel": "",
+      "hidden": false,
+      "hideLabel": false,
+      "id": "e1a7gs",
+      "input": false,
+      "key": "order_service_html",
+      "label": "Order service text description",
+      "labelPosition": "top",
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": false,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "showCharCount": false,
+      "showWordCount": false,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": false,
+      "tag": "div",
+      "tooltip": "",
+      "type": "htmlelement",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "multiple": false,
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change"
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "attributes": {
+        "data-desc": "CUSTOM PANEL"
+      },
+      "authenticate": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": ""
+      },
+      "customClass": "",
+      "customConditional": "show = data.order_service_test_panel === 'CUSTOM PANEL';",
+      "customDefaultValue": "",
+      "data": {
+        "url": ""
+      },
+      "dataGridLabel": false,
+      "dataSrc": "values",
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "encrypted": false,
+      "errorLabel": "",
+      "fieldSet": false,
+      "hidden": false,
+      "hideLabel": false,
+      "id": "ek1rkcz",
+      "ignoreCache": false,
+      "inline": true,
+      "input": true,
+      "inputType": "checkbox",
+      "key": "order_service_test_parameters_1",
+      "label": "Test Parameters",
+      "labelPosition": "top",
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "order_service_test_panel",
+      "showCharCount": false,
+      "showWordCount": false,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": false,
+      "template": "<span>{{ item.label }}</span>",
+      "tooltip": "",
+      "type": "selectboxes",
+      "unique": false,
+      "validate": {
+        "custom": "valid = data.order_service_test_panel === 'CUSTOM PANEL' ? true : false;",
+        "customPrivate": false,
+        "multiple": false,
+        "onlyAvailableItems": false,
+        "required": true,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "values": [
+        {
+          "label": "ATM",
+          "shortcut": "",
+          "value": "ATM"
+        },
+        {
+          "label": "BLM",
+          "shortcut": "",
+          "value": "BLM"
+        },
+        {
+          "label": "BRCA1",
+          "shortcut": "",
+          "value": "BRCA1"
+        },
+        {
+          "label": "BRCA2",
+          "shortcut": "",
+          "value": "BRCA2"
+        },
+        {
+          "label": "BTK",
+          "shortcut": "",
+          "value": "BTK"
+        },
+        {
+          "label": "CDX1",
+          "shortcut": "",
+          "value": "CDX1"
+        },
+        {
+          "label": "CFTR",
+          "shortcut": "",
+          "value": "CFTR"
+        },
+        {
+          "label": "CYBA",
+          "shortcut": "",
+          "value": "CYBA"
+        },
+        {
+          "label": "CYBB",
+          "shortcut": "",
+          "value": "CYBB"
+        },
+        {
+          "label": "F13B",
+          "shortcut": "",
+          "value": "F13B"
+        },
+        {
+          "label": "F5",
+          "shortcut": "",
+          "value": "F5"
+        },
+        {
+          "label": "F7",
+          "shortcut": "",
+          "value": "F7"
+        },
+        {
+          "label": "F9",
+          "shortcut": "",
+          "value": "F9"
+        },
+        {
+          "label": "FANCC",
+          "shortcut": "",
+          "value": "FANCC"
+        },
+        {
+          "label": "FGB",
+          "shortcut": "",
+          "value": "FGB"
+        },
+        {
+          "label": "G6PC",
+          "shortcut": "",
+          "value": "G6PC"
+        },
+        {
+          "label": "G6PD",
+          "shortcut": "",
+          "value": "G6PD"
+        },
+        {
+          "label": "IFNGR1",
+          "shortcut": "",
+          "value": "IFNGR1"
+        },
+        {
+          "label": "IFNGR2",
+          "shortcut": "",
+          "value": "IFNGR2"
+        },
+        {
+          "label": "ITGB2",
+          "shortcut": "",
+          "value": "ITGB2"
+        },
+        {
+          "label": "JAK2",
+          "shortcut": "",
+          "value": "JAK2"
+        },
+        {
+          "label": "JAGN1",
+          "shortcut": "",
+          "value": "JAGN1"
+        },
+        {
+          "label": "MEFV",
+          "shortcut": "",
+          "value": "MEFV"
+        },
+        {
+          "label": "MPL",
+          "shortcut": "",
+          "value": "MPL"
+        },
+        {
+          "label": "MSH2",
+          "shortcut": "",
+          "value": "MSH2"
+        },
+        {
+          "label": "MSH6",
+          "shortcut": "",
+          "value": "MSH6"
+        },
+        {
+          "label": "MYD88",
+          "shortcut": "",
+          "value": "MYD88"
+        },
+        {
+          "label": "NCF1",
+          "shortcut": "",
+          "value": "NCF1"
+        },
+        {
+          "label": "NFKB2",
+          "shortcut": "",
+          "value": "NFKB2"
+        },
+        {
+          "label": "NRAS",
+          "shortcut": "",
+          "value": "NRAS"
+        },
+        {
+          "label": "PALB2",
+          "shortcut": "",
+          "value": "PALB2"
+        },
+        {
+          "label": "PIK3CD",
+          "shortcut": "",
+          "value": "PIK3CD"
+        },
+        {
+          "label": "PLCG2",
+          "shortcut": "",
+          "value": "PLCG2"
+        },
+        {
+          "label": "PMS2",
+          "shortcut": "",
+          "value": "PMS2"
+        },
+        {
+          "label": "PTPRC",
+          "shortcut": "",
+          "value": "PTPRC"
+        },
+        {
+          "label": "RAG1",
+          "shortcut": "",
+          "value": "RAG1"
+        },
+        {
+          "label": "RAG2",
+          "shortcut": "",
+          "value": "RAG2"
+        },
+        {
+          "label": "RFXANK",
+          "shortcut": "",
+          "value": "RFXANK"
+        },
+        {
+          "label": "RUNX1",
+          "shortcut": "",
+          "value": "RUNX1"
+        },
+        {
+          "label": "SPINK5",
+          "shortcut": "",
+          "value": "SPINK5"
+        },
+        {
+          "label": "STAT1",
+          "shortcut": "",
+          "value": "STAT1"
+        },
+        {
+          "label": "STAT3",
+          "shortcut": "",
+          "value": "STAT3"
+        },
+        {
+          "label": "STK4",
+          "shortcut": "",
+          "value": "STK4"
+        },
+        {
+          "label": "TERT",
+          "shortcut": "",
+          "value": "TERT"
+        },
+        {
+          "label": "TNFRSF13B",
+          "shortcut": "",
+          "value": "TNFRSF13B"
+        },
+        {
+          "label": "VPS13B",
+          "shortcut": "",
+          "value": "VPS13B"
+        },
+        {
+          "label": "PTEN",
+          "shortcut": "",
+          "value": "PTEN"
+        }
+      ]
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "value = data.order_service_test_panel === 'CUSTOM PANEL' ? data.order_service_test_parameters_1 : data.order_service_test_panel === 'COMPREHENSIVE PANEL' ? 'COMPREHENSIVE PANEL' : '';",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": ""
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "dataGridLabel": false,
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "encrypted": false,
+      "errorLabel": "",
+      "hidden": false,
+      "hideLabel": false,
+      "id": "eisjedc",
+      "input": true,
+      "inputType": "hidden",
+      "key": "order_service_test_parameters",
+      "label": "Test parameters",
+      "labelPosition": "top",
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "data",
+      "refreshOn": "",
+      "showCharCount": false,
+      "showWordCount": false,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": false,
+      "tooltip": "",
+      "type": "hidden",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "multiple": false,
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "widget": {
+        "type": "input"
+      }
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": ""
+      },
+      "content": "<div class=\"bg-light rce-pt-5 rce-pb-5 rce-pr-10 rce-pl-10 fw-600 text-black\">Clinical History</div>",
+      "customClass": "",
+      "customDefaultValue": "",
+      "dataGridLabel": false,
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "encrypted": false,
+      "errorLabel": "",
+      "hidden": false,
+      "hideLabel": false,
+      "id": "ehpsawy",
+      "input": false,
+      "key": "html_clinical_history",
+      "label": "HTML",
+      "labelPosition": "top",
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": false,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "showCharCount": false,
+      "showWordCount": false,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": false,
+      "tag": "div",
+      "tooltip": "",
+      "type": "htmlelement",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "multiple": false,
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change"
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "authenticate": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "clearOnRefresh": false,
+      "conditional": {
+        "eq": ""
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "data": {
+        "custom": "",
+        "json": "",
+        "resource": "",
+        "url": "",
+        "values": [
+          {
+            "label": "Diagnostic",
+            "value": "Diagnostic"
+          },
+          {
+            "label": "Presymptomatic",
+            "value": "Presymptomatic"
+          },
+          {
+            "label": "Family History",
+            "value": "Family History"
+          },
+          {
+            "label": "Family Variant",
+            "value": "Family Variant"
+          },
+          {
+            "label": "Other",
+            "value": "Other"
+          }
+        ]
+      },
+      "dataGridLabel": false,
+      "dataSrc": "values",
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "encrypted": false,
+      "errorLabel": "",
+      "filter": "",
+      "fuseOptions": {
+        "include": "score",
+        "threshold": 0.3
+      },
+      "hidden": false,
+      "hideLabel": false,
+      "id": "evs9f",
+      "idPath": "id",
+      "ignoreCache": false,
+      "input": true,
+      "key": "order_service_indications_for_testing",
+      "label": "Indications for Testing",
+      "labelPosition": "top",
+      "lazyLoad": true,
+      "limit": 100,
+      "minSearch": 0,
+      "modalEdit": false,
+      "multiple": true,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "readOnlyValue": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "searchDebounce": 0.3,
+      "searchEnabled": true,
+      "searchField": "",
+      "selectFields": "",
+      "selectThreshold": 0.3,
+      "showCharCount": false,
+      "showWordCount": false,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": true,
+      "template": "<span>{{ item.label }}</span>",
+      "tooltip": "",
+      "type": "select",
+      "unique": false,
+      "uniqueOptions": false,
+      "useExactSearch": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "multiple": false,
+        "onlyAvailableItems": false,
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "valueProperty": "",
+      "widget": "choicesjs"
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": "Other",
+        "show": true,
+        "when": "order_service_indications_for_testing"
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "dataGridLabel": false,
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "displayMask": "",
+      "encrypted": false,
+      "errorLabel": "",
+      "hidden": false,
+      "hideLabel": false,
+      "id": "e84s5k",
+      "input": true,
+      "inputFormat": "plain",
+      "inputMask": "",
+      "inputType": "text",
+      "key": "order_service_specify_other_indication_for_testing",
+      "label": "Specify Other Indication",
+      "labelPosition": "top",
+      "mask": false,
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "showCharCount": false,
+      "showWordCount": false,
+      "spellcheck": true,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": true,
+      "tooltip": "",
+      "truncateMultipleSpaces": false,
+      "type": "textfield",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "maxLength": "",
+        "minLength": "",
+        "multiple": false,
+        "pattern": "",
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "widget": {
+        "type": "input"
+      }
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": ""
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "dataGridLabel": false,
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "displayMask": "",
+      "encrypted": false,
+      "errorLabel": "",
+      "hidden": false,
+      "hideLabel": false,
+      "id": "e3cipzj",
+      "input": true,
+      "inputFormat": "plain",
+      "inputMask": "",
+      "inputType": "text",
+      "key": "order_service_age_of_primary_diagnosis",
+      "label": "Age of Primary Diagnosis",
+      "labelPosition": "top",
+      "mask": false,
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "showCharCount": false,
+      "showWordCount": false,
+      "spellcheck": true,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": true,
+      "tooltip": "",
+      "truncateMultipleSpaces": false,
+      "type": "textfield",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "maxLength": "",
+        "minLength": "",
+        "multiple": false,
+        "pattern": "",
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "widget": {
+        "type": "input"
+      }
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "authenticate": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": ""
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "data": {
+        "url": ""
+      },
+      "dataGridLabel": false,
+      "dataSrc": "values",
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "encrypted": false,
+      "errorLabel": "",
+      "fieldSet": false,
+      "hidden": false,
+      "hideLabel": false,
+      "id": "eybu1p",
+      "ignoreCache": false,
+      "input": true,
+      "inputType": "radio",
+      "key": "order_service_previous_genetic_tests",
+      "label": "Previous genetic tests",
+      "labelPosition": "top",
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "showCharCount": false,
+      "showWordCount": false,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": false,
+      "template": "<span>{{ item.label }}</span>",
+      "tooltip": "",
+      "type": "radio",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "multiple": false,
+        "onlyAvailableItems": false,
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "values": [
+        {
+          "label": "Yes",
+          "shortcut": "",
+          "value": "Yes"
+        },
+        {
+          "label": "No",
+          "shortcut": "",
+          "value": "No"
+        }
+      ]
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": "Yes",
+        "show": true,
+        "when": "order_service_previous_genetic_tests"
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "dataGridLabel": false,
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "displayMask": "",
+      "encrypted": false,
+      "errorLabel": "",
+      "hidden": false,
+      "hideLabel": false,
+      "id": "euxu34k",
+      "input": true,
+      "inputFormat": "plain",
+      "inputMask": "",
+      "inputType": "text",
+      "key": "order_service_specify_test_and_results",
+      "label": "Specify test and results",
+      "labelPosition": "top",
+      "mask": false,
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "showCharCount": false,
+      "showWordCount": false,
+      "spellcheck": true,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": true,
+      "tooltip": "",
+      "truncateMultipleSpaces": false,
+      "type": "textfield",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "maxLength": "",
+        "minLength": "",
+        "multiple": false,
+        "pattern": "",
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "widget": {
+        "type": "input"
+      }
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "authenticate": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": ""
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "data": {
+        "url": ""
+      },
+      "dataGridLabel": false,
+      "dataSrc": "values",
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "encrypted": false,
+      "errorLabel": "",
+      "fieldSet": false,
+      "hidden": false,
+      "hideLabel": false,
+      "id": "e7zid8",
+      "ignoreCache": false,
+      "input": true,
+      "inputType": "radio",
+      "key": "order_service_will_patient_management_be_changed_depending_on_the_test_results",
+      "label": "Will Patient management be changed depending on the test results?",
+      "labelPosition": "top",
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "showCharCount": false,
+      "showWordCount": false,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": false,
+      "template": "<span>{{ item.label }}</span>",
+      "tooltip": "",
+      "type": "radio",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "multiple": false,
+        "onlyAvailableItems": false,
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "values": [
+        {
+          "label": "Yes",
+          "shortcut": "",
+          "value": "Yes"
+        },
+        {
+          "label": "No",
+          "shortcut": "",
+          "value": "No"
+        }
+      ]
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "authenticate": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": ""
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "data": {
+        "url": ""
+      },
+      "dataGridLabel": false,
+      "dataSrc": "values",
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "encrypted": false,
+      "errorLabel": "",
+      "fieldSet": false,
+      "hidden": false,
+      "hideLabel": false,
+      "id": "ejxms4j",
+      "ignoreCache": false,
+      "input": true,
+      "inputType": "radio",
+      "key": "order_service_bone_marrow_transplant",
+      "label": "Has patient received a bone marrow transplant?",
+      "labelPosition": "top",
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "showCharCount": false,
+      "showWordCount": false,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": false,
+      "template": "<span>{{ item.label }}</span>",
+      "tooltip": "",
+      "type": "radio",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "multiple": false,
+        "onlyAvailableItems": false,
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "values": [
+        {
+          "label": "Yes",
+          "shortcut": "",
+          "value": "Yes"
+        },
+        {
+          "label": "No",
+          "shortcut": "",
+          "value": "No"
+        }
+      ]
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": "Yes",
+        "show": true,
+        "when": "order_service_bone_marrow_transplant"
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "dataGridLabel": false,
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "displayMask": "",
+      "encrypted": false,
+      "errorLabel": "",
+      "hidden": false,
+      "hideLabel": false,
+      "id": "er70gtb",
+      "input": true,
+      "inputFormat": "plain",
+      "inputMask": "",
+      "inputType": "text",
+      "key": "order_service_bmt_date",
+      "label": "Date of bone marrow transplant",
+      "labelPosition": "top",
+      "mask": false,
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "mm/dd/yyyy",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "showCharCount": false,
+      "showWordCount": false,
+      "spellcheck": true,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": true,
+      "tooltip": "",
+      "truncateMultipleSpaces": false,
+      "type": "textfield",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "maxLength": "",
+        "minLength": "",
+        "multiple": false,
+        "pattern": "",
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "widget": {
+        "type": "input"
+      }
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": "Yes",
+        "show": true,
+        "when": "order_service_bone_marrow_transplant"
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "dataGridLabel": false,
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "displayMask": "",
+      "encrypted": false,
+      "errorLabel": "",
+      "hidden": false,
+      "hideLabel": false,
+      "id": "ewik34c",
+      "input": true,
+      "inputFormat": "plain",
+      "inputMask": "",
+      "inputType": "text",
+      "key": "order_service_bmt_engraftment",
+      "label": "Percent engraftment",
+      "labelPosition": "top",
+      "mask": false,
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "showCharCount": false,
+      "showWordCount": false,
+      "spellcheck": true,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": true,
+      "tooltip": "",
+      "truncateMultipleSpaces": false,
+      "type": "textfield",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "maxLength": "",
+        "minLength": "",
+        "multiple": false,
+        "pattern": "",
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "widget": {
+        "type": "input"
+      }
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": ""
+      },
+      "content": "<div class=\"bg-light rce-pt-5 rce-pb-5 rce-pr-10 rce-pl-10 fw-600 text-black\">Clinical Symptoms</div>",
+      "customClass": "",
+      "customDefaultValue": "",
+      "dataGridLabel": false,
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "encrypted": false,
+      "errorLabel": "",
+      "hidden": false,
+      "hideLabel": false,
+      "id": "ekrvjc5",
+      "input": false,
+      "key": "html_clinical_symptoms",
+      "label": "HTML",
+      "labelPosition": "top",
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": false,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "showCharCount": false,
+      "showWordCount": false,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": false,
+      "tag": "div",
+      "tooltip": "",
+      "type": "htmlelement",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "multiple": false,
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change"
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "authenticate": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": ""
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "data": {
+        "url": ""
+      },
+      "dataGridLabel": false,
+      "dataSrc": "values",
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "encrypted": false,
+      "errorLabel": "",
+      "hidden": false,
+      "hideLabel": false,
+      "id": "e2c27pv",
+      "ignoreCache": false,
+      "inline": false,
+      "input": true,
+      "inputType": "radio",
+      "key": "order_service_general_symptoms",
+      "label": "General",
+      "labelPosition": "top",
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "showCharCount": false,
+      "showWordCount": false,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": false,
+      "tooltip": "",
+      "type": "radio",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "multiple": false,
+        "onlyAvailableItems": false,
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "values": [
+        {
+          "label": "Acute liver failure",
+          "shortcut": "",
+          "value": "Acute liver failure"
+        },
+        {
+          "label": "Fever(s)",
+          "shortcut": "",
+          "value": "Fever(s)"
+        },
+        {
+          "label": "Failure to thrive",
+          "shortcut": "",
+          "value": "Failure to thrive"
+        },
+        {
+          "label": "(Hepato)splenomegaly",
+          "shortcut": "",
+          "value": "(Hepato)splenomegaly"
+        },
+        {
+          "label": "Lethargy",
+          "shortcut": "",
+          "value": "Lethargy"
+        },
+        {
+          "label": "Respiratory insufficiency/failure",
+          "shortcut": "",
+          "value": "Respiratory insufficiency/failure"
+        },
+        {
+          "label": "Sudden unexplained coma/death",
+          "shortcut": "",
+          "value": "Sudden unexplained coma/death"
+        },
+        {
+          "label": "Other; specify",
+          "shortcut": "",
+          "value": "Other"
+        }
+      ]
+    },
+    {
+      "type": "textfield",
+      "key": "order_service_general_symptoms_other_specify",
+      "label": "Specify",
+      "placeholder": "",
+      "input": true,
+      "tableView": false,
+      "hidden": false,
+      "clearOnHide": true,
+      "persistent": true,
+      "protected": false,
+      "disabled": false,
+      "autofocus": false,
+      "tabindex": "",
+      "prefix": "",
+      "suffix": "",
+      "errorLabel": "",
+      "customClass": "",
+      "tooltip": "",
+      "hideLabel": false,
+      "dataGridLabel": false,
+      "labelPosition": "top",
+      "description": "",
+      "id": "otgenerals",
+      "validate": {
+        "required": false,
+        "custom": "",
+        "customPrivate": false,
+        "strictDateValidation": false,
+        "unique": false,
+        "multiple": false
+      },
+      "conditional": {
+        "show": true,
+        "when": "order_service_general_symptoms",
+        "eq": "Other"
+      }
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "authenticate": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": ""
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "data": {
+        "url": ""
+      },
+      "dataGridLabel": false,
+      "dataSrc": "values",
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "encrypted": false,
+      "errorLabel": "",
+      "hidden": false,
+      "hideLabel": false,
+      "id": "eeemb6",
+      "ignoreCache": false,
+      "inline": false,
+      "input": true,
+      "inputType": "radio",
+      "key": "order_service_head_neck_symptoms",
+      "label": "Head and Neck",
+      "labelPosition": "top",
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "showCharCount": false,
+      "showWordCount": false,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": false,
+      "tooltip": "",
+      "type": "radio",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "multiple": false,
+        "onlyAvailableItems": false,
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "values": [
+        {
+          "label": "Abnormal CT/MRI of brain; specify",
+          "shortcut": "",
+          "value": "Abnormal CT/MRI of brain; specify"
+        },
+        {
+          "label": "Dysmorphic facies",
+          "shortcut": "",
+          "value": "Dysmorphic facies"
+        },
+        {
+          "label": "Enlarged lymph nodes",
+          "shortcut": "",
+          "value": "Enlarged lymph nodes"
+        },
+        {
+          "label": "Microcephaly",
+          "shortcut": "",
+          "value": "Microcephaly"
+        },
+        {
+          "label": "Oral leukoplakia",
+          "shortcut": "",
+          "value": "Oral leukoplakia"
+        },
+        {
+          "label": "Small lymph nodes and/or tonsils",
+          "shortcut": "",
+          "value": "Small lymph nodes and/or tonsils"
+        },
+        {
+          "label": "Thymic hypoplasia",
+          "shortcut": "",
+          "value": "Thymic hypoplasia"
+        },
+        {
+          "label": "Other; specify",
+          "shortcut": "",
+          "value": "Other"
+        }
+      ]
+    },
+    {
+      "type": "textfield",
+      "key": "order_service_head_neck_symptoms_other_specify",
+      "label": "Specify",
+      "placeholder": "",
+      "input": true,
+      "tableView": false,
+      "hidden": false,
+      "clearOnHide": true,
+      "persistent": true,
+      "protected": false,
+      "disabled": false,
+      "autofocus": false,
+      "tabindex": "",
+      "prefix": "",
+      "suffix": "",
+      "errorLabel": "",
+      "customClass": "",
+      "tooltip": "",
+      "hideLabel": false,
+      "dataGridLabel": false,
+      "labelPosition": "top",
+      "description": "",
+      "id": "otheadneck",
+      "validate": {
+        "required": false,
+        "custom": "",
+        "customPrivate": false,
+        "strictDateValidation": false,
+        "unique": false,
+        "multiple": false
+      },
+      "conditional": {
+        "show": true,
+        "when": "order_service_head_neck_symptoms",
+        "eq": "Other"
+      }
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "authenticate": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": ""
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "data": {
+        "url": ""
+      },
+      "dataGridLabel": false,
+      "dataSrc": "values",
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "encrypted": false,
+      "errorLabel": "",
+      "hidden": false,
+      "hideLabel": false,
+      "id": "e3ivav",
+      "ignoreCache": false,
+      "inline": false,
+      "input": true,
+      "inputType": "radio",
+      "key": "order_service_skin_symptoms",
+      "label": "Skin",
+      "labelPosition": "top",
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "showCharCount": false,
+      "showWordCount": false,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": false,
+      "tooltip": "",
+      "type": "radio",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "multiple": false,
+        "onlyAvailableItems": false,
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "values": [
+        {
+          "label": "Alopecia",
+          "shortcut": "",
+          "value": "Alopecia"
+        },
+        {
+          "label": "Eczema",
+          "shortcut": "",
+          "value": "Eczema"
+        },
+        {
+          "label": "Hypopigmentation/ hyperpigmentation",
+          "shortcut": "",
+          "value": "Hypopigmentation/ hyperpigmentation"
+        },
+        {
+          "label": "Rash/dermatitis",
+          "shortcut": "",
+          "value": "Rash/dermatitis"
+        },
+        {
+          "label": "Telangiectasia of eyes or skin",
+          "shortcut": "",
+          "value": "Telangiectasia of eyes or skin"
+        },
+        {
+          "label": "Dysplastic nails",
+          "shortcut": "",
+          "value": "Dysplastic nails"
+        },
+        {
+          "label": "Other skin lesions; specify",
+          "shortcut": "",
+          "value": "Other"
+        }
+      ]
+    },
+    {
+      "type": "textfield",
+      "key": "order_service_skin_symptoms_other_specify",
+      "label": "Specify",
+      "placeholder": "",
+      "input": true,
+      "tableView": false,
+      "hidden": false,
+      "clearOnHide": true,
+      "persistent": true,
+      "protected": false,
+      "disabled": false,
+      "autofocus": false,
+      "tabindex": "",
+      "prefix": "",
+      "suffix": "",
+      "errorLabel": "",
+      "customClass": "",
+      "tooltip": "",
+      "hideLabel": false,
+      "dataGridLabel": false,
+      "labelPosition": "top",
+      "description": "",
+      "id": "otskinsymp",
+      "validate": {
+        "required": false,
+        "custom": "",
+        "customPrivate": false,
+        "strictDateValidation": false,
+        "unique": false,
+        "multiple": false
+      },
+      "conditional": {
+        "show": true,
+        "when": "order_service_skin_symptoms",
+        "eq": "Other"
+      }
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "authenticate": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": ""
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "data": {
+        "url": ""
+      },
+      "dataGridLabel": false,
+      "dataSrc": "values",
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "encrypted": false,
+      "errorLabel": "",
+      "hidden": false,
+      "hideLabel": false,
+      "id": "emyf6c",
+      "ignoreCache": false,
+      "inline": false,
+      "input": true,
+      "inputType": "radio",
+      "key": "order_service_hematologic_history",
+      "label": "Hematologic History",
+      "labelPosition": "top",
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "showCharCount": false,
+      "showWordCount": false,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": false,
+      "tooltip": "",
+      "type": "radio",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "multiple": false,
+        "onlyAvailableItems": false,
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "values": [
+        {
+          "label": "Bone marrow failure",
+          "shortcut": "",
+          "value": "Bone marrow failure"
+        },
+        {
+          "label": "Cytopenias (2 of 3 cell lineages)",
+          "shortcut": "",
+          "value": "Cytopenias (2 of 3 cell lineages)"
+        },
+        {
+          "label": "Leukopenia/neutropenia",
+          "shortcut": "",
+          "value": "Leukopenia/neutropenia"
+        },
+        {
+          "label": "Red cell anemia",
+          "shortcut": "",
+          "value": "Red cell anemia"
+        },
+        {
+          "label": "Thrombocytopenia/small platelets",
+          "shortcut": "",
+          "value": "Thrombocytopenia/small platelets"
+        },
+        {
+          "label": "Other; specify",
+          "shortcut": "",
+          "value": "Other"
+        }
+      ]
+    },
+    {
+      "type": "textfield",
+      "key": "order_service_hematologic_history_other_specify",
+      "label": "Specify",
+      "placeholder": "",
+      "input": true,
+      "tableView": false,
+      "hidden": false,
+      "clearOnHide": true,
+      "persistent": true,
+      "protected": false,
+      "disabled": false,
+      "autofocus": false,
+      "tabindex": "",
+      "prefix": "",
+      "suffix": "",
+      "errorLabel": "",
+      "customClass": "",
+      "tooltip": "",
+      "hideLabel": false,
+      "dataGridLabel": false,
+      "labelPosition": "top",
+      "description": "",
+      "id": "othematolo",
+      "validate": {
+        "required": false,
+        "custom": "",
+        "customPrivate": false,
+        "strictDateValidation": false,
+        "unique": false,
+        "multiple": false
+      },
+      "conditional": {
+        "show": true,
+        "when": "order_service_hematologic_history",
+        "eq": "Other"
+      }
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "authenticate": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": ""
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "data": {
+        "url": ""
+      },
+      "dataGridLabel": false,
+      "dataSrc": "values",
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "encrypted": false,
+      "errorLabel": "",
+      "hidden": false,
+      "hideLabel": false,
+      "id": "eb0eau",
+      "ignoreCache": false,
+      "inline": false,
+      "input": true,
+      "inputType": "radio",
+      "key": "order_service_oncologic_history",
+      "label": "Oncologic History",
+      "labelPosition": "top",
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "showCharCount": false,
+      "showWordCount": false,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": false,
+      "tooltip": "",
+      "type": "radio",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "multiple": false,
+        "onlyAvailableItems": false,
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "values": [
+        {
+          "label": "Lymphoma; specify type",
+          "shortcut": "",
+          "value": "Lymphoma; specify type"
+        },
+        {
+          "label": "Myelodysplasia/AML",
+          "shortcut": "",
+          "value": "Myelodysplasia/AML"
+        },
+        {
+          "label": "Other leukemia; specify type",
+          "shortcut": "",
+          "value": "Other"
+        },
+        {
+          "label": "Recurrent primary tumors; specify types",
+          "shortcut": "",
+          "value": "Recurrent primary tumors; specify types"
+        },
+        {
+          "label": "Solid tumor; specify type",
+          "shortcut": "",
+          "value": "Solid tumor; specify type"
+        },
+        {
+          "label": "Other; specify",
+          "shortcut": "",
+          "value": "Other"
+        }
+      ]
+    },
+    {
+      "type": "textfield",
+      "key": "order_service_oncologic_history_other_specify",
+      "label": "Specify",
+      "placeholder": "",
+      "input": true,
+      "tableView": false,
+      "hidden": false,
+      "clearOnHide": true,
+      "persistent": true,
+      "protected": false,
+      "disabled": false,
+      "autofocus": false,
+      "tabindex": "",
+      "prefix": "",
+      "suffix": "",
+      "errorLabel": "",
+      "customClass": "",
+      "tooltip": "",
+      "hideLabel": false,
+      "dataGridLabel": false,
+      "labelPosition": "top",
+      "description": "",
+      "id": "otoncologi",
+      "validate": {
+        "required": false,
+        "custom": "",
+        "customPrivate": false,
+        "strictDateValidation": false,
+        "unique": false,
+        "multiple": false
+      },
+      "conditional": {
+        "show": true,
+        "when": "order_service_oncologic_history",
+        "eq": "Other"
+      }
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "authenticate": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": ""
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "data": {
+        "url": ""
+      },
+      "dataGridLabel": false,
+      "dataSrc": "values",
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "encrypted": false,
+      "errorLabel": "",
+      "hidden": false,
+      "hideLabel": false,
+      "id": "e1g7ozs",
+      "ignoreCache": false,
+      "inline": false,
+      "input": true,
+      "inputType": "radio",
+      "key": "order_service_infectious_disease_history",
+      "label": "Infectious Disease History",
+      "labelPosition": "top",
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "showCharCount": false,
+      "showWordCount": false,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": false,
+      "tooltip": "",
+      "type": "radio",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "multiple": false,
+        "onlyAvailableItems": false,
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "values": [
+        {
+          "label": "Recurrent, unusual or difficult to treat infections",
+          "shortcut": "",
+          "value": "Recurrent, unusual or difficult to treat infections"
+        },
+        {
+          "label": "Recurrent pneumonia, ear infections or sinusitis",
+          "shortcut": "",
+          "value": "Recurrent pneumonia, ear infections or sinusitis"
+        },
+        {
+          "label": "Recurrent deep abscesses of the organs or skin",
+          "shortcut": "",
+          "value": "Recurrent deep abscesses of the organs or skin"
+        },
+        {
+          "label": "Multiple courses of antibiotics or IV antibiotics necessary to clear infections",
+          "shortcut": "",
+          "value": "Multiple courses of antibiotics or IV antibiotics necessary to clear infections"
+        },
+        {
+          "label": "Other; specify",
+          "shortcut": "",
+          "value": "Other"
+        }
+      ]
+    },
+    {
+      "type": "textfield",
+      "key": "order_service_infectious_disease_history_other_specify",
+      "label": "Specify",
+      "placeholder": "",
+      "input": true,
+      "tableView": false,
+      "hidden": false,
+      "clearOnHide": true,
+      "persistent": true,
+      "protected": false,
+      "disabled": false,
+      "autofocus": false,
+      "tabindex": "",
+      "prefix": "",
+      "suffix": "",
+      "errorLabel": "",
+      "customClass": "",
+      "tooltip": "",
+      "hideLabel": false,
+      "dataGridLabel": false,
+      "labelPosition": "top",
+      "description": "",
+      "id": "otinfectio",
+      "validate": {
+        "required": false,
+        "custom": "",
+        "customPrivate": false,
+        "strictDateValidation": false,
+        "unique": false,
+        "multiple": false
+      },
+      "conditional": {
+        "show": true,
+        "when": "order_service_infectious_disease_history",
+        "eq": "Other"
+      }
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "authenticate": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": ""
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "data": {
+        "url": ""
+      },
+      "dataGridLabel": false,
+      "dataSrc": "values",
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "encrypted": false,
+      "errorLabel": "",
+      "hidden": false,
+      "hideLabel": false,
+      "id": "e8nnl48",
+      "ignoreCache": false,
+      "inline": false,
+      "input": true,
+      "inputType": "radio",
+      "key": "order_service_laboratory_findings",
+      "label": "Laboratory findings",
+      "labelPosition": "top",
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "showCharCount": false,
+      "showWordCount": false,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": false,
+      "tooltip": "",
+      "type": "radio",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "multiple": false,
+        "onlyAvailableItems": false,
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "values": [
+        {
+          "label": "Anemia",
+          "shortcut": "",
+          "value": "Anemia"
+        },
+        {
+          "label": "Decreased telomere length",
+          "shortcut": "",
+          "value": "Decreased telomere length"
+        },
+        {
+          "label": "Neutropenia/leukopenia",
+          "shortcut": "",
+          "value": "Neutropenia/leukopenia"
+        },
+        {
+          "label": "Thrombocytopenia",
+          "shortcut": "",
+          "value": "Thrombocytopenia"
+        },
+        {
+          "label": "Abnormal ALPS panel",
+          "shortcut": "",
+          "value": "Abnormal ALPS panel"
+        },
+        {
+          "label": "Abnormal mitogen stimulation",
+          "shortcut": "",
+          "value": "Abnormal mitogen stimulation"
+        },
+        {
+          "label": "Abnormal lymphocyte subsets",
+          "shortcut": "",
+          "value": "Abnormal lymphocyte subsets"
+        },
+        {
+          "label": "Abnormal TREC assay",
+          "shortcut": "",
+          "value": "Abnormal TREC assay"
+        },
+        {
+          "label": "Abnormal B cell function; specify",
+          "shortcut": "",
+          "value": "Abnormal B cell function; specify"
+        },
+        {
+          "label": "Abnormal T cell function; specify",
+          "shortcut": "",
+          "value": "Abnormal T cell function; specify"
+        },
+        {
+          "label": "Low or absent NK function",
+          "shortcut": "",
+          "value": "Low or absent NK function"
+        },
+        {
+          "label": "Complementation group correction (specify)",
+          "shortcut": "",
+          "value": "Complementation group correction (specify)"
+        },
+        {
+          "label": "Increased chromosome breakage",
+          "shortcut": "",
+          "value": "Increased chromosome breakage"
+        },
+        {
+          "label": "\u2191 ferritin",
+          "shortcut": "",
+          "value": "\u2191 ferritin"
+        },
+        {
+          "label": "\u2191 soluble IL2R\u03b1",
+          "shortcut": "",
+          "value": "\u2191 soluble IL2R\u03b1"
+        },
+        {
+          "label": "\u2191 triglycerides and/or \u2193fibrinogens",
+          "shortcut": "",
+          "value": "\u2191 triglycerides and/or \u2193fibrinogens"
+        },
+        {
+          "label": "Abnormal protein assay by flow cytometry; specify",
+          "shortcut": "",
+          "value": "Abnormal protein assay by flow cytometry; specify"
+        },
+        {
+          "label": "Other; specify",
+          "shortcut": "",
+          "value": "Other"
+        }
+      ]
+    },
+    {
+      "type": "textfield",
+      "key": "order_service_laboratory_findings_other_specify",
+      "label": "Specify",
+      "placeholder": "",
+      "input": true,
+      "tableView": false,
+      "hidden": false,
+      "clearOnHide": true,
+      "persistent": true,
+      "protected": false,
+      "disabled": false,
+      "autofocus": false,
+      "tabindex": "",
+      "prefix": "",
+      "suffix": "",
+      "errorLabel": "",
+      "customClass": "",
+      "tooltip": "",
+      "hideLabel": false,
+      "dataGridLabel": false,
+      "labelPosition": "top",
+      "description": "",
+      "id": "otlaborato",
+      "validate": {
+        "required": false,
+        "custom": "",
+        "customPrivate": false,
+        "strictDateValidation": false,
+        "unique": false,
+        "multiple": false
+      },
+      "conditional": {
+        "show": true,
+        "when": "order_service_laboratory_findings",
+        "eq": "Other"
+      }
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": ""
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "dataGridLabel": false,
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "displayMask": "",
+      "editor": "",
+      "encrypted": false,
+      "errorLabel": "",
+      "fixedSize": true,
+      "hidden": false,
+      "hideLabel": false,
+      "id": "em38enq",
+      "input": true,
+      "inputFormat": "html",
+      "inputMask": "",
+      "inputType": "text",
+      "key": "order_service_congenital_abnormalities",
+      "label": "Congenital abnormalities/malformations/dysmorphic features",
+      "labelPosition": "top",
+      "mask": false,
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "rows": 3,
+      "showCharCount": false,
+      "showWordCount": false,
+      "spellcheck": true,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": true,
+      "tooltip": "",
+      "truncateMultipleSpaces": false,
+      "type": "textarea",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "maxLength": "",
+        "maxWords": "",
+        "minLength": "",
+        "minWords": "",
+        "multiple": false,
+        "pattern": "",
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "widget": {
+        "type": "input"
+      },
+      "wysiwyg": false
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": ""
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "dataGridLabel": false,
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "displayMask": "",
+      "editor": "",
+      "encrypted": false,
+      "errorLabel": "",
+      "fixedSize": true,
+      "hidden": false,
+      "hideLabel": false,
+      "id": "extd0oc",
+      "input": true,
+      "inputFormat": "html",
+      "inputMask": "",
+      "inputType": "text",
+      "key": "order_service_other_symptoms",
+      "label": "Other Symptoms",
+      "labelPosition": "top",
+      "mask": false,
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "rows": 3,
+      "showCharCount": false,
+      "showWordCount": false,
+      "spellcheck": true,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": true,
+      "tooltip": "",
+      "truncateMultipleSpaces": false,
+      "type": "textarea",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "maxLength": "",
+        "maxWords": "",
+        "minLength": "",
+        "minWords": "",
+        "multiple": false,
+        "pattern": "",
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "widget": {
+        "type": "input"
+      },
+      "wysiwyg": false
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": ""
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "dataGridLabel": false,
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "displayMask": "",
+      "encrypted": false,
+      "errorLabel": "",
+      "hidden": false,
+      "hideLabel": false,
+      "id": "edftciw",
+      "input": true,
+      "inputFormat": "plain",
+      "inputMask": "",
+      "inputType": "text",
+      "key": "order_service_additional_clinical_context",
+      "label": "Additional Clinical Context",
+      "labelPosition": "top",
+      "mask": false,
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "showCharCount": false,
+      "showWordCount": false,
+      "spellcheck": true,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": true,
+      "tooltip": "",
+      "truncateMultipleSpaces": false,
+      "type": "textfield",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "maxLength": "",
+        "minLength": "",
+        "multiple": false,
+        "pattern": "",
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "widget": {
+        "type": "input"
+      }
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "authenticate": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "clearOnRefresh": false,
+      "conditional": {
+        "eq": ""
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "data": {
+        "custom": "const diags = window.currentCase?.case_data?.rawjson?.diagnosis_icd10codes || []; return diags.map(d => ({label: `${d.displayCode} - ${d.Description}`, value: d.Code}));",
+        "json": "",
+        "resource": "",
+        "url": "",
+        "values": [
+          {
+            "label": "",
+            "value": ""
+          }
+        ]
+      },
+      "dataGridLabel": false,
+      "dataSrc": "custom",
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "encrypted": false,
+      "errorLabel": "",
+      "filter": "",
+      "fuseOptions": {
+        "include": "score",
+        "threshold": 0.3
+      },
+      "hidden": false,
+      "hideLabel": false,
+      "id": "exjlm2p",
+      "idPath": "id",
+      "ignoreCache": false,
+      "input": true,
+      "key": "order_service_relevant_diagnosis",
+      "label": "Relevant Diagnosis",
+      "labelPosition": "top",
+      "lazyLoad": true,
+      "limit": 100,
+      "minSearch": 0,
+      "modalEdit": false,
+      "multiple": true,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "readOnlyValue": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "searchDebounce": 0.3,
+      "searchEnabled": true,
+      "searchField": "",
+      "selectFields": "",
+      "selectThreshold": 0.3,
+      "showCharCount": false,
+      "showWordCount": false,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": true,
+      "template": "<span>{{ item.label }}</span>",
+      "tooltip": "",
+      "type": "select",
+      "unique": false,
+      "uniqueOptions": false,
+      "useExactSearch": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "multiple": false,
+        "onlyAvailableItems": false,
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "valueProperty": "",
+      "widget": "choicesjs"
+    },
+    {
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "autofocus": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": ""
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "dataGridLabel": false,
+      "dbIndex": false,
+      "description": "",
+      "disabled": false,
+      "displayMask": "",
+      "editor": "",
+      "encrypted": false,
+      "errorLabel": "",
+      "fixedSize": true,
+      "hidden": false,
+      "hideLabel": false,
+      "id": "e7dm8ndj",
+      "input": true,
+      "inputFormat": "html",
+      "inputMask": "",
+      "inputType": "text",
+      "key": "order_service_instructions",
+      "label": "Instructions",
+      "labelPosition": "top",
+      "mask": false,
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": true,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "rows": 3,
+      "showCharCount": false,
+      "showWordCount": false,
+      "spellcheck": true,
+      "suffix": "",
+      "tabindex": "",
+      "tableView": true,
+      "tooltip": "",
+      "truncateMultipleSpaces": false,
+      "type": "textarea",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "maxLength": "",
+        "maxWords": "",
+        "minLength": "",
+        "minWords": "",
+        "multiple": false,
+        "pattern": "",
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "widget": {
+        "type": "input"
+      },
+      "wysiwyg": false
+    },
+    {
+      "action": "submit",
+      "allowCalculateOverride": false,
+      "allowMultipleMasks": false,
+      "autofocus": false,
+      "block": false,
+      "calculateServer": false,
+      "calculateValue": "",
+      "clearOnHide": true,
+      "conditional": {
+        "eq": ""
+      },
+      "customClass": "",
+      "customDefaultValue": "",
+      "dataGridLabel": true,
+      "dbIndex": false,
+      "description": "",
+      "disableOnInvalid": false,
+      "disabled": false,
+      "encrypted": false,
+      "errorLabel": "",
+      "hidden": false,
+      "hideLabel": false,
+      "id": "ewe3k5",
+      "input": true,
+      "key": "submit",
+      "label": "Submit",
+      "labelPosition": "top",
+      "leftIcon": "",
+      "modalEdit": false,
+      "multiple": false,
+      "overlay": {
+        "height": "",
+        "left": "",
+        "style": "",
+        "top": "",
+        "width": ""
+      },
+      "persistent": false,
+      "placeholder": "",
+      "prefix": "",
+      "protected": false,
+      "redrawOn": "",
+      "refreshOn": "",
+      "rightIcon": "",
+      "showCharCount": false,
+      "showWordCount": false,
+      "size": "md",
+      "suffix": "",
+      "tabindex": "",
+      "tableView": false,
+      "theme": "primary",
+      "tooltip": "",
+      "type": "button",
+      "unique": false,
+      "validate": {
+        "custom": "",
+        "customPrivate": false,
+        "multiple": false,
+        "required": false,
+        "strictDateValidation": false,
+        "unique": false
+      },
+      "validateOn": "change",
+      "widget": {
+        "type": "input"
+      }
+    }
+  ],
+  "display": "form",
+  "name": "[DEV] [AI] order services Immuno Alpha Dera"
+}

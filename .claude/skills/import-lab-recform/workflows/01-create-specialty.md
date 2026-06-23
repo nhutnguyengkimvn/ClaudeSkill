@@ -7,7 +7,7 @@
 ## Pre-check
 
 1. Navigate to: `<DASHBOARD_URL>/admin/ehealth/medicalspeciality/`
-2. Search for `<SHORTCODE> 2026` (e.g. `CGX 2026`)
+2. Search for `<SHORTCODE> <YEAR>` (e.g. `CGX <YEAR>`)
 3. **Found** → skip this workflow, go to Workflow 02
 4. **Not found** → continue below
 
@@ -20,18 +20,18 @@
 
 | Field | Value |
 |-------|-------|
-| Medical Specialty Service | select `Genetic 2026` from dropdown |
-| Key | `tt-<shortcode_lowercase>-2026` (e.g. `tt-cgx-2026`) |
+| Medical Specialty Service | select `Genetic <YEAR>` from dropdown |
+| Key | `tt-<shortcode_lowercase>-<YEAR>` (e.g. `tt-cgx-<YEAR>`) |
 | Git Sync Key | same as Key |
-| Name | `<SHORTCODE>-2026` (e.g. `CGX-2026`) |
+| Name | `<SHORTCODE>-<YEAR>` (e.g. `CGX-<YEAR>`) |
 | Display Name | `<SHORTCODE>` (e.g. `CGX`) |
 | Sheet ID | `1_k-lFKB_68XGGr7PIpsM_wkOX3boscCFrsA6aawT374` |
-| Description | same as Name (e.g. `CGX-2026`) |
+| Description | same as Name (e.g. `CGX-<YEAR>`) |
 | Is Active | ✅ CHECK ON |
 
 > **`SOAP Note Template` is a REQUIRED field** (the form won't save without it,
 > even though it's easy to miss). Copy a known-good template from an existing
-> `<X> 2026` Genetic specialty (e.g. open `IMMUNODEFICIENCY 2026`'s change page,
+> `<X> <YEAR>` Genetic specialty (e.g. open `IMMUNODEFICIENCY <YEAR>`'s change page,
 > read its `#id_soap_note_template_textarea`, and paste the same JSON). Tip: stash
 > it in `localStorage` so it survives the navigation back to the Add page.
 
@@ -59,5 +59,5 @@ Paste the full contents of `references/metadata-template.json` into the Metadata
 
 - Click `Save`
 - Wait for success confirmation
-- Report `✅ Workflow 01 done: <SHORTCODE>-2026 created`
+- Report `✅ Workflow 01 done: <SHORTCODE>-<YEAR> created`
 - Continue to Workflow 02

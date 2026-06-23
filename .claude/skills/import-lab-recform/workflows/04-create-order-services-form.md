@@ -233,8 +233,19 @@ known from step 8. Do NOT ask the user for the link again.
      --datagrid-link "<url1>" [--datagrid-link "<url2>" ...]
    ```
 
-4. Report the CSV path + row count. Then report:
-   `✅ Workflow 04 done: Form.io form saved, schema linked, CSV exported.`
+4. Report the CSV path + row count.
+
+### 12. Sync CSV (moved from Workflow 02)
+
+Now that the Form.io form is saved and the ReqForm metadata is updated, trigger the CSV sync:
+
+1. Navigate to: `<DASHBOARD_URL>/admin/ehealth/medicalrecform/`
+2. Find the ReqForm created in Workflow 02 (match by Description e.g. `CGX - Amedix <YEAR>`)
+3. Check the checkbox next to it
+4. Open `Action` dropdown → select `Sync CSV`
+5. Click `Go`
+6. Wait for message: `Syncing process has been started! You can look over it from Sequence Tracker`
+7. Report `✅ Workflow 04 done: Form.io form saved, schema linked, CSV exported, Sync CSV triggered.`
 
 ---
 
@@ -271,6 +282,53 @@ Build the `components` array from these patterns. Keep input keys prefixed
    pattern list.
 10. **Guideline criteria** — `select` `multiple: true` (e.g. NCCN criteria) +
     a conditional `textfield` to cite "Other …" when chosen.
+10b. **Clinical Indications** — `select`, `key: order_service_clinical_indications`,
+    `type: select`, `multiple: true`, `dataSrc: values`, `widget: choicesjs`,
+    `tableView: true`, `input: true`. `data.values[]` = label/value pairs sourced
+    from the PDF's clinical indications list, where `label === value` (verbatim
+    text, no normalisation). Shape:
+    ```json
+    {
+      "type": "select",
+      "key": "order_service_clinical_indications",
+      "label": "Clinical Indications",
+      "multiple": true,
+      "tableView": true,
+      "input": true,
+      "widget": "choicesjs",
+      "data": {
+        "values": [
+          { "label": "<indication from PDF>", "value": "<same text>" }
+        ]
+      }
+    }
+    ```
+    Extract every indication line from the PDF verbatim — do not paraphrase or
+    shorten. `label` and `value` must be identical strings.
+10c. **Clinical Symptom sections** — General, Head & Neck, Skin, Hematologic
+    History, Oncologic History, Infectious Disease History, Laboratory Findings.
+    Use `radio` (single-select), NOT `selectboxes`. For any option whose label
+    contains "Other", set `value: "Other"` and add a conditional `textfield`
+    immediately after (shown when that radio value === `"Other"`):
+    ```json
+    {
+      "type": "radio",
+      "key": "order_service_general_symptoms",
+      "label": "General",
+      "values": [
+        {"label": "Acute liver failure", "value": "Acute liver failure"},
+        {"label": "Other; specify", "value": "Other"}
+      ]
+    },
+    {
+      "type": "textfield",
+      "key": "order_service_general_symptoms_other_specify",
+      "label": "Specify",
+      "conditional": {"show": true, "when": "order_service_general_symptoms", "eq": "Other"}
+    }
+    ```
+    Apply this pattern to all 7 symptom sections. See `references/field-taxonomy.md`
+    §"Clinical Symptom Sections" for the full rule.
 11. **Medications datagrid** (PGx-type forms) — `datagrid`
     `key: test_requirements_test_order_medication`, often `hidden: true`,
     containing a nested `container` with a `select` (`dataSrc: url`,
@@ -278,8 +336,23 @@ Build the `components` array from these patterns. Keep input keys prefixed
     textfield, plus a `usage` selectboxes (Current/Future).
 12. **Additional Clinical Context** — `textfield`,
     `key: order_service_additional_clinical_context`.
-13. **Relevant Diagnosis** — `select` `multiple: true`, `dataSrc: custom`
-    pulling from `window.currentCase?.case_data?.rawjson?.diagnosis_icd10codes`.
+13. **Relevant Diagnosis** — `select`, `key: order_service_relevant_diagnosis`,
+    `multiple: true`, `dataSrc: custom`. The `data.custom` expression must be
+    exactly:
+    ```json
+    {
+      "type": "select",
+      "key": "order_service_relevant_diagnosis",
+      "label": "Relevant Diagnosis",
+      "multiple": true,
+      "dataSrc": "custom",
+      "data": {
+        "custom": "const diags = window.currentCase?.case_data?.rawjson?.diagnosis_icd10codes || []; return diags.map(d => ({label: `${d.displayCode} - ${d.Description}`, value: d.Code}));"
+      }
+    }
+    ```
+    Do **not** seed values from the reqform's ICD-10 list. The custom expression
+    is the only data source — copy it verbatim, do not modify the JS.
 14. **Instructions** — `textarea`, `key: order_service_instructions`.
 15. **Submit** — `button` `action: submit`, `key: submit`.
 

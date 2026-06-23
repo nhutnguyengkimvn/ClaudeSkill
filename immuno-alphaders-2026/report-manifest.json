@@ -1,0 +1,99 @@
+{
+  "recform_name": "IMMUNO - Alpha Dera 2026",
+  "slug": "immuno-alphaders-2026",
+  "mss": "Genetic 2026",
+  "test_type": "IMMUNO",
+  "lab": "Alpha Dera",
+  "source_pdf": "/Users/nhut/Downloads/Primary Immunodeficiency.pdf",
+  "dashboard_url": "https://dev-dashboard.dnainsights.ai",
+  "steps": [
+    {
+      "n": 0,
+      "title": "Validate Inputs & Detect PDF Type",
+      "done": "Validated Primary Immunodeficiency.pdf. Detected Test Type=IMMUNO, Lab=Alpha Dera via PDF content analysis. Dashboard URL: https://dev-dashboard.dnainsights.ai [DEV]. Browser session confirmed logged in.",
+      "outcome": "success",
+      "screenshots": ["00-dashboard-login-check.png"]
+    },
+    {
+      "n": 1,
+      "title": "Create Medical Specialty",
+      "done": "Pre-check found existing Medical Specialty 'Genetic 2026' (ID: 451d3a62-8f4c-4579-be41-24fa9408d4f8). Skipped creation.",
+      "outcome": "skipped",
+      "screenshots": ["01-specialty-precheck-found.png"]
+    },
+    {
+      "n": 2,
+      "title": "Create Req Form",
+      "done": "Created ReqForm 'IMMUNO - Alpha Dera 2026' (ID: 0b3d34a0-8e88-4130-8950-a322fbe33e69). Google Sheet tab created and linked (Sheet ID: 1_k-lFKB_68XGGr7PIpsM_wkOX3boscCFrsA6aawT374, tab: 2037338741).",
+      "outcome": "success",
+      "screenshots": [
+        "02-reqform-add-page.png",
+        "03-gsheet-tab-created.png",
+        "04-reqform-filled.png",
+        "05-reqform-saved.png"
+      ]
+    },
+    {
+      "n": 3,
+      "title": "Flatten PDF & Upload",
+      "done": "Flattened Primary Immunodeficiency.pdf via Ghostscript → Primary Immunodeficiency-flatten-pdf.pdf. Uploaded as MedicalPDF (ID: f7e5e0e0-d257-485c-bccc-c56c8a4ac665) linked to ReqForm.",
+      "outcome": "success",
+      "screenshots": [
+        "06-pdf-upload-ready.png",
+        "07-pdf-uploaded.png",
+        "08-pdf-upload-confirmed.png"
+      ]
+    },
+    {
+      "n": 4,
+      "title": "Create Form.io Order Services Form",
+      "done": "Created Form.io schema '[DEV] [AI] order services Immuno Alpha Dera' (Firebase key: -OvjkA5ip89yDUn8xUts, 31 components). Injected JSON via Monaco editor. Linked schema URL in ReqForm metadata. Exported req-form mapping CSV (29 rows). Sync CSV triggered.",
+      "outcome": "success",
+      "screenshots": [
+        "07-formio-builder-before-create.png",
+        "08-new-schema-form-created.png",
+        "09-alpha-dera-form-selected.png",
+        "10-edit-json-schema-mode.png",
+        "11-edit-json-schema-editor.png",
+        "12-json-pasted-in-editor.png",
+        "13-after-save.png",
+        "14-preview-form-mode.png",
+        "14-preview-form-fullpage.png",
+        "15-preview-form-current.png",
+        "16-reqform-list.png",
+        "17-reqform-change-page.png",
+        "18-metadata-field.png",
+        "19-metadata-set.png",
+        "20-reqform-metadata-saved.png",
+        "21-sync-csv-triggered.png",
+        "22-medicalpdf-list.png"
+      ],
+      "decisions": [
+        {
+          "question": "The CSV converter found datagrid `order_service_family_history`. Provide a JSON link for this field, or skip?",
+          "options": ["Provide JSON link", "Skip (no link)"],
+          "recommended": "Skip (no link)",
+          "chosen": "Skip (no link)",
+          "note": "Family history datagrid link was skipped; CSV row generated with empty link."
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "title": "Import Key to PDF (Fill AnnotsJSON)",
+      "done": "AnnotsJSON is null/empty for Primary Immunodeficiency-flatten-pdf.pdf. No annotations to populate. Skipped W05.",
+      "outcome": "skipped",
+      "screenshots": []
+    },
+    {
+      "n": 6,
+      "title": "Final Confirm",
+      "done": "All workflows complete. ReqForm and MedicalPDF confirmed in dashboard. Awaiting user sign-off.",
+      "outcome": "changes-confirmed",
+      "screenshots": [
+        "23-final-confirm-reqform.png",
+        "24-final-confirm-medicalpdf.png"
+      ]
+    }
+  ]
+}

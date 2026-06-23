@@ -47,17 +47,21 @@ For each PDF, in the order supplied:
     Pre-check: Does Medical Specialty exist?
         ↓ No  → Workflow 01: Create Medical Specialty
         ↓ Yes → skip
-    Workflow 02: Create Req Form + Sync CSV
+    Workflow 02: Create Req Form (no Sync CSV yet)
         ↓
-    Workflow 03: Flatten PDF via chosen method → Upload to dashboard
+    Workflow 03: Flatten PDF via Ghostscript → Upload to dashboard
         ↓
     Workflow 04: Create Form.io order services form (full-read PDF via Claude
        Read tool → classify fields + business rules → confirm field list → build JSON → paste into
        builder → user checks → Save → open → screenshot Preview Form → link
        schema URL into ReqForm metadata → export req-form mapping CSV via
-       convert-order-service-json-to-csv)
+       convert-order-service-json-to-csv → Sync CSV on the ReqForm)
         ↓
-    Workflow 05 (Step 7): Final confirm + build per-recform HTML report
+    Workflow 05 — import-key-to-pdf: Fill AnnotsJSON in medicalpdf admin
+       (fetch current AnnotsJSON from dashboard → read full PDF → build ICD10 panel
+       mapping → apply via icd10-panel-fill → paste updated JSON back → Save)
+        ↓
+    Workflow 06: Final confirm + build per-recform HTML report
        (screenshots per step → <recform-slug>/report-<slug>.html)
         ↓
     🔒 CONFIRM GATE: report this recform's result, then ASK the user to
@@ -103,10 +107,11 @@ at each step for the report (see `references/reporting.md`).
 
 Follow each in order per PDF:
 - `workflows/01-create-specialty.md` — Section 0: Create Medical Specialty
-- `workflows/02-create-reqform.md` — Section 1: Create Req Form + Sync CSV
+- `workflows/02-create-reqform.md` — Section 1: Create Req Form
 - `workflows/03-flatten-upload.md` — Section 2: Flatten PDF + Upload
-- `workflows/04-create-order-services-form.md` — Section 3: Create Form.io order services form
-- `workflows/05-final-confirm-and-report.md` — Step 7: Final confirm + per-recform HTML report
+- `workflows/04-create-order-services-form.md` — Section 4: Create Form.io order services form
+- `workflows/05-import-key-to-pdf.md` — Section 5: Fill AnnotsJSON in medicalpdf admin
+- `workflows/06-final-confirm-and-report.md` — Section 6: Final confirm + per-recform HTML report
 
 ## Phase 0 — Validate Inputs
 
