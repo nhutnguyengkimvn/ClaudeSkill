@@ -65,11 +65,11 @@ All user-facing output is in **English**, regardless of conversation language.
 | CGX / Hereditary Cancer Panel | `.claude/skills/generate-annots-json/keys/cgx-hereditary-cancer.json` |
 
 If the current PDF matches a pre-built key list → load it directly, report
-`✅ key.json loaded from pre-built list: N keys`, and skip to Step 2.
+`✅ key.json loaded from pre-built list: N keys`, then go to **Step 1c**.
 
 If `--key` was supplied:
 - Load the file. Report: `✅ key.json loaded: N keys`.
-- Skip to Step 2.
+- Go to **Step 1c**.
 
 If neither → go to Step 1b (generate from PDF).
 
@@ -78,12 +78,39 @@ If neither → go to Step 1b (generate from PDF).
 > Goal: produce an ordered list of key strings matching the naming conventions
 > below, covering every **annotatable** form field in the PDF.
 >
-> **FIRST:** If W04 (Form.io order-services form) was already completed for
-> this recform, load the saved Form.io schema JSON and extract all component
-> keys directly — they are already in the correct format. Use those keys for
-> every clinical / panel / diagnosis field and only supplement with the
-> standard conventions below for patient/insurance/ordering sections that
-> Form.io does not cover.
+> **FIRST:** Go to **Step 1c** immediately — if the Form.io JSON is available
+> it provides the authoritative clinical/panel/gene keys. After Step 1c,
+> supplement with the standard conventions below for patient/insurance/ordering
+> sections that Form.io does not cover.
+
+## Step 1c — Supplement from Form.io JSON (always run after 1a or 1b)
+
+> The Form.io schema saved in W04 contains the authoritative component keys for
+> all clinical, panel, gene, and ICD-10 fields of this specific form. Always
+> merge these into the key list — even when a pre-built key list was used.
+
+1. Look for the Form.io JSON file in the project folder:
+   ```
+   <project-dir>/<recform-slug>/<recform-slug>-formio.json
+   ```
+2. If **not found** → skip silently, continue with the existing key list.
+3. If **found**:
+   a. Parse the JSON. Walk every component recursively (including nested
+      `components` arrays inside panels, columns, fieldsets, etc.).
+   b. Collect every `key` string that is **not** in the existing key list.
+   c. Append the new keys to the key list (preserve original order first,
+      then append Form.io additions).
+   d. Report:
+      ```
+      ✅ Form.io JSON found: +K new keys merged (total: N keys)
+         Source: <recform-slug>-formio.json
+      ```
+4. If the Form.io JSON is malformed → warn and continue with the existing list.
+
+> **Why:** the pre-built key lists cover common patterns, but each lab's variant
+> may have extra clinical fields, unique gene checkboxes, or custom ICD-10 codes
+> that only appear in their specific Form.io schema. Step 1c ensures those are
+> never missed without requiring a full key-list regeneration.
 
 ---
 
@@ -169,12 +196,22 @@ If neither → go to Step 1b (generate from PDF).
 |---------|---------|
 | `diagnosis_icd10codes__<CODE>` | `diagnosis_icd10codes__J96.0` |
 
+> The free-text **"Additional / Other ICD-10 Codes"** field at the bottom of the
+> ICD-10 section uses key: **`diagnosis_additional_icd10_codes`**
+> (not a checkbox — it is a text input).
+
 **Signatures**
 
 | Pattern | Example |
 |---------|---------|
 | `signature_<id>` | `signature_patient`, `signature_physician` |
 | `datesignature_<id>` | `datesignature_patient`, `datesignature_physician` |
+
+> When `<id>` is a **numeric timestamp** (e.g. `signature_1781252108317`,
+> `datesignature_1720606221698`), this is a **provider/physician signature** field —
+> the number is a form-generated component ID, not a date. Map the provider
+> signature line to `signature_<timestamp>` and its date to `datesignature_<timestamp>`.
+> Patient signatures use `patient_signature_<timestamp>` / `patient_datesignature_<timestamp>`.
 
 **Clinical History / Panel / Gene fields**
 
@@ -186,13 +223,15 @@ If neither → go to Step 1b (generate from PDF).
 
 ### Steps
 
-1. If W04 Form.io JSON is available → extract all component keys from it.
-2. Read the full PDF with the `Read` tool (all pages).
-3. Map each PDF field to a key using the tables above (or the Form.io key for
-   clinical sections). Preserve reading order (top→bottom, left→right, page order).
+1. Read the full PDF with the `Read` tool (all pages).
+2. Map each PDF field to a key using the tables above. Preserve reading order
+   (top→bottom, left→right, page order).
+3. For clinical / panel / gene / ICD-10 fields: leave them as placeholders for
+   now — Step 1c will fill the authoritative keys from the Form.io JSON.
 4. Omit: Sexual Orientation, specimen fields, Self-Pay/Client Billing checkboxes.
-5. Deduplicate. Save to `/tmp/key-<recform-slug>.json`.
-6. Show the key list and ask: **"Does this look correct? (yes / edit)"**
+5. Deduplicate. Save draft to `/tmp/key-<recform-slug>.json`.
+6. **Run Step 1c** to merge Form.io keys.
+7. Show the final key list and ask: **"Does this look correct? (yes / edit)"**
    - Wait for confirmation before proceeding to Step 2.
 
 ---
@@ -201,7 +240,7 @@ If neither → go to Step 1b (generate from PDF).
 
 ```bash
 SKILL=".claude/skills/generate-annots-json"
-VENV=".claude/skills/.venv"
+VENV=".claude/skills/generate-annots-json/.venv"   # skill has its own venv with torch/commonforms
 
 "$VENV/bin/python3" "$SKILL/scripts/detect_to_json.py" \
   "<PDF_PATH>" \
@@ -221,6 +260,8 @@ Then retry.
 ## Step 3 — Assign keys
 
 ```bash
+VENV=".claude/skills/generate-annots-json/.venv"   # same dedicated venv
+
 "$VENV/bin/python3" "$SKILL/scripts/assign_keys.py" \
   "/tmp/detected-<recform-slug>.json" \
   "<KEY_JSON_PATH>" \

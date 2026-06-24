@@ -31,6 +31,15 @@ generate-annots-json <PDF_PATH> [--key <key.json>]
 After the skill completes, it saves `annots-<recform-slug>.json` to the
 project folder and instructs the user to paste + save it in the dashboard.
 
+**Do NOT paste via Playwright** (file size causes browser crash). Instead tell the user:
+```
+✅ AnnotsJSON generated — please paste it manually:
+   File: <project-dir>/<recform-slug>/annots-<recform-slug>.json
+   URL:  <DASHBOARD_URL>/admin/ehealth/medicalpdf/<MEDICALPDF_ID>/change/
+Copy the full file content into the AnnotsJSON field, then click Save.
+Confirm when done.
+```
+
 **Wait for user to confirm they have saved the AnnotsJSON in the dashboard.**
 
 Once confirmed:
@@ -75,11 +84,24 @@ If there are **no** `diagnosis_icd10codes__<ICD>` entries → report
 
 ## Step 4 — Save enriched AnnotsJSON to dashboard
 
-1. Navigate to: `<DASHBOARD_URL>/admin/ehealth/medicalpdf/<MEDICALPDF_ID>/change/`
-2. Clear the **AnnotsJSON** Ace editor field.
-3. Paste the full contents of `/tmp/annots-<recform-slug>.json`.
-4. Click **Save**.
-5. Wait for success confirmation.
-6. Screenshot: `<recform-slug>/screenshots/<NN>-annots-json-saved.png`
-7. Report: `✅ Workflow 05 done: AnnotsJSON updated and saved.`
-8. Continue to Workflow 06.
+> ⚠️ **Do NOT inject via Playwright** — the AnnotsJSON file is typically 250–400 KB;
+> passing it through `page.evaluate()` crashes the browser tab. Always use
+> the manual-paste flow below.
+
+1. Copy the enriched file to the project folder:
+   ```bash
+   cp /tmp/annots-<recform-slug>.json "<project-dir>/<recform-slug>/annots-<recform-slug>.json"
+   ```
+2. Tell the user:
+   ```
+   ✅ AnnotsJSON ready — please paste it manually:
+      File: <project-dir>/<recform-slug>/annots-<recform-slug>.json
+      URL:  <DASHBOARD_URL>/admin/ehealth/medicalpdf/<MEDICALPDF_ID>/change/
+   Copy the full file content into the AnnotsJSON field, then click Save.
+   Confirm when done.
+   ```
+3. **Wait for the user to confirm** they have pasted and saved.
+4. Take a screenshot after confirmation:
+   `<recform-slug>/screenshots/<NN>-annots-json-saved.png`
+5. Report: `✅ Workflow 05 done: AnnotsJSON updated and saved.`
+6. Continue to Workflow 06.
