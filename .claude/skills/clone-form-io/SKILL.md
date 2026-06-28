@@ -121,6 +121,65 @@ For each change the user requests:
 After applying changes, show the user a summary diff (what changed) and ask for
 confirmation. Re-apply if they request further tweaks.
 
+### 4c-required — Required components (always verify)
+
+After patching, **always** verify these two components are present with the correct
+structure. Add or overwrite them if missing or malformed — **never leave them absent**.
+
+**1. `order_service_clinical_indications`** — Clinical Indications multi-select.
+Values are form-specific (ask the user if not obvious from context). Canonical
+structure:
+
+```json
+{
+  "data": {
+    "values": [
+      { "label": "<indication text>", "value": "<indication text>" }
+    ]
+  },
+  "input": true,
+  "key": "order_service_clinical_indications",
+  "label": "Clinical Indications",
+  "multiple": true,
+  "tableView": true,
+  "type": "select",
+  "widget": "choicesjs"
+}
+```
+
+For NEURO forms, the standard 8 values are:
+- `Peripheral neuropathy (EMG/NCS confirmed)`
+- `Progressive ataxia / cerebellar signs / dysarthria`
+- `ALS / motor neuron disease signs`
+- `Drug-resistant epilepsy`
+- `Intellectual disability / autism / developmental delay`
+- `Parkinsonism / dystonia / chorea`
+- `Progressive dementia / cognitive decline (onset <65)`
+- `Progressive muscle weakness / elevated CK / myotonia`
+
+**2. `order_service_patient_s_personal_cancer_diagnosis`** — Relevant Diagnosis
+multi-select. The `data.custom` field **must always use this exact expression** (do
+not simplify or replace with a static list):
+
+```json
+{
+  "data": {
+    "custom": "const diags = window.currentCase?.case_data?.rawjson?.diagnosis_icd10codes || []; return diags.map(d => ({label: `${d.displayCode} - ${d.Description}`, value: d.Code}));"
+  },
+  "dataSrc": "custom",
+  "input": true,
+  "key": "order_service_patient_s_personal_cancer_diagnosis",
+  "label": "Relevant Diagnosis",
+  "multiple": true,
+  "tableView": true,
+  "type": "select",
+  "validate": {
+    "required": true
+  },
+  "widget": "choicesjs"
+}
+```
+
 ### 4d — Paste updated JSON
 
 1. In the builder, with the target form selected, switch to **Edit Json Schema**.
