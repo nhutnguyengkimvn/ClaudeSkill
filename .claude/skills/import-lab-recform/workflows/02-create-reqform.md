@@ -23,8 +23,11 @@ Before filling any form fields, determine `<YEAR>`:
 
 | Field | Value |
 |-------|-------|
-| Name | Lab name (e.g. `Amedix`) |
-| Description | e.g. `CGX - Amedix <YEAR>` |
+| Name | **Same as Description** — the full ReqForm name (e.g. `CGX - Alpha Dera <YEAR>`) |
+| Description | `<TestType> - <Lab> <YEAR>` (e.g. `CGX - Alpha Dera <YEAR>`) |
+
+> **Name = Description.** Always set `Name` to the full description string, not the
+> Lab name alone. (Setting `Name` to only the Lab name causes a 500 on Save.)
 
 ### 3. Medical Specific dropdown
 - Click dropdown → type Short Code (e.g. `CGX`, `IMMUNO`, `PGX`)
@@ -47,7 +50,7 @@ Fill with: `1_k-lFKB_68XGGr7PIpsM_wkOX3boscCFrsA6aawT374`
    - Click it → read `gid` from URL
    - Use gid as Sheet Name value
 4. **Tab missing:**
-   - Find tab named `PGX Hightech`
+   - Find tab named `NEURO Alpha Dera`
    - Right-click → Duplicate
    - Rename to `<SHORTCODE> <Lab>` (e.g. `CGX Amedix`)
    - Read new gid from URL
@@ -59,12 +62,9 @@ Make sure checkbox is **UNCHECKED**
 
 ### 8. Save
 - Click `Save`
-- **If 500 error:**
-  - Go back to form
-  - Change `Name` field → full Description (e.g. `CGX - Amedix <YEAR>`)
-  - Click `Save` again
-  - **Still 500** → mark ❌, skip entire cycle
 - Wait for success confirmation
+- **If 500 error:** confirm `Name` = full Description (step 2), fix if needed, and
+  Save again. **Still 500** → mark ❌, skip entire cycle.
 - Report `✅ Workflow 02 done: ReqForm saved`
 - Continue to Workflow 03
 

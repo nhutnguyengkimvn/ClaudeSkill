@@ -166,6 +166,34 @@ displayed (as the manually created forms appear when selected):
 - Confirm it loads: the **Form Name** header, the **Apis to Get Schema** URL,
   and the builder/JSON for this form are shown.
 
+### 8a. Verify panel → parameters wiring (verify-formio-panel-params)
+
+Before screenshotting or wiring the schema, verify the Test Panel → Test
+Parameters → aggregator copy mechanism works — a wrong panel-value string or key
+silently leaves `order_service_test_parameters` empty in the submission. Invoke
+the `verify-formio-panel-params` skill inline with the schema URL from step 8:
+
+1. **Static check** — WebFetch `<SCHEMA_URL>` to `/tmp/form-<slug>.json`, then:
+   ```bash
+   python3 .claude/skills/verify-formio-panel-params/scripts/validate_panel_wiring.py \
+     /tmp/form-<slug>.json
+   ```
+   - `✅ PASS` → continue to the live check.
+   - `❌ FAIL` → the schema has a broken panel/parameters mapping. Fix the JSON
+     (correct the panel value across the option `value`, the group's
+     `customConditional` + `validate.custom`, and the aggregator arm so all four
+     match), re-paste, Save, and re-run. Do NOT proceed while it fails.
+
+2. **Live check** — in **Preview Form**, iterate **every** panel: select it,
+   confirm the matching `order_service_test_parameters_<N>` group appears with
+   options, check all its options, and confirm the Submission JSON's hidden
+   `order_service_test_parameters` becomes non-empty (equals the selected group's
+   value). Report `✅ N/N panels populate order_service_test_parameters` or list
+   the failing panels. See `verify-formio-panel-params` Phase B for the exact
+   Playwright steps.
+
+Report the verification result before continuing.
+
 ### 9. Screenshot the rendered form (Preview Form)
 For the report's "Create Form.io order services form" step, capture the form
 **as it renders**, not the JSON editor:

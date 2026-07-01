@@ -53,7 +53,8 @@ For each PDF, in the order supplied:
         ↓
     Workflow 04: Create Form.io order services form (full-read PDF via Claude
        Read tool → classify fields + business rules → confirm field list → build JSON → paste into
-       builder → user checks → Save → open → screenshot Preview Form → link
+       builder → user checks → Save → open → verify panel→parameters wiring via
+       verify-formio-panel-params → screenshot Preview Form → link
        schema URL into ReqForm metadata → export req-form mapping CSV via
        convert-order-service-json-to-csv → Sync CSV on the ReqForm)
         ↓
@@ -94,6 +95,7 @@ Load these as needed:
 - `scripts/detect-recform-type.py` — Helper that extracts title + lab hints from a PDF
 - `scripts/build-report.py` — Builds the self-contained per-recform HTML report
 - `~/.claude/skills/convert-order-service-json-to-csv/scripts/convert.py` — Converts the saved Form.io schema JSON to the DNAi req-form mapping CSV (called at end of W04)
+- `verify-formio-panel-params` skill — Verifies the Form.io Test Panel → Test Parameters → aggregator copy wiring (static key/mapping check + live Preview submission check); called from W04 step 8a after Save
 
 ## Browser Automation
 
