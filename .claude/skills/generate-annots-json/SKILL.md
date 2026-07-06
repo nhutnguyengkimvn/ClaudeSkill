@@ -18,7 +18,7 @@ verification. The output is the `AnnotsJSON` field value for
 ## Full pipeline
 
 ```
-PDF  →  detect_to_json.py  →  detected.json
+PDF  →  detect_to_json.py (ML + checkbox-glyph recovery)  →  detected.json
 detected.json + key.json + PDF  →  assign_keys.py  →  assigned.json
 assigned.json + key.json + PDF  →  form-key-verifier (Claude)  →  assigned_fixed.json
 assigned_fixed.json  →  paste into medicalpdf AnnotsJSON field  →  Save
@@ -236,7 +236,7 @@ If neither → go to Step 1b (generate from PDF).
 
 ---
 
-## Step 2 — Detect form fields (ML)
+## Step 2 — Detect form fields (ML + glyph recovery)
 
 ```bash
 SKILL=".claude/skills/generate-annots-json"
@@ -247,13 +247,46 @@ VENV=".claude/skills/generate-annots-json/.venv"   # skill has its own venv with
   "/tmp/detected-<recform-slug>.json"
 ```
 
-Report: `✅ Detected N fields → /tmp/detected-<recform-slug>.json`
+Output line: `Detected N fields (ML) + K checkbox glyphs recovered = N+K → …`
+
+> **Why the glyph-recovery step exists:** the ML detector (FFDNet) reliably
+> finds dense ICD-10 grids but frequently MISSES scattered checkboxes — Test
+> Panel Selection, the clinical questionnaire (personal/family cancer history,
+> NCCN testing criteria), and Yes/No radios. `detect_to_json.py` now scans the
+> PDF text layer for every checkbox **glyph** (a small square-ish char in a
+> symbol font — `BasicShapes`/Wingdings/Dingbats/etc.) and adds any the model
+> dropped, deduped against ML boxes by centre proximity (idempotent — re-runs
+> add 0). Forms that draw checkboxes as vector rectangles or images yield no
+> glyphs, so the step is a safe no-op there. If `K` is large, that is expected
+> for lab req forms — those recovered boxes are exactly what used to go missing.
 
 If the script fails with an import error → instruct user to run:
 ```bash
 .claude/skills/generate-annots-json/install.sh
 ```
 Then retry.
+
+### Completeness check (do this before Step 3)
+
+Confirm no checkbox was left behind — the annotation count must equal the total
+glyph count:
+
+```bash
+"$VENV/bin/python3" - "<PDF_PATH>" "/tmp/detected-<recform-slug>.json" <<'PY'
+import sys, json
+sys.path.insert(0, ".claude/skills/generate-annots-json/scripts")
+from detect_to_json import _detect_checkbox_glyphs
+pdf, det = sys.argv[1], sys.argv[2]
+glyphs = len(_detect_checkbox_glyphs(pdf))
+cbs = sum(1 for a in json.load(open(det)) if a["subject"] == "Checkbox")
+print(f"checkbox glyphs in PDF: {glyphs} | Checkbox annotations: {cbs} | "
+      f"{'OK' if cbs >= glyphs else 'MISSING ' + str(glyphs - cbs)}")
+PY
+```
+
+If it reports `MISSING n`, the glyph font in this PDF is not matched by
+`_CHECKBOX_FONT_RE` in `detect_to_json.py` — inspect the checkbox glyph's
+`fontname` with pdfplumber and add its base-name token to that regex.
 
 ---
 
@@ -289,6 +322,18 @@ Invoke the `form-key-verifier` skill inline:
 ```
 
 This reads each PDF page visually and corrects wrong/missing key assignments.
+
+> **Known assignment pitfalls in AlphaDERA-family req forms** — verify these
+> explicitly, the Hungarian matcher gets them wrong systematically:
+> - `datesignature_physician` landing in the **NPI#** cell (should be `order_npi`).
+> - `patient_city` ↔ `network_city` **swapped** (patient-info City vs physician City).
+> - Office-Contact-Name / Contact-Phone boxes holding `patient_full_name` /
+>   `patient_phone` (should be `order_provider_network` / `_phone`).
+> - The 5 "Ordering Provider (select one physician)" picker boxes absorbing
+>   leftover keys (`order_npi`, `order_fax`, `signature_physician`, …) — those
+>   keys belong in the top ORDERING PHYSICIAN INFO block.
+> - All 4 signature/date fields assigned to page 0 (belong on the **consent
+>   page** — the last page).
 
 Report after completion:
 ```

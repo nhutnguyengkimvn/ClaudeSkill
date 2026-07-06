@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import uuid
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -32,6 +33,99 @@ _SUBJECT_MAP = {
     "ChoiceButton": "Checkbox",
     "Signature": "Signature",
 }
+
+# Fonts used to RENDER checkbox glyphs in lab req-form templates. The ML
+# detector (FFDNet) reliably finds dense ICD-10 grids but frequently MISSES
+# scattered checkboxes (Test Panel Selection, clinical questionnaire, Yes/No
+# radios). Every such box is a single glyph drawn in one of these symbol fonts,
+# so a text-layer glyph scan recovers the ones the model dropped.
+# (Font subset prefixes like "XPQJTY+" vary per PDF; match on the base name.)
+_CHECKBOX_FONT_RE = re.compile(
+    r"(BasicShapes|Wingding|Dingbat|ZapfDingbats|Webding|Symbol)", re.IGNORECASE
+)
+
+
+def _detect_checkbox_glyphs(pdf_path: str) -> list[tuple[int, float, float, float, float]]:
+    """
+    Find every checkbox glyph in the PDF text layer via pdfplumber.
+
+    Returns a list of (page_ix, x0, y0, x1, y1) in PDF points (origin
+    bottom-left) for each small, roughly-square glyph drawn in a checkbox font.
+    Forms that draw checkboxes as vector rectangles or images (no glyph) simply
+    yield nothing here — the augmentation is a safe no-op for them.
+    """
+    try:
+        import pdfplumber
+    except ImportError:
+        print("  ! pdfplumber unavailable — skipping glyph augmentation")
+        return []
+
+    boxes: list[tuple[int, float, float, float, float]] = []
+    with pdfplumber.open(pdf_path) as pdf:
+        for page_ix, page in enumerate(pdf.pages):
+            page_h = page.height
+            for c in page.chars:
+                text = c.get("text", "")
+                if not text or text.isspace():
+                    continue
+                if not _CHECKBOX_FONT_RE.search(c.get("fontname", "")):
+                    continue
+                w = c["x1"] - c["x0"]
+                h = c["bottom"] - c["top"]
+                # small + roughly square → a checkbox, not a decorative glyph
+                if not (3.0 <= w <= 16.0 and 3.0 <= h <= 16.0):
+                    continue
+                if abs(w - h) > max(w, h) * 0.6:
+                    continue
+                boxes.append((page_ix, c["x0"], page_h - c["bottom"],
+                              c["x1"], page_h - c["top"]))
+    return boxes
+
+
+def _augment_with_glyph_checkboxes(
+    annotations: list[dict], pdf_path: str, date_str: str, tol: float = 6.0
+) -> int:
+    """
+    Add a Checkbox annotation for every checkbox glyph the ML model missed.
+
+    A glyph is considered already covered when its centre lies within `tol`
+    points of an existing annotation's centre, so re-runs and ML-detected boxes
+    never get duplicated (verified: 0 duplicate positions on cgx/pgx forms).
+    """
+    centers: dict[int, list[tuple[float, float]]] = {}
+    for a in annotations:
+        x0, y0, x1, y1 = (float(v) for v in a["rect"].split(","))
+        centers.setdefault(a["page"], []).append(((x0 + x1) / 2, (y0 + y1) / 2))
+
+    added = 0
+    for page_ix, x0, y0, x1, y1 in _detect_checkbox_glyphs(pdf_path):
+        cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+        if any(abs(cx - ex) < tol and abs(cy - ey) < tol
+               for ex, ey in centers.get(page_ix, [])):
+            continue
+        annotations.append({
+            "date": date_str,
+            "name": str(uuid.uuid4()),
+            "page": page_ix,
+            "rect": f"{x0},{y0},{x1},{y1}",
+            "type": "freetext",
+            "color": "#ff0000",
+            "flags": "print",
+            "style": "solid",
+            "title": "CommonForms",
+            "width": 0,
+            "opacity": 1,
+            "subject": "Checkbox",
+            "contents": f"{page_ix}_glyph{added}",
+            "fontColor": "#000000",
+            "creationdate": date_str,
+            "customEntries": {},
+            "justification": 0,
+            "defaultappearance": "8 Tf 1.00 0.00 0.00 rg",
+        })
+        centers.setdefault(page_ix, []).append((cx, cy))
+        added += 1
+    return added
 
 
 def _pdf_date(dt: datetime) -> str:
@@ -120,10 +214,14 @@ def detect_to_json(
                 "defaultappearance": "8 Tf 1.00 0.00 0.00 rg",
             })
 
+    ml_count = len(annotations)
+    added = _augment_with_glyph_checkboxes(annotations, input_path, date_str)
+
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(annotations, f, indent=2, ensure_ascii=False)
 
-    print(f"Detected {len(annotations)} fields → {output_path}")
+    print(f"Detected {ml_count} fields (ML) + {added} checkbox glyphs recovered "
+          f"= {len(annotations)} → {output_path}")
 
 
 def _detect_kwargs(args: argparse.Namespace) -> dict:
