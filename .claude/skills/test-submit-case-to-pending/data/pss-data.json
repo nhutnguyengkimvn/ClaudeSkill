@@ -1,0 +1,23 @@
+{
+  "pss_account": {
+    "email": "vu.bui.pss@gkim.vn",
+    "password": "Vuvit@123456"
+  },
+  "compliance": {
+    "default_answer": "Yes",
+    "overrides": [
+      { "question_contains": "hospice, hospital, nursing home", "answer": "No" },
+      { "question_contains": "video call or audio call only", "answer": "Audio Only" }
+    ],
+    "reason_for_audio_only": "Patient declined video/prefer audio",
+    "check_all_verification_checkboxes": true
+  },
+  "medications": {
+    "default_answer": null,
+    "overrides": [
+      { "question_contains": "prescription medications", "answer": "No" },
+      { "question_contains": "any allergies", "answer": "No" }
+    ],
+    "confirm_checkbox_contains": "I confirm that I have verified"
+  }
+}

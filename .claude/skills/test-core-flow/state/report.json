@@ -1,0 +1,43 @@
+{
+  "flow": "test-core-flow",
+  "environment": "dev",
+  "dashboard_url": "https://dev-dashboard.dnainsights.ai/#/",
+  "started_at": "2026-07-13T16:00:00+07:00",
+  "steps": {
+    "test-create-new-case": {
+      "status": "done",
+      "environment": "dev",
+      "case_id": "CA-HFZ4SYJ5",
+      "patient_id": "PT-43341283",
+      "medicare_id": "3EG4CE5MK99",
+      "patient": "Gkim test",
+      "phone": "804-222-1111",
+      "cid": "6c60aad8-8864-465b-8bf3-32db485e23e9",
+      "case_status": "New",
+      "logout": true,
+      "note": "previous case CA-VOWXT6JN no longer active -> new case creation allowed"
+    },
+    "test-submit-case-to-pending": {
+      "status": "done",
+      "case_id": "CA-HFZ4SYJ5",
+      "sections": {
+        "compliance": "saved (15/15, 2 disabled skipped)",
+        "medications": "saved"
+      },
+      "case_status": "Pending",
+      "session": "PSS logged in"
+    },
+    "test-provider-call-flow": {
+      "status": "BLOCKED at ring-provider (root cause found 2026-07-15, scripts fixed, ready to re-run)",
+      "case_id": "CA-HFZ4SYJ5",
+      "done": {
+        "dual_login": true,
+        "patient_call_804_222_1111": "answered (live)",
+        "provider_rung": "FAILED - row showed Offline, Call button never appeared"
+      },
+      "root_cause": "every retry re-ran the monolithic prov-01 which goto'd the provider page; navigation kills the presence websocket -> provider Offline -> no Call button -> no pop. The pop DOES arrive in Playwright (websocket, not FCM) when the provider page is left untouched.",
+      "fix": "prov-01 split into prov-01a-dual-login-online.js (login both + poll provider Online <=90s, navigates only dead sessions) and prov-01b-call-answer-open-case.js (patient connect -> ring provider IMMEDIATELY, zero pause -> answer pop -> poll CA-link <=45s). Retries re-run 01b only.",
+      "next": "re-run: prov-01a -> prov-01b -> prov-02 -> prov-03 (case may need to be back in Pending first)"
+    }
+  }
+}

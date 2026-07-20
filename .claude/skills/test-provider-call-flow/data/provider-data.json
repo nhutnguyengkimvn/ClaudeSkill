@@ -1,0 +1,95 @@
+{
+  "provider_account": {
+    "email": "vu.bui.provider@gkim.vn",
+    "password": "Vuvit@123456"
+  },
+  "sections": {
+    "medications": {
+      "taking_medications": "No",
+      "allergies": "No",
+      "confirm_contains": "I confirm that I have verified"
+    },
+    "medical_history": {
+      "past_medical_history": "Hypertension, well controlled with lifestyle modification. No prior surgeries. No hospitalizations in the past year.",
+      "check_no_findings": true
+    },
+    "review_of_systems": {
+      "symptoms": [],
+      "notes": "Patient denies all symptoms reviewed by systems.",
+      "check_no_findings": true
+    },
+    "family_history": {
+      "has_family_medical_history": "Yes",
+      "member": {
+        "condition": "Cancer",
+        "relation": "Mother",
+        "living_or_deceased": "Living",
+        "side": "M"
+      },
+      "confirm_contains": "Confirm that I have checked this section"
+    },
+    "general_health": {
+      "radio_answers": {
+        "current living arrangement": "Single",
+        "overall health": "Good",
+        "hospitalized in the past 12 month": "No",
+        "special diet": "No",
+        "happy with your current weight": "Yes",
+        "food would not last": "No",
+        "didn't have money to get more": "No",
+        "days a week do you exercise": "1-2 times",
+        "intense is your typical exercise": "Light (stretching or slow walking)",
+        "hours of sleep": "5-8 hours",
+        "often is stress a problem": "Sometimes",
+        "handle the stress": "I'm usually able to cope effectively",
+        "social and emotional support": "Usually",
+        "satisfied are you with your life": "Satisfied",
+        "bodily pain": "0 - No pain: Generally pain-free."
+      },
+      "text_answers": {
+        "how long do you usually exercise": "30 minutes"
+      },
+      "check_confirm_checkboxes": true
+    },
+    "depression_screening": {
+      "radio_answers": {
+        "Little interest or pleasure": "Not at all",
+        "Feeling down, depressed or hopeless": "Not at all",
+        "ongoing care with your primary care physician": "Yes",
+        "difficult have they made daily functioning": "Not difficult"
+      },
+      "phq9_all_zero": true,
+      "check_confirm_checkboxes": true
+    },
+    "generic_sections_strategy": {
+      "note": "Social History / Preventive Screening / Functional Status & Safety / Advance Care Planning: answers captured on the calibration run live in data/captured-keys.json. Default heuristic when a question is unknown: radio → 'No' (else first enabled option), confirm/'I have checked' checkboxes → check, required empty textareas → 'None reported by patient.'",
+      "default_radio": "No",
+      "required_text_filler": "None reported by patient."
+    },
+    "assessment_plan": {
+      "discussion_notes": "Discussed wellness screening results, healthy lifestyle recommendations and remote patient monitoring options with the patient. Patient verbalized understanding.",
+      "care_plan_item": {
+        "type": "Chronic",
+        "status": "Active",
+        "plan": "Continue lifestyle modification. Monitor blood glucose with CGM/BGM device. Follow up in 3 months to review readings.",
+        "care_goals": "Maintain healthy weight; blood pressure under 130/80; improved glucose control."
+      },
+      "orders": {
+        "note": "Open Manage Orders and create ONE order per available service (calibration run captures each order form's fields into captured-keys.json).",
+        "pgx_defaults": {
+          "lab": "Knucks",
+          "reason_for_exam": "Medication Selection",
+          "medication": "first option in the dropdown",
+          "usage": "Current"
+        }
+      }
+    },
+    "diagnosis": {
+      "note": "Z Code for Wellness is REQUIRED for medical necessity — click Z00.01 chip; keep any preselected family codes; then Save.",
+      "pick_codes": ["Z00.01"]
+    },
+    "master_encounter_report": {
+      "note": "Open the section, wait for the report generation to finish, then report the outcome. No data entry."
+    }
+  }
+}

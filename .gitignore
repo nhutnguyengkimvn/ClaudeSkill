@@ -1,4 +1,5 @@
 .playwright-mcp/
+.claude/skills/test-create-new-case/data/case-data.json
 **/.venv/
 **/__pycache__/
 **/*.pyc

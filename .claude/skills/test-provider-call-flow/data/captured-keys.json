@@ -1,0 +1,192 @@
+{
+  "_note": "Field keys captured on the 2026-07-13 calibration run (provider view, case CA-VOWXT6JN). Radio/checkbox names are Form.io input name prefixes — match with input[name*=...]. Suffixes in [] change per render; never hardcode them.",
+  "sections": {
+    "medications": {
+      "taking_medications_radio": "taking-medications (app-custom, OUTSIDE .formio-form; values Yes/No)",
+      "allergies_radio": "patient_personal_history_progress_note_has_allergies (Yes/No/No known allergies (NKA))",
+      "confirm_checkbox_label": "I confirm that I have verified the information on this section with the patient"
+    },
+    "medical_history": {
+      "current_conditions_text": "medical_history_list_all_conditions_currently_being_man...",
+      "pmhx_textarea": "patient_personal_history_progress_note_phmx (REQUIRED)",
+      "vitals_texts": [
+        "...vitals_blood_pre...",
+        "...vitals_temperatu...",
+        "...vitals_pulse_rat...",
+        "...vitals_oxygen_sa...",
+        "...vitals_blood_sug..."
+      ],
+      "confirm_checkboxes": [
+        "...progress_provider_history_conf...",
+        "...progress_note_vitals_confirm_n..."
+      ],
+      "note": "vitals are optional when both 'I have checked this section' checkboxes are ticked"
+    },
+    "review_of_systems": {
+      "symptom_checkbox_groups": [
+        "review_of_system_constitutional[]",
+        "review_of_system_respiratory[]",
+        "review_of_system_cardiovascular[]",
+        "review_of_system_gastrointestinal[]",
+        "review_of_system_urinary[]",
+        "review_of_system_dermatologic_integumentary[]",
+        "review_of_system_musculoskeletal[]",
+        "review_of_system_neurological[]",
+        "review_of_system_psychiatric[]",
+        "review_of_system_hematologic_lymphatic[]"
+      ],
+      "notes_textarea": "review_of_system_note (REQUIRED)",
+      "confirm_checkbox": "review_of_system_confirm_no_ros"
+    },
+    "family_history": {
+      "has_history_radio": "family_history_confirm_has_family (Yes/No)",
+      "member1": "Condition (1) text input; Relation to Patient (1) = .formio-component-select Choices (Mother/...); Living or Deceased (1) radio Living/Deceased; M/P radio",
+      "confirm_checkbox_label": "Confirm that I have checked this section"
+    },
+    "general_health_radios": {
+      "general_health_describes_your_current_living_arrangement": [
+        "Single",
+        "Married",
+        "Widowed"
+      ],
+      "general_health_how_would_you_rate_your_overall_health": [
+        "Excellent",
+        "Very Good",
+        "Good",
+        "Fair",
+        "Poor"
+      ],
+      "general_health_hospitalized": [
+        "Yes",
+        "No"
+      ],
+      "health_behaviors_special_diet": [
+        "Yes",
+        "No"
+      ],
+      "health_behaviors_current_weight": [
+        "Yes",
+        "No"
+      ],
+      "health_behaviors_food_worry": [
+        "Yes",
+        "No"
+      ],
+      "health_behaviors_food_run_out": [
+        "Yes",
+        "No"
+      ],
+      "health_behaviors_usually_exercise": [
+        "0 times",
+        "1–2 times",
+        "3–4 times",
+        "5–7 times"
+      ],
+      "health_behaviors_typical_exercise": [
+        "I’m currently not exercising",
+        "Light (stretching or slow walking)",
+        "Moderate (like brisk walking)",
+        "Heavy (like jogging or swimming)",
+        "Very heavy (fast running, or stair climbing)"
+      ],
+      "health_behaviors_sleep_time": [
+        "1–4 hours",
+        "5–8 hours",
+        "10 hours or more"
+      ],
+      "general_health_stress_problem": [
+        "Never",
+        "Rarely",
+        "Sometimes",
+        "Usually",
+        "Always"
+      ],
+      "general_health_stress_in_your_life": [
+        "I'm usually able to cope effectively",
+        "At times I have problems coping",
+        "l often have problems coping"
+      ],
+      "general_health_stress_social_and_emotional_support": [
+        "Never",
+        "Rarely",
+        "Sometimes",
+        "Usually",
+        "Always"
+      ],
+      "general_health_stress_satisfied_in_your_life": [
+        "Very satisfied",
+        "Satisfied",
+        "Neutral",
+        "Dissatisfied",
+        "Very dissatisfied"
+      ],
+      "general_health_bodily_pain": [
+        "0 – No pain: Generally pain-free.",
+        "1..5 – ..."
+      ],
+      "_warning": "option values use EN-DASH (–) not hyphen — match with includes('1–2') or normalize dashes"
+    },
+    "depression_screening": {
+      "phq2": [
+        "test_requirements_depression_screening_things_phq2 (0-3)",
+        "test_requirements_depression_screening_hopeless_phq2 (0-3)",
+        "test_requirements_depression_screening_ongoing_phq2 (Yes/No)"
+      ],
+      "phq9_rows": "test_requirements_depression_screening_things_phq9[0..8][score] (0/1/2/3) — pick '0'",
+      "difficulty": "test_requirements_depression_screening_problem_functioning (Not difficult/...)"
+    },
+    "social_history": {
+      "radios": [
+        "social_history_screening_alcohol (Yes/No)",
+        "social_history_screening_smoke (Yes/No)",
+        "social_history_screening_drugs (Yes/No)"
+      ]
+    },
+    "preventive_screening": {
+      "grids": [
+        "preventive_past_exam[0..6][status] (yes/no — lowercase!)",
+        "preventive_past_immunization[0..5][status] (yes/no)"
+      ]
+    },
+    "functional_status_safety": {
+      "adl_grids": [
+        "functional_safety_screening_adls[0..4][assistance] (no/some/total)",
+        "functional_safety_screening_IADL[0..4][assistance_iadl] (no_help/some_help/total_help)"
+      ],
+      "attestation_radio": "functional_safety_adls_radio_statement (pick the 'adequate support / no difficulty' value)",
+      "other_radios": "falls/afraid/assistive devices (None/...)/housing (Home)/utilities/grab bars/safe at home/abuse/drive/seatbelt/drinking/transportation — mostly Yes/No/N/A; default No is safe EXCEPT seatbelt-type positives (generic No fallback worked)"
+    },
+    "advance_care_planning": {
+      "radios": [
+        "advance_care_planning_directive (Yes/No)",
+        "advance_care_planning_code_status (DNR/Comfort Care/Unknown)",
+        "advance_care_planning_medical_power (Yes/No)",
+        "advance_care_planning_acceptable_emergency (Yes/No)",
+        "advance_care_planning_advocate (Yes/No)"
+      ]
+    }
+  },
+  "orders": {
+    "flow": "Assessment & Plan → Manage Orders button → 'Available Services' modal → Order per service → form → Save Order → back to list. Ordered services lose their Order button.",
+    "genetic_forms": "Lab pre-filled; 'Test Panel' = .formio-component-select with LAZY options — TRUSTED click required (JS click does nothing), wait ≤15s for options, pick a NON-'CUSTOM PANEL' option; selecting a panel auto-ticks Test Parameters; then tick the first Reason checkbox; deeper selects like 'Indications for Testing' may appear — same trusted pattern.",
+    "cgm_bgm": "starts with 'Patient Consent: CGM/BGM' (3 checkboxes 'Patient agrees with the statement above' + 'Confirm Consent & Continue'); then form needs Supplier/Device Preference (Choices), 'Year diagnosed with Diabetes' (text), 'Is patient currently taking Insulin?' + several more radios (default No/first ok).",
+    "cgx_gotcha": "picking a Breast-related personal-cancer option spawns 'Specify Breast Cancer laterality' (required) — pick a NON-breast option or fill laterality.",
+    "labs_seen": {
+      "PGx": "Knucks",
+      "Neuro": "Hightech",
+      "Immuno": "Alpha Dera",
+      "Diabetes": "Amedix",
+      "Metabolic": "Amedix"
+    }
+  },
+  "call_flow": {
+    "ORDER (user-confirmed)": "1) Call Mobile -> patient answers FIRST; 2) the MOMENT it connects, ring provider (row Call button -> dropdown -> VOICE) - zero pause; 3) switch to provider tab and ANSWER the pop immediately (green fa-phone button) - answering assigns the Pending case; 4) poll the CA-link every 5s (<=45s) until the case opens (fallback: cid URL + reload, only AFTER answering)",
+    "presence": "provider Online status + the pop both ride ONE websocket on the provider page; ANY goto/reload kills it -> row Offline, no Call button, no pop. That's why prov-01 is split: 01a = login + wait Online (navigates only when a session is dead), 01b = the call (never navigates). Retry failed calls with 01b ONLY.",
+    "pss_phone_button": "case-header button with i.fa-phone -> full-screen call overlay",
+    "call_mobile": "getByText('Call Mobile') trusted click; disappears once ringing - in-call markers: 'Switch to Digital' / 'Patient: +1' / MM:SS / 20 mins timer; testcall may be busy -> one 15s backoff retry",
+    "ring_provider": "button.rf-btn-call-single (visible only when row shows Online, only during live patient call) -> Voice/Video dropdown -> click 'Voice'",
+    "provider_pop": "arrives via WEBSOCKET (works in Playwright) but ONLY if the provider page is stable (no goto/reload near ring time). Poll <=25s for /PSTN Call|PSS, PATIENT/, answer green button.",
+    "assignment": "answering the pop assigns the case; URL cid navigation alone only works for already-assigned cases",
+    "provider_case_open": "CA-link in mini call widget (leaf element with exact case id text); fallback #/?cid=<cid> + reload"
+  }
+}
