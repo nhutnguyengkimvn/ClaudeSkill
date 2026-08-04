@@ -28,7 +28,11 @@ ICD_RE = re.compile(r"^[A-TV-Z][0-9][0-9A-Z](\.[0-9A-Zx]{1,4})?$")
 GENE_RE = re.compile(r"^[A-Z][A-Z0-9\-]*(\s*\([A-Za-z0-9\-]+\))?$")
 
 PANEL_TYPES = {"NGS_PANEL", "PCR_MLPA_REPEAT_EXPANSION", "GENE_PANEL", "FORM_ICD"}
-GENE_ONLY_TYPES = {"NGS_PANEL", "GENE_PANEL"}
+# Gene-symbol shape is only enforced on NGS_PANEL rows, where the form prints
+# bare symbols. GENE_PANEL also covers organism / resistance-marker panels
+# (UTI-ABR style), whose parameters are species names and assay phrases.
+GENE_SHAPE_TYPES = {"NGS_PANEL"}
+EXTENDED_OK_TYPES = {"NGS_PANEL", "GENE_PANEL"}
 ICD_SCOPES = {"panel", "form"}
 ICD_COLS = ["icd_primary", "icd_secondary", "icd_cross_panel"]
 
@@ -37,11 +41,11 @@ def split_list(cell):
     return [p.strip() for p in cell.split(";") if p.strip()]
 
 
-def check_dupes(items, where, label, errors):
+def check_dupes(items, where, label, sink):
     seen = set()
     for it in items:
         if it in seen:
-            errors.append(f"{where}: duplicate {label} {it!r}")
+            sink.append(f"{where}: duplicate {label} {it!r}")
         seen.add(it)
 
 
@@ -104,18 +108,21 @@ def main() -> int:
                     f"{where}: icd_scope=form but the row carries its own codes — "
                     "form-level codes belong on the FORM_ICD row"
                 )
-            if extended and ptype not in GENE_ONLY_TYPES:
+            if extended and ptype not in EXTENDED_OK_TYPES:
                 warnings.append(f"{where}: extended_parameters on a {ptype} row")
 
         check_dupes(params, where, "test parameter", errors)
         check_dupes(extended, where, "extended parameter", errors)
         for token in params + extended:
-            if ptype in GENE_ONLY_TYPES and not GENE_RE.match(token):
+            if ptype in GENE_SHAPE_TYPES and not GENE_RE.match(token):
                 warnings.append(f"{where}: {token!r} does not look like a gene symbol")
             all_genes.add(token)
 
         for col, items in codes.items():
-            check_dupes(items, f"{where} / {col}", "code", errors)
+            # A repeated code inside one cell is a WARNING, not an error: forms that
+            # print indented payer-combination sub-lists legitimately repeat a code
+            # that also has its own standalone row.
+            check_dupes(items, f"{where} / {col}", "code", warnings)
             for code in items:
                 if not ICD_RE.match(code):
                     errors.append(f"{where} / {col}: malformed ICD-10 code {code!r}")

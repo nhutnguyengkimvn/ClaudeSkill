@@ -82,6 +82,33 @@ it hides the fact that the form never assigned codes per panel.
 A form could mix both (per-panel tables *and* a trailing shared list). Nothing
 forbids it: use `icd_scope` per row and add the `FORM_ICD` row.
 
+**Type A variant — Primary Diagnostics Laboratory forms.** Same "codes live under
+the panel" logic, different printing: each panel is a `q <Panel Name>` checkbox
+line followed by its gene list and then its own `PRIMARY` / `SECONDARY` tables.
+There is no PCR-vs-NGS split, so the row is `GENE_PANEL`.
+
+**One row per orderable *panel*, never per assay line.** When a block prints
+assay lines under a panel that already owns the ICD table — the metabolic form's
+`mtDNA (full gene sequencing) | NGS — whole mitochondrial genome` and
+`mtDNA (large deletion) | Long-range PCR` under `MITOCHONDRIAL GENOME PANEL` —
+those lines are **parameters of that panel**: append them to its
+`test_parameters` and say so in `notes`. Do not give them their own rows; a row
+with no ICD codes of its own is indistinguishable from a dropped ICD table.
+
+A reflex block that owns its own ICD table (`MITOCHONDRIAL DIABETES (MIDD) REFLEX
+TESTING`) is a normal `GENE_PANEL` row: the targeted assay in `test_parameters`,
+the reflex composition in `extended_parameters`.
+
+**When a block does not fit these four types, do not invent a fifth.** Map it to
+the closest type, keep the data, and raise the oddity in the report so the user
+decides. Vocabulary growth is not the reader's call.
+
+These forms sometimes print an **indented sub-list under a SECONDARY code**: a
+combination the payer expects to see together (`E11.8` followed by an indented
+`E78.2 / E78.49 / I10`). Flatten the sub-list into the same `icd_secondary` cell
+in printed order and describe the pairing in `notes` — never drop it, and never
+invent a separate column for it.
+
 ## Flow
 
 ### 1. Check the text layer FIRST
@@ -163,21 +190,54 @@ at the image again.** Record resolved judgement calls in `notes`.
   placeholders, not billable codes. Never invent a 4th character.
 - Gene aliases stay attached: `PARK7 (DJ-1)`, `PAFAH1B1 (LIS1)`.
 - Assay labels are copied whole, pipe included:
-  `PMP22 Full Seq | NGS — Run only if PMP22 Dup/Del negative`.
+  `PMP22 Full Seq | NGS — Run only if PMP22 Dup/Del negative` — pipe and method
+  included, never truncated to `PMP22 Full Seq`. This holds whether the label ends
+  up in `test_parameters` or, for an AlphaDERA PCR block, alongside its siblings
+  there.
+- Footnote expansions (`*1 Anaerococcus prevotii, …` under a species list) go in
+  `extended_parameters` **with the `*n` marker kept as a prefix on the first
+  species of each group** — that marker is the only link back to the
+  `Citrobacter species *2` entry in `test_parameters`.
+- Column headers that mean primary/secondary without saying so (`CATEGORY I` /
+  `CATEGORY 2`) map by column position: left → `icd_primary`, right →
+  `icd_secondary`. Say so in `notes`.
 - Descriptions are never stored — the ICD columns hold codes only. Anything the
   form prints oddly (a stray `checkbox)` prefix, a trailing `v`) is transcribed
   cleanly and flagged in `notes`.
 - Anything still ambiguous after a second look goes in `notes`, not silently into
   a data cell.
 
-## Reference runs (2026-08-03)
+## Reference runs — 11 forms, every one double-read and validator-clean
 
-Both validate clean and were confirmed by an independent second read.
-
-| CSV | Layout | Rows | Notes |
+| CSV (in `recform-panels/`) | Rows | Layout | Codes |
 |---|---|---|---|
-| `recform-panels/neurological-disorders-alphadera-labs.csv` | A | 15 panels (7 PCR + 8 NGS) | 128 distinct codes — matches `extract-recform-icd10-panels/data/neurological-disorders-alphadera-labs.json` exactly. Second read produced one diff, on the neuromuscular `PABPN1` assay label: the form prints a stray `checkbox)` prefix, kept out of the data cell and recorded in `notes` |
-| `recform-panels/pharmacogenomics-pgx-isacare-labs.csv` | B | 7 panels + 1 `FORM_ICD` | 25 PRIMARY / 24 SECONDARY shared codes. Second read identical. No `Focused PGx` panel on this PDF, though the live Form.io schema has one |
+| `neurological-disorders-alphadera-labs` | 15 | A (7 PCR + 8 NGS) | 128 |
+| `germline-cancer-alphadera-labs` | 8 + `FORM_ICD` | B | 100 |
+| `cancer-genetics-cgx-primary-diagnostics-lab` | 8 + `FORM_ICD` | B | 100 |
+| `pharmacogenomics-pgx-alphadera-labs` | 7 + `FORM_ICD` | B | 49 |
+| `pharmacogenomics-pgx-isacare-labs` | 7 + `FORM_ICD` | B | 49 |
+| `pharmacogenomics-pgx-primary-diagnostics-lab` | 8 + `FORM_ICD` | B | 48 |
+| `primary-immunodeficiency-alphadera-labs` | 2 + `FORM_ICD` | B | 77 |
+| `uti-abr-knucks-labs` | 2 + `FORM_ICD` | B | 27 |
+| `immunodeficiency-primary-diagnostics-lab` | 5 | A variant | 44 |
+| `monogenic-diabetes-primary-diagnostics-lab` | 3 | A variant | 66 |
+| `metabolic-disorders-primary-diagnostics-lab` | 3 | A variant | 72 |
+
+**Twin forms.** `cancer-genetics-cgx-primary-diagnostics-lab` ≡
+`germline-cancer-alphadera-labs`, and `pharmacogenomics-pgx-alphadera-labs` ≡
+`pharmacogenomics-pgx-isacare-labs` — byte-identical panel data under different
+labs. Four independent reads per pair, each blind to the others, agreed exactly.
+When a batch contains a rebranded template, cross-diffing the two CSVs is a free
+extra check.
+
+**Resolved diffs worth remembering:** the `PABPN1` line on the neuro form carries a
+stray printed `checkbox)` prefix (cleaned, noted); the metabolic mtDNA assay lines
+are parameters of `MITOCHONDRIAL GENOME PANEL`, not rows; UTI footnote species keep
+their `*n` markers.
+
+`pharmacogenomics-pgx-primary-diagnostics-lab` is the only PGx form of the three
+that prints a **`FOCUSED PGx`** panel (9 genes) and a 13-gene `COMPREHENSIVE PGx` —
+the AlphaDERA/Isacare pair drops Focused and carries 18 comprehensive genes.
 
 ## Report
 
