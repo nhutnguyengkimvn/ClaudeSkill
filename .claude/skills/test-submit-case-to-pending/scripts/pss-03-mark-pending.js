@@ -24,18 +24,46 @@ async (page) => {
     return cut > 0 ? t.slice(0, cut) : t.slice(0, 80);
   });
 
+  // Classify dialogs by TEXT, not by button label (see fast-03): the
+  // "Your unsaved data … will be lost" guard left over from the previous
+  // section save covers the header and its OK button would be misread as a
+  // validation block.
+  const dialogKind = () => page.evaluate(() => {
+    const d = document.querySelector('.swal-modal, .swal2-popup');
+    if (!d || !d.offsetParent) return null;
+    const t = (d.textContent || '').toLowerCase();
+    if (/unsaved data/.test(t)) return 'guard';
+    if (/required fields|complete all/.test(t)) return 'blocked';
+    if (/are you sure/.test(t)) return 'confirm';
+    return 'other';
+  });
+
   // idempotency: already Pending (auto-transition or re-run) → nothing to click
   const zoneBefore = await readBadgeZone();
   if (/\bPending\b/.test(zoneBefore)) {
     out.alreadyPending = true;
   } else {
-    const clicked = await page.evaluate(() => {
-      const btn = [...document.querySelectorAll('button')]
-        .find((b) => /Mark as Pending/i.test(b.textContent) && !b.disabled && b.offsetParent);
-      if (btn) { btn.click(); return true; } return false;
-    });
+    // clear a leftover guard dialog, then POLL for the button to be clickable.
+    // A single check 77ms after the Medications save found it "not found" while
+    // the save was still in flight and a guard dialog was up (hit 2026-07-31).
+    for (let i = 0; i < 8 && (await dialogKind()) === 'guard'; i++) {
+      await jsClickSwal(['OK']);
+      await page.waitForTimeout(250);
+    }
+    let clicked = false;
+    for (let i = 0; i < 40 && !clicked; i++) {          // ≤10s
+      clicked = await page.evaluate(() => {
+        const btn = [...document.querySelectorAll('button')]
+          .find((b) => /Mark as Pending/i.test(b.textContent) && !b.disabled && b.offsetParent);
+        if (btn) { btn.click(); return true; } return false;
+      });
+      if (!clicked) {
+        if (/\bPending\b/.test(await readBadgeZone())) { out.alreadyPending = true; clicked = true; break; }
+        await page.waitForTimeout(250);
+      }
+    }
     if (!clicked) {
-      out.error = '"Mark as Pending" button not found/enabled — a required section may still be missing.';
+      out.error = '"Mark as Pending" button not found/enabled within 10s — a required section may still be missing.';
       await page.screenshot({ path: './pss-mark-pending-missing.jpeg', type: 'jpeg', quality: 90 });
       return out;
     }

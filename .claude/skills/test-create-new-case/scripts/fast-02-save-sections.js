@@ -25,22 +25,57 @@ async (page) => {
     return null;
   }, labels);
 
+  // SPEED RULE: poll for what you need, never sleep a fixed amount.
+  const until = async (fn, timeoutMs = 6000, everyMs = 120) => {
+    const deadline = Date.now() + timeoutMs;
+    for (;;) {
+      const v = await fn().catch(() => false);
+      if (v) return v;
+      if (Date.now() >= deadline) return false;
+      await page.waitForTimeout(everyMs);
+    }
+  };
+  const sectionOpen = (name) => page.evaluate((n) => {
+    const h = [...document.querySelectorAll('h1,h2,h3')].find((e) => e.textContent.trim() === n);
+    return !!(h && h.offsetParent);
+  }, name);
   const clickSection = async (name) => {
+    if (await sectionOpen(name)) return true;
     for (let i = 0; i < 3; i++) {
       await page.evaluate((n) => {
         const es = [...document.querySelectorAll('strong')].filter((s) => s.textContent.trim() === n);
         es[es.length - 1]?.click();
       }, name);
-      await page.waitForTimeout(1000);
       await jsClickSwal(['OK']); // unsaved-data navigation guard
-      const opened = await page.evaluate((n) => {
-        const h = [...document.querySelectorAll('h1,h2,h3')].find((e) => e.textContent.trim() === n);
-        return !!(h && h.offsetParent);
-      }, name);
-      if (opened) return true;
+      if (await until(() => sectionOpen(name), 4000)) return true;
     }
     return false;
   };
+  // Setting a Form.io input has TWO failure modes, and the fix needs both halves:
+  //  - Too early: the heading is visible but Form.io has not hydrated yet, so
+  //    `.check()` throws "Clicking the checkbox did not change its state".
+  //  - Wrong kind of click: a JS `el.click()` flips the DOM property but Form.io
+  //    never registers it, so the value REVERTS on the next re-render (this is
+  //    what silently unchecked the PCP box on 2026-07-30 and left the reason
+  //    dropdown unrendered → a 30s locator timeout).
+  // So: TRUSTED click (force, short timeout), then read the value back, retry
+  // until it sticks. Never swap this for a JS click.
+  const setInput = async (selector, timeoutMs = 8000) => {
+    const loc = page.locator(selector).first();
+    const isSet = () => loc.evaluate((el) => !!el.checked).catch(() => false);
+    const deadline = Date.now() + timeoutMs;
+    for (;;) {
+      if (await isSet()) return true;
+      await loc.click({ force: true, timeout: 2000 }).catch(() => {});
+      if (await isSet()) return true;
+      if (Date.now() >= deadline) return false;
+      await page.waitForTimeout(200);
+    }
+  };
+  const setRadio = (namePart, value, timeoutMs = 8000) =>
+    setInput('input[name*="' + namePart + '"][value="' + value + '"]', timeoutMs);
+  const setCheckbox = (namePart, timeoutMs = 8000) =>
+    setInput('input[type="checkbox"][name*="' + namePart + '"]', timeoutMs);
 
   // Save the ACTIVE section and verify via the activity log; abort on failure.
   const saveAndVerify = async (name) => {
@@ -49,16 +84,24 @@ async (page) => {
         .filter((b) => b.textContent.trim() === 'Save' && !b.disabled && b.offsetParent);
       btns[btns.length - 1]?.click();
     });
-    // a confirm dialog may appear late — poll ~3s
-    for (let t = 0; t < 6; t++) {
-      if (await jsClickSwal(['Yes'])) break;
-      await page.waitForTimeout(500);
-    }
-    // hard verification: activity log must show this section as the latest update
-    const confirmed = await page.waitForFunction(
-      (n) => new RegExp('updated the case on[\\s\\S]{0,10}' + n).test(document.body.innerText),
-      name, { timeout: 12000 }
-    ).then(() => true).catch(() => false);
+    // A confirm dialog may appear late, but most saves show none — race it
+    // against the activity log so a dialog-less save does not burn a fixed 3s.
+    await until(async () => (await jsClickSwal(['Yes']))
+      || page.evaluate((n) => new RegExp('updated the case on[\\s\\S]{0,10}' + n).test(document.body.innerText), name),
+      1500, 100);
+    // Hard verification, two accepted proofs:
+    //  a) the activity log names this section, or
+    //  b) the section's sidebar marker is GREEN (circle fill #227110).
+    // (b) is required because the activity panel shows only the ONE latest
+    // entry: re-running the script over an already-saved section produces a
+    // no-op save with no new log line, and log-only checking then reports a
+    // false "Save NOT confirmed" (hit 2026-07-30 on a resumed run).
+    const confirmed = await until(async () =>
+      (await page.evaluate((n) => new RegExp('updated the case on[\\s\\S]{0,10}' + n).test(document.body.innerText), name))
+      || (await page.evaluate((n) => {
+        const s = [...document.querySelectorAll('.card-header strong')].filter(e => e.textContent.trim() === n).pop();
+        return !!s && /#227110/.test(s.parentElement.outerHTML);
+      }, name)), 12000, 250);
     if (!confirmed) {
       out.error = 'Save NOT confirmed by activity log'; out.failedSection = name;
       await page.screenshot({ path: './fast-section-save-failed.jpeg', type: 'jpeg', quality: 90 });
@@ -78,9 +121,8 @@ async (page) => {
   if (await q1.first().isDisabled().catch(() => true)) {
     out.optInLocked = true; // already recorded/locked — do NOT force
   } else {
-    await q1.first().check({ force: true });
-    await page.locator('input[name*="opt_in_consent_proof_method"][value="' + CFG.opt_in_consent.consent_proof_method + '"]').check({ force: true });
-    await page.waitForTimeout(300);
+    await setRadio('opt_in_consent_q1', perm);
+    await setRadio('opt_in_consent_proof_method', CFG.opt_in_consent.consent_proof_method);
     // value guard: abort rather than save a wrong consent answer
     const checked = await page.evaluate(() =>
       [...document.querySelectorAll('input[name*="opt_in_consent_q1"]')].filter(r => r.checked).map(r => r.value));
@@ -96,16 +138,24 @@ async (page) => {
   // 8c — Primary Care Provider
   if (!(await clickSection('Primary Care Provider'))) { out.error = 'Primary Care Provider did not open'; return out; }
   if (CFG.primary_care_provider.pcp_information_unavailable) {
-    const box = page.getByRole('checkbox', { name: 'Primary Care Provider (PCP) information unavailable' }).first();
-    if (!(await box.isChecked().catch(() => false))) { await box.check({ force: true }); await page.waitForTimeout(800); }
+    if (!(await setCheckbox('pcp_no_pcp_certification'))) {
+      out.error = 'PCP-unavailable checkbox never became checked'; return out;
+    }
+    // the reason dropdown only renders after the box is ticked
+    await until(() => page.evaluate(() => !!document.querySelector('[id*="pcp_no_pcp_reason"]')), 4000);
     const reasonSelected = await page.evaluate(() => {
       const sel = document.querySelector('[id*="pcp_no_pcp_reason"]');
       return !!sel?.closest('.choices')?.querySelector('.choices__list--single .choices__item');
     });
     if (!reasonSelected) {
-      await page.locator('.choices').filter({ has: page.locator('[id*="pcp_no_pcp_reason"]') }).first().click();
-      await page.locator('.choices__list--dropdown [role="option"]').filter({ hasText: CFG.primary_care_provider.reason_for_missing_info }).first().click();
-      await page.waitForTimeout(300);
+      await page.locator('.choices').filter({ has: page.locator('[id*="pcp_no_pcp_reason"]') })
+        .first().click({ timeout: 8000 });
+      await page.locator('.choices__list--dropdown [role="option"]')
+        .filter({ hasText: CFG.primary_care_provider.reason_for_missing_info }).first().click({ timeout: 8000 });
+      await until(() => page.evaluate(() => {
+        const sel = document.querySelector('[id*="pcp_no_pcp_reason"]');
+        return !!sel?.closest('.choices')?.querySelector('.choices__list--single .choices__item:not(.choices__placeholder)');
+      }), 4000);
     }
   }
   if (!(await saveAndVerify('Primary Care Provider'))) return out;
@@ -119,8 +169,8 @@ async (page) => {
   if (await radio.first().isDisabled().catch(() => true)) {
     out.saved.familyHistory = 'skipped (locked)';
   } else {
-    await radio.first().check({ force: true });
-    out.familyAnswerSet = true;
+    out.familyAnswerSet = await setRadio('family_history_confirm_has_family', fam);
+    if (!out.familyAnswerSet) { out.error = 'Family History radio never took the value ' + fam; return out; }
     if (!(await saveAndVerify('Family History'))) return out;
     out.saved.familyHistory = true;
   }

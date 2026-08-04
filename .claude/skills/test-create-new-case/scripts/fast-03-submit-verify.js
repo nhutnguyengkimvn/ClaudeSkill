@@ -19,23 +19,56 @@ async (page) => {
     return null;
   }, labels);
 
+  // Classify a dialog by its TEXT, never by its button label. Three different
+  // dialogs all offer an OK/Yes button here:
+  //   'guard'   — "Your unsaved data on the current case will be lost" → OK, harmless
+  //   'confirm' — "Are you sure you want to take this action?"          → Yes, proceed
+  //   'blocked' — "Please complete all required fields first"           → real failure
+  // Reading only the label made the guard dialog look like a validation block and
+  // failed the run in 80ms with every section green (hit 2026-07-31).
+  const dialogKind = () => page.evaluate(() => {
+    const d = document.querySelector('.swal-modal, .swal2-popup');
+    if (!d || !d.offsetParent) return null;
+    const t = (d.textContent || '').toLowerCase();
+    if (/unsaved data/.test(t)) return 'guard';
+    if (/required fields|complete all/.test(t)) return 'blocked';
+    if (/are you sure/.test(t)) return 'confirm';
+    return 'other';
+  });
+
+  // a leftover guard dialog from the previous phase covers the header — clear it first
+  for (let i = 0; i < 6 && (await dialogKind()) === 'guard'; i++) {
+    await jsClickSwal(['OK']);
+    await page.waitForTimeout(300);
+  }
+
   await page.evaluate(() => {
     const btn = [...document.querySelectorAll('button')]
       .find((b) => /Submit/.test(b.textContent) && !b.disabled && b.offsetParent);
     btn?.click();
   });
 
-  // poll up to 10s for either the confirm (Yes) or a validation block (OK)
+  // poll up to 10s, answering each dialog by KIND
   let confirmed = null;
   const deadline = Date.now() + 10000;
   while (Date.now() < deadline && !confirmed) {
-    confirmed = await jsClickSwal(['Yes', 'OK']);
-    if (!confirmed) await page.waitForTimeout(500);
-  }
-  if (confirmed === 'OK') {
-    out.error = 'Submit blocked: "complete all required fields" — a section lost its save. Check sidebar for red *.';
-    await page.screenshot({ path: './fast-submit-blocked.jpeg', type: 'jpeg', quality: 90 });
-    return out;
+    const kind = await dialogKind();
+    if (kind === 'blocked') {
+      out.error = 'Submit blocked: "complete all required fields" — a section lost its save. Check sidebar for red *.';
+      await page.screenshot({ path: './fast-submit-blocked.jpeg', type: 'jpeg', quality: 90 });
+      return out;
+    }
+    if (kind === 'guard') {
+      await jsClickSwal(['OK']);           // dismiss, then re-click Submit
+      await page.evaluate(() => {
+        const btn = [...document.querySelectorAll('button')]
+          .find((b) => /Submit/.test(b.textContent) && !b.disabled && b.offsetParent);
+        btn?.click();
+      });
+    } else if (kind === 'confirm' || kind === 'other') {
+      confirmed = await jsClickSwal(['Yes', 'OK']);
+    }
+    if (!confirmed) await page.waitForTimeout(250);
   }
 
   // success: the HEADER badge (first ~300 chars: "<name> <Badge> Case ID: …")

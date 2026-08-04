@@ -80,6 +80,27 @@ share the same app).
 
 ### PSS-view quirks (learned on the 2026-07-10 calibration run — encoded in scripts)
 
+- **A JS `el.click()` does NOT register with Form.io — values REVERT** (hit
+  2026-07-30, the worst kind of failure because it reports success). All 15
+  Compliance radios read back `checked: true` right after the JS clicks, then
+  Save wiped every one of them and validation showed "This field is required"
+  ×15 with `reasonSet: null`. Form.io keeps its own data model; only a TRUSTED
+  Playwright click updates it. pss-02 now (a) builds a PLAN inside
+  `page.evaluate` without clicking, then (b) applies it with
+  `setInput()` — trusted `click({force:true})`, read the value back, retry until
+  it sticks. Same helper ticks the verification checkboxes and the
+  `admin-pss-confirm` box. Never replace it with a JS click for speed.
+- **The activity panel shows only the ONE latest entry**, so log-only save
+  verification fails on a re-run over an already-saved section (no new log line
+  for a no-op save). Accept a GREEN sidebar marker (`circle fill="#227110"`) as
+  the second proof — note that `svg.gk-section-valid-icon` is the ERROR icon.
+- **Speed:** poll with `until()`, never `waitForTimeout`. Fixed sleeps cost ~3s
+  per section on the swal poll alone; the confirm dialog is now raced against
+  the activity log.
+
+- **The stale-session retry needs `page.reload()`** (fixed 2026-07-27): clearing
+  storage/cookies + `goto()` on a `#/` hash URL does not re-render the SPA, so
+  the login form never appears and the old session survives with the wrong role.
 - **Case cards need a TRUSTED Playwright click** — JS `el.click()` on
   `.gk-cases-wrapper` does not open the case.
 - Several **empty `.formio-form` wrappers are visible at once** — pick the
@@ -93,6 +114,17 @@ share the same app).
 - **The case auto-transitions New → Pending as soon as Compliance is saved
   completely** — clicking "Mark as Pending" is usually unnecessary; pss-03's
   `alreadyPending` path handles this.
+- **Compliance has REQUIRED "Verified Patient Gender / DOB / Address / Phone"
+  checkboxes** (`data[compliance_verification_verified_patient_*]`). The
+  empty-`.formio-form`-wrapper quirk applies to CHECKBOXES too, not just
+  radios: the checkbox root must be the visible form that actually *contains*
+  checkboxes. Symptom when it isn't (hit 2026-07-27): all 15 radios answer
+  fine, `checkboxes: "0 checked"`, Save silently fails validation
+  ("Verified Patient … is required") and the activity-log verification times
+  out with `failedSection: Compliance`. pss-02 now ticks by the correct root
+  and aborts if any required box is left unchecked.
+- The Medications confirm box is `name="admin-pss-confirm"`, an app-custom
+  checkbox OUTSIDE any `.formio-form` → it must be searched document-wide.
 
 ## Report
 

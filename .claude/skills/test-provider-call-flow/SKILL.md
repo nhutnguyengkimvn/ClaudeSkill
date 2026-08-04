@@ -83,11 +83,22 @@ Run the pre-built scripts via `mcp__playwright__browser_run_code_unsafe`
    placeholders — answers are baked in from provider-data.json). Fills and
    activity-log-verifies all 10 sections + Diagnosis (Z00.01) using the
    exact captured field keys.
-4. **Run `scripts/prov-03-orders-plan-mer.js`** via `{ filename }`. Creates
-   every remaining order in Manage Orders (loops the exact-'Order' buttons;
-   CGM consent path; avoids CUSTOM panels and Breast CGX options), adds the
-   Care Plan item + Discussion Notes, saves A&P, then generates the Master
-   Encounter Report and waits (≤3 min).
+4. **Run `scripts/prov-03b-ap-notes-mdm-mer.js`** via `{ filename }` — the
+   DEFAULT finish: closes any leftover order modal, fills A&P Discussion Notes +
+   MDM by exact field name, saves, then generates the Master Encounter Report
+   and waits for the section marker to go green (≤3 min). No Manage Orders.
+   Use `scripts/prov-03-orders-plan-mer.js` INSTEAD only when the user
+   explicitly wants orders automated (see the Orders section below for why it
+   is slow and fragile).
+
+**SPEED RULE (2026-07-30 feedback — the run felt slow):** never
+`waitForTimeout` for something observable. Every script now carries an
+`until(fn, timeoutMs, everyMs)` poll helper; section switches went from a fixed
+2s each to 15–230ms measured (6 sections: 12.0s of sleeps → 0.6s). Other rules:
+poll role/nav checks at 200ms, not 1s; race the save-confirm dialog against the
+activity log instead of burning a fixed 3s per section on a dialog that never
+appears; and only `reload()` when the SPA is already mounted on a hash route.
+When adding code here, keep sleeps out.
 
 Then merge results into `state/report.json` and report. Both sessions stay
 logged in. On failure: ONE screenshot → fix only the failing step (all known
@@ -135,11 +146,95 @@ landmines are listed below and in captured-keys.json).
 > The flow continues past this point (user will specify later steps —
 > ending the call, approving the case, …). Do NOT invent them.
 
+## Entry point when the case is ALREADY Assigned — `prov-01c` (added 2026-07-30)
+
+When the call was made outside this run (user called manually) or the case
+auto-assigned, run **`scripts/prov-01c-open-assigned-case.js`** with
+`{ url, provEmail, provPassword, caseId, cid }` INSTEAD of 01a + 01b: it logs
+the provider into the second context and opens the case, no call sequence, no
+presence websocket. Then continue with prov-02 (and prov-03 if orders are
+wanted). Check the header badge first — `Assigned` means take this path.
+
+## Orders: the user usually does Manage Orders manually (2026-07-30)
+
+Creating orders through the form is slow and brittle; on 2026-07-30 the user
+asked to **skip the Manage Orders automation entirely** and did the orders +
+Sign Off by hand. Treat prov-03's order loop as opt-in, not default: fill
+A&P/MER and let the user handle orders unless they ask otherwise. Known order-
+form landmines if it is ever needed again:
+
+- **Lab is a react-select (`#order-form-lab-select`, `.sp-select__control`), not
+  a formio Choices** — and ~17 `.sp-select__control` nodes exist page-wide, so
+  `.first()` grabs the sidebar's status select and times out. Click it by
+  coordinates inside the modal instead, then type the lab name + Enter.
+- **The default lab "Alpha Dera" has NO Test Panel options for PGx on dev** —
+  Save then fails forever with "Test Panel is required". Switching the lab to
+  **Knucks** loads panels (Comprehensive / Psych) AND re-renders the whole form
+  with different fields (Reason for Exam, Medications for PGx Review grid), so
+  every field must be re-read after a lab switch.
+- **Relevant Diagnosis is required** on the Alpha Dera PGx form (multi Choices,
+  option = the case's Z00.01) — prov-03 explicitly skips that label, which is
+  why its only order attempt failed.
+
 ## Calibration status: DONE 2026-07-13 (case CA-VOWXT6JN)
 
 All selectors/keys are recorded in `data/captured-keys.json` — READ IT before
 driving anything. Top lessons (also see captured-keys.json):
 
+- **Ticking a Form.io checkbox needs THREE things at once** (2026-07-30 — this
+  single bug cost five repair rounds on CA-QI3GSKRF): `scrollIntoView` (the
+  attestation boxes sit ~1500px down, outside the 1000px viewport, so a click
+  lands on nothing), click the **LABEL** (`label.form-check-label`; the input is
+  `opacity: 0`), and **verify `.checked`** afterwards — a JS `el.click()` flips
+  the property but Form.io never registers it, so the value reverts on the next
+  re-render. `preventive_exam_statement` came back unchecked that way after a
+  "successful" tick and silently blocked the section's Save (button greyed out,
+  "Please check the form and correct all errors").
+- **Diagnosis Z-codes are `<div class="tag">` pills** inside `.essentials`, and
+  the list LAZY-LOADS ("Loading..." first). A trusted locator click sets
+  `class="tag active"` and clears "Z Code for Wellness is REQUIRED". A JS click
+  or a coordinate click does nothing — and the switch on the right of that row is
+  a "Description" toggle, not the selector.
+- **`svg.gk-section-valid-icon` is the ERROR icon, not the valid one** (2026-07-30):
+  it wraps `id="icon-error"` and renders the RED `*` of an INCOMPLETE section. A
+  COMPLETE section renders a green circle `fill="#227110"`. Read completeness from
+  `.card-header strong` → parent `outerHTML`; scope to `.card-header` or a stray
+  duplicate `<strong>` elsewhere on the page flips the answer.
+- **Never scan the active form for missing fields AFTER Save** (2026-07-30): the
+  app AUTO-ADVANCES to the next section, so the scan reports the *next* section's
+  empty fields and every section looks "saved-INCOMPLETE". Scan before Save;
+  judge completeness from the sidebar marker.
+- **The ROS attestation must be ticked BY NAME** (2026-07-30):
+  `checkBoxesByText()` matches `cb.closest('.formio-component, label, div')`,
+  which resolves to the innermost wrapper div — it does NOT contain the label
+  text, so the box was silently never ticked. Use
+  `input[name="data[review_of_system_confirm]"]` + trusted `check()`.
+- **Family History must be answered "No"** (2026-07-30): the form renders FIVE
+  member blocks and Condition (2)–(5) are all required, so the old "Yes + Mother
+  /Cancer" path can never complete the section. "No" also matches what SALES
+  saved in case-data.json.
+- **A green activity-log entry does NOT mean the section is COMPLETE**
+  (2026-07-27): "updated the case on <Section>" is logged even when required
+  fields are still empty and the sidebar keeps a red `*`. prov-02's `doSection`
+  now also scans the active section for required-but-empty fields and reports
+  `saved-INCOMPLETE: <labels>`. Two sections were hit by this:
+  - **Review of Systems**: the blocking field is the attestation box
+    `data[review_of_system_confirm]` ("I affirm that i have verified…"), not
+    "I have checked this section". The 10 body-system groups show a `*` but do
+    NOT block completion — do not fabricate symptoms; only "No Lesions"
+    (Dermatologic) is a genuine negative finding.
+  - **Family History**: Relation to Patient (1) / Living or Deceased (1) /
+    Maternal-Paternal side must be set with LABEL-SCOPED trusted clicks; the
+    old document-wide JS scan matched nothing and left the section incomplete.
+- **A case can already be Assigned to the provider without any call** (e.g.
+  auto-assignment after Pending). When the provider's Task List already shows
+  the case as **Assigned**, the sections can be reached directly and the whole
+  call sequence is unnecessary. Verify the badge before deciding to call.
+- **Switching the provider to another case needs a real `page.reload()`** —
+  `goto()` on a `#/?cid=…` hash URL does not re-render the SPA, so the previous
+  case stays on screen (and a "Document Review & Sign off" modal can block
+  clicks). Close the modal, then goto + reload. Only safe when the call is not
+  in play — navigation kills the presence websocket.
 - **CALL SEQUENCE IS MANDATORY AND ORDERED** (user-confirmed): patient call
   FIRST → the moment it connects, ring the provider (Call → **Voice** in the
   dropdown) with ZERO pause → provider ANSWERS the pop right away → poll the

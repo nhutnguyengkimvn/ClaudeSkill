@@ -35,31 +35,66 @@ async (page) => {
       await page.getByRole('button', { name: 'Continue' }).click();
     }
   };
+  const until = async (fn, timeoutMs = 8000, everyMs = 150) => {
+    const deadline = Date.now() + timeoutMs;
+    for (;;) {
+      const v = await fn().catch(() => false);
+      if (v) return v;
+      if (Date.now() >= deadline) return false;
+      await page.waitForTimeout(everyMs);
+    }
+  };
   const createBtnVisible = () => page.getByRole('button', { name: /Create case/ })
     .waitFor({ state: 'visible', timeout: 20000 }).then(() => true).catch(() => false);
   // SALES-role check: PSS sessions ALSO show "+ Create case" (and PSS stays
   // logged in — that skill does not log out). Only the sales nav has a
   // "Sales Report" item; without this check a stale PSS session would create
   // the case under the WRONG account.
-  const isSalesRole = () => page.evaluate(() =>
-    !!document.querySelector('[title="Sales Report"]')
-    || [...document.querySelectorAll('.nav-title')].some(e => e.textContent.trim() === 'Sales Report'));
+  // POLL, never single-shot: the nav renders several seconds AFTER the Task List,
+  // so a one-shot check right after login reports "not sales" for a perfectly
+  // valid sales session and the run aborts for nothing (hit 2026-07-29).
+  // SPEED: decide as soon as ANY role marker renders. The old version polled a
+  // full 20s at 1s intervals for "Sales Report" alone, so a stale PSS session —
+  // which happens on EVERY core-flow run, because step 2 deliberately leaves PSS
+  // logged in — burned 20s before the hard-logout path even started. Watching
+  // for the foreign-role markers too makes that decision take ~1s.
+  const whoAmI = async (timeoutMs = 20000) => until(() => page.evaluate(() => {
+    const navs = [...document.querySelectorAll('.nav-title')].map(e => e.textContent.trim());
+    if (document.querySelector('[title="Sales Report"]') || navs.includes('Sales Report')) return 'sales';
+    if (navs.includes('Call Scoring')) return 'pss';
+    if (navs.includes('Result Dashboard') || /\+ Busy Time/.test(document.body.innerText)) return 'provider';
+    return false;
+  }), timeoutMs, 200);
+  const isSalesRole = async (timeoutMs = 20000) => (await whoAmI(timeoutMs)) === 'sales';
 
   await page.goto(CFG.url);
-  await page.waitForTimeout(2000);
+  // poll for whichever lands first: the login form or an existing session
+  await until(() => page.evaluate(() =>
+    !!document.querySelector('input[name="username"], input[type="password"]')
+    || [...document.querySelectorAll('button')].some(b => /Create case/.test(b.textContent))
+    || !!document.querySelector('.nav-title')), 15000);
   if (/cid=/.test(page.url())) {
     out.error = 'A case is already open (?cid= in URL) — resume with fast-02, do NOT re-create.';
     return out;
   }
   await doLogin();
 
-  if (!(await createBtnVisible()) || !(await isSalesRole())) {
-    // stale session with the wrong role → hard logout and retry once
+  // One role probe decides everything: 'sales' → go; 'pss'/'provider' → the
+  // session belongs to another account, wipe it immediately (no 20s wait).
+  const role = await whoAmI(20000);
+  out.sessionRole = role || 'unknown';
+  if (role !== 'sales') {
+    // stale session with the wrong role → hard logout and retry once.
+    // A plain goto() on a hash URL does NOT re-render the SPA, so the login
+    // form never appears and doLogin() no-ops → the stale session survives
+    // (hit 2026-07-27). A real reload + waiting for the Username box is required.
     out.hadWrongRoleSession = true;
-    await page.evaluate(() => { localStorage.clear(); sessionStorage.clear(); });
+    await page.evaluate(() => { try { localStorage.clear(); sessionStorage.clear(); } catch (e) {} });
     await page.context().clearCookies();
     await page.goto(CFG.url);
-    await page.waitForTimeout(2000);
+    await page.reload({ waitUntil: 'domcontentloaded' });
+    await page.getByRole('textbox', { name: 'Username *' })
+      .waitFor({ state: 'visible', timeout: 20000 }).catch(() => {});
     await doLogin();
     if (!(await createBtnVisible()) || !(await isSalesRole())) {
       await page.screenshot({ path: './fast-create-case-error.jpeg', type: 'jpeg', quality: 90 });
@@ -68,13 +103,20 @@ async (page) => {
     }
   }
   await dismissSwal();
-  // JS-dispatch: the collapsed nav sidebar overlays the button box
-  const createClicked = await page.evaluate(() => {
-    const btn = [...document.querySelectorAll('button')].find(b => /Create case/.test(b.textContent) && !b.disabled);
-    if (btn) { btn.click(); return true; } return false;
-  });
+  // JS-dispatch: the collapsed nav sidebar overlays the button box.
+  // POLL for an ENABLED button: right after a fresh login the Task List is
+  // still loading and "+ Create case" stays `disabled` for a few seconds
+  // (hit 2026-07-29 — a single-shot check aborted the run for nothing).
+  let createClicked = false;
+  for (let i = 0; i < 30 && !createClicked; i++) {
+    createClicked = await page.evaluate(() => {
+      const btn = [...document.querySelectorAll('button')].find(b => /Create case/.test(b.textContent) && !b.disabled);
+      if (btn) { btn.click(); return true; } return false;
+    });
+    if (!createClicked) await page.waitForTimeout(1000);
+  }
   if (!createClicked) {
-    out.error = '"+ Create case" button present but disabled — Task List may still be loading; re-run this script.';
+    out.error = '"+ Create case" button stayed disabled for 30s — Task List never finished loading.';
     return out;
   }
   out.loggedIn = true;
@@ -125,8 +167,34 @@ async (page) => {
   }
   out.page1 = 'verified';
 
-  await page.getByRole('button', { name: 'Continue' }).click();
-  await page.getByText('PERSONAL INFORMATION').first().waitFor({ timeout: 20000 });
+  // The Eligibility Check runs on Continue. While it is in flight the click is
+  // SWALLOWED, and a failed/slow check paints a red "Inactive Insurance" banner
+  // in the panel header (hit 2026-07-29 with a policy # that had worked before).
+  // The banner is NOT fatal: clicking Continue again once the check settles goes
+  // through. Retry up to 3× before giving up.
+  // The click itself must be CAUGHT and given a short timeout: while the
+  // eligibility check is in flight the button goes `disabled`, Playwright waits
+  // for it to become enabled, and the default 30s timeout THROWS out of the
+  // retry loop — which is what killed the chained run on 2026-07-30 (65s, phase
+  // 1, "locator.click: Timeout 30000ms exceeded ... Continue").
+  let onPage2 = false;
+  for (let i = 0; i < 4 && !onPage2; i++) {
+    await page.getByRole('button', { name: 'Continue' })
+      .click({ timeout: 6000 }).catch(() => {});
+    onPage2 = await page.getByText('PERSONAL INFORMATION').first()
+      .waitFor({ timeout: 12000 }).then(() => true).catch(() => false);
+    if (!onPage2) {
+      out.eligibilityNotice = await page.evaluate(() =>
+        [...document.querySelectorAll('.formio-errors, .error, .invalid-feedback, .text-danger')]
+          .map(e => e.textContent.trim()).filter(Boolean));
+      await page.waitForTimeout(3000);
+    }
+  }
+  if (!onPage2) {
+    out.error = 'Continue did not reach page 2 after 3 attempts (eligibility check)';
+    await page.screenshot({ path: './fast-continue-blocked.jpeg', type: 'jpeg', quality: 90 });
+    return out;
+  }
 
   // ---- Page 2: Personal Information ----
   await page.getByRole('radio', { name: p.gender, exact: true }).check({ force: true });
@@ -145,7 +213,8 @@ async (page) => {
   }
   await page.getByRole('combobox').first().click();
   await page.locator('.choices__list--dropdown [role="option"]').filter({ hasText: CFG.additional.reason_of_visit }).first().click();
-  await page.waitForTimeout(1000);
+  // the RPM select renders only after Reason of Visit is set — poll for a 2nd combobox
+  await until(() => page.getByRole('combobox').count().then(n => n > 1), 6000);
   if (CFG.additional.rpm_service) {
     const rpmMap = { 'CGM/BGM': 'CGM or BGM' };
     const rpmText = rpmMap[CFG.additional.rpm_service] || CFG.additional.rpm_service;
@@ -179,7 +248,8 @@ async (page) => {
 
   await page.getByRole('button', { name: 'Save' }).last().click();
   await page.waitForURL(/cid=/, { timeout: 30000 });
-  await page.waitForTimeout(3000);
+  // poll for the header IDs instead of a blind 3s wait
+  await until(() => page.evaluate(() => /CA-[A-Z0-9]{8}/.test(document.body.innerText)), 15000);
 
   const body = await page.evaluate(() => document.body.innerText);
   out.caseId = (body.match(/CA-[A-Z0-9]{8}/) || [null])[0];

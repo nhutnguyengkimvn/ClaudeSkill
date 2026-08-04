@@ -96,6 +96,17 @@ Load these as needed:
 - `scripts/build-report.py` — Builds the self-contained per-recform HTML report
 - `~/.claude/skills/convert-order-service-json-to-csv/scripts/convert.py` — Converts the saved Form.io schema JSON to the DNAi req-form mapping CSV (called at end of W04)
 - `verify-formio-panel-params` skill — Verifies the Form.io Test Panel → Test Parameters → aggregator copy wiring (static key/mapping check + live Preview submission check); called from W04 step 8a after Save
+- `extract-recform-icd10-panels` skill — Turns the requisition PDF into the
+  panel → ICD-10 JSON (`relevant_diagnosis_condition`: PRIMARY required /
+  SECONDARY optional / CROSS-PANEL per panel). Run it BEFORE W05 and feed its
+  JSON to `icd10-panel-fill` instead of hand-typing the mapping. Requisition PDFs
+  are flattened (no text layer), so it renders at 300 DPI and reads the strips —
+  do not read codes off a page-scale render.
+- `verify-recform-icd10-import` skill — Runs AFTER W05: diffs the saved
+  AnnotsJSON against that panel/ICD JSON and reports unfilled entries, codes the
+  form prints but nobody imported, codes under the wrong panel, extras and count
+  mismatches. Treat a non-zero exit as a W05 failure and fix the mapping before
+  the confirmation gate.
 
 ## Browser Automation
 

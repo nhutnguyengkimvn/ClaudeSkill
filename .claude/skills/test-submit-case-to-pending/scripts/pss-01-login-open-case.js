@@ -18,21 +18,47 @@ async (page) => {
     .waitFor({ state: 'visible', timeout: 20000 }).then(() => true).catch(() => false);
   // PSS-role check: sales/doctor sessions ALSO have a "Search case" box, and
   // sessions persist across skills. Only the PSS nav has "Call Scoring".
-  const isPssRole = () => page.evaluate(() =>
-    !!document.querySelector('[title="Call Scoring"]')
-    || [...document.querySelectorAll('.nav-title')].some(e => e.textContent.trim() === 'Call Scoring'));
+  // POLL, never single-shot: the nav renders several seconds AFTER the Task List
+  // (same false-negative as fast-01, 2026-07-29).
+  const until = async (fn, timeoutMs = 8000, everyMs = 150) => {
+    const deadline = Date.now() + timeoutMs;
+    for (;;) {
+      const v = await fn().catch(() => false);
+      if (v) return v;
+      if (Date.now() >= deadline) return false;
+      await page.waitForTimeout(everyMs);
+    }
+  };
+  // SPEED: resolve the role from whichever marker appears first (200ms polling)
+  // instead of polling 20s at 1s intervals for "Call Scoring" alone — a stale
+  // sales/provider session used to cost the full 20s before the retry started.
+  const whoAmI = (timeoutMs = 20000) => until(() => page.evaluate(() => {
+    const navs = [...document.querySelectorAll('.nav-title')].map(e => e.textContent.trim());
+    if (document.querySelector('[title="Call Scoring"]') || navs.includes('Call Scoring')) return 'pss';
+    if (navs.includes('Sales Report')) return 'sales';
+    if (navs.includes('Result Dashboard') || /\+ Busy Time/.test(document.body.innerText)) return 'provider';
+    return false;
+  }), timeoutMs, 200);
+  const isPssRole = async (timeoutMs = 20000) => (await whoAmI(timeoutMs)) === 'pss';
 
   await page.goto(CFG.url);
-  await page.waitForTimeout(2000);
+  await until(() => page.evaluate(() =>
+    !!document.querySelector('input[type="password"]') || !!document.querySelector('.nav-title')), 15000);
   await doLogin();
 
-  if (!(await searchVisible()) || !(await isPssRole())) {
-    // stale session with another role → hard logout and retry once
+  out.sessionRole = (await whoAmI(20000)) || 'unknown';
+  if (out.sessionRole !== 'pss') {
+    // stale session with another role → hard logout and retry once.
+    // goto() alone on a hash URL does NOT re-render the SPA → the login form
+    // never appears and doLogin() no-ops (see fast-01, 2026-07-27). Reload and
+    // wait for the Username box before logging in.
     out.hadStaleSession = true;
-    await page.evaluate(() => { localStorage.clear(); sessionStorage.clear(); });
+    await page.evaluate(() => { try { localStorage.clear(); sessionStorage.clear(); } catch (e) {} });
     await page.context().clearCookies();
     await page.goto(CFG.url);
-    await page.waitForTimeout(2000);
+    await page.reload({ waitUntil: 'domcontentloaded' });
+    await page.getByRole('textbox', { name: 'Username *' })
+      .waitFor({ state: 'visible', timeout: 20000 }).catch(() => {});
     await doLogin();
     if (!(await searchVisible()) || !(await isPssRole())) {
       await page.screenshot({ path: './pss-login-error.jpeg', type: 'jpeg', quality: 90 });

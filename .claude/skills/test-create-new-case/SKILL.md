@@ -85,6 +85,23 @@ Task List sidebar makes snapshots huge and slow.
   leaves its PSS session logged in (no logout, by design) → script 01 also
   requires the "Sales Report" nav item (sales-only) before creating; a stale
   PSS session triggers the hard-logout + fresh-login path automatically.
+- **The hard-logout path needs a real `page.reload()`** (fixed 2026-07-27):
+  clearing localStorage/cookies then `goto()` on a `#/` hash URL does NOT
+  re-render the SPA, so the login form never appears, `doLogin()` no-ops, and
+  the stale PSS session survives → script aborts with the misleading
+  "account is not a SALE account". Symptom: nav shows QC/Calls/Call Scoring
+  instead of Sales Report. Same fix applied to `pss-01`.
+- **The role-check must POLL, not single-shot** (fixed 2026-07-29): the nav
+  ("Sales Report" / "Call Scoring") renders several seconds AFTER the Task List,
+  so checking it once right after login reports the wrong role for a perfectly
+  valid session and aborts the run. `isSalesRole()` in fast-01 (and
+  `isPssRole()` in pss-01) now poll for up to 20s.
+- **Continue can be swallowed by the Eligibility Check** (fixed 2026-07-29):
+  while the check is in flight the click does nothing, and a failed/slow check
+  paints a red **"Inactive Insurance"** banner in the panel header. The banner is
+  NOT fatal and does NOT mean the policy # is wrong — clicking Continue again a
+  few seconds later goes through. fast-01 retries Continue up to 3×. Do not
+  re-type page-1 fields; they survive the failed check.
 - Phone / DOB / Zip are masked inputs → typed key-by-key.
 - The State input echoes pasted text twice → cleared via native setter first.
 - Reason of Visit / RPM service / PCP reason are Choices.js dropdowns →
