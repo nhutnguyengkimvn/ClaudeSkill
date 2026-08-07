@@ -44,6 +44,26 @@ async (page) => {
     }
     return false;
   };
+  // ---- STUCK "Loading… ⟳" SECTION BODY (user-reported 2026-08-07) ----
+  // The heading renders immediately; the body is a separate async mount that can
+  // hang on "Loading... ⟳" forever, so every input poll reads an EMPTY form.
+  // Waiting longer does NOT help — BOUNCE to another section for ~1s and come
+  // back; the remount loads instantly.
+  const bodyReady = () => page.evaluate(() => {
+    if (/Loading\.\.\./.test(document.body.innerText)) return false;
+    const form = [...document.querySelectorAll('.formio-form')]
+      .find((f) => f.offsetParent && f.querySelectorAll('input, select, textarea').length);
+    return !!form;
+  });
+  const openSection = async (name, bounceTo) => {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      if (!(await clickSection(name))) continue;
+      if (await until(bodyReady, 2500, 150)) return true;
+      await clickSection(bounceTo);
+      await page.waitForTimeout(1000);
+    }
+    return false;
+  };
   // A visible heading does NOT mean the form finished rendering: Form.io mounts
   // its question groups progressively. Planning too early scanned only 5 of the
   // 15 Compliance radio groups, so Save failed validation on the 10 unanswered
@@ -216,7 +236,7 @@ async (page) => {
   };
 
   // ---- Compliance ----
-  if (!(await clickSection('Compliance'))) { out.error = 'Compliance section did not open'; return out; }
+  if (!(await openSection('Compliance', 'Medications'))) { out.error = 'Compliance body stuck on "Loading…" after 3 bounce attempts'; return out; }
   out.radiosSettled = await waitRadiosSettled();
   out.sections.compliance = await applyPlan(await answerRadios(CFG.compliance));
   if (out.sections.compliance.overrideFailures.length || out.sections.compliance.setFailures) {
@@ -283,7 +303,7 @@ async (page) => {
   out.sections.compliance.saved = true;
 
   // ---- Medications ----
-  if (!(await clickSection('Medications'))) { out.error = 'Medications section did not open'; return out; }
+  if (!(await openSection('Medications', 'Compliance'))) { out.error = 'Medications body stuck on "Loading…" after 3 bounce attempts'; return out; }
   await waitRadiosSettled();
   out.sections.medications = await applyPlan(await answerRadios(CFG.medications));
   if (out.sections.medications.overrideFailures.length || out.sections.medications.setFailures) {

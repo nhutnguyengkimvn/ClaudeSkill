@@ -51,6 +51,35 @@ async (page) => {
     }
     return false;
   };
+  // ---- STUCK "Loading… ⟳" SECTION BODY (user-reported 2026-08-07) ----
+  // The section HEADING renders immediately, but the body is a separate async
+  // mount that shows "Loading... ⟳" — and it can hang there forever. Every
+  // input-level poll then reads an EMPTY form: on 2026-08-07 fast-02 aborted
+  // with `Opt-In answer mismatch — got: []` because not one radio existed.
+  // Waiting longer does NOT help. The fix is to BOUNCE: click another section,
+  // wait ~1s, click back — the remount loads instantly.
+  const SECTIONS = ['Patient Information', 'Opt-In Consent', 'Primary Care Provider', 'Family History'];
+  const bodyReady = () => page.evaluate(() => {
+    if (/Loading\.\.\./.test(document.body.innerText)) return false;
+    const form = [...document.querySelectorAll('.formio-form')]
+      .find((f) => f.offsetParent && f.querySelectorAll('input, select, textarea').length);
+    return !!form;
+  });
+  // Open a section AND wait for its body to actually mount. `probe` (optional)
+  // is a selector that must exist once the section is really ready.
+  const openSection = async (name, probe) => {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      if (!(await clickSection(name))) continue;
+      const ready = await until(async () =>
+        (await bodyReady()) && (!probe || (await page.locator(probe).count()) > 0), 2500, 150);
+      if (ready) return true;
+      // still "Loading…" after 2.5s → bounce off a neighbour for 1s and retry
+      const other = SECTIONS.find((s) => s !== name);
+      await clickSection(other);
+      await page.waitForTimeout(1000);
+    }
+    return false;
+  };
   // Setting a Form.io input has TWO failure modes, and the fix needs both halves:
   //  - Too early: the heading is visible but Form.io has not hydrated yet, so
   //    `.check()` throws "Clicking the checkbox did not change its state".
@@ -110,12 +139,12 @@ async (page) => {
   };
 
   // 8a — Patient Information (pre-filled by the create wizard, just Save)
-  if (!(await clickSection('Patient Information'))) { out.error = 'Patient Information did not open'; return out; }
+  if (!(await openSection('Patient Information'))) { out.error = 'Patient Information body stuck on "Loading…" after 3 bounce attempts'; return out; }
   if (!(await saveAndVerify('Patient Information'))) return out;
   out.saved.patientInformation = true;
 
   // 8b — Opt-In Consent
-  if (!(await clickSection('Opt-In Consent'))) { out.error = 'Opt-In Consent did not open'; return out; }
+  if (!(await openSection('Opt-In Consent', 'input[name*="opt_in_consent_q1"]'))) { out.error = 'Opt-In Consent body stuck on "Loading…" after 3 bounce attempts'; return out; }
   const perm = CFG.opt_in_consent.permission_to_speak_with_provider; // "Yes" | "No"
   const q1 = page.locator('input[name*="opt_in_consent_q1"][value="' + perm + '"]');
   if (await q1.first().isDisabled().catch(() => true)) {
@@ -136,7 +165,7 @@ async (page) => {
   out.optInAnswer = perm; // "No" normally auto-cancels + DNC — warn in report
 
   // 8c — Primary Care Provider
-  if (!(await clickSection('Primary Care Provider'))) { out.error = 'Primary Care Provider did not open'; return out; }
+  if (!(await openSection('Primary Care Provider', 'input[type="checkbox"][name*="pcp_no_pcp_certification"]'))) { out.error = 'Primary Care Provider body stuck on "Loading…" after 3 bounce attempts'; return out; }
   if (CFG.primary_care_provider.pcp_information_unavailable) {
     if (!(await setCheckbox('pcp_no_pcp_certification'))) {
       out.error = 'PCP-unavailable checkbox never became checked'; return out;
@@ -163,7 +192,7 @@ async (page) => {
 
   // 8d — Family History. If the radios are DOM-disabled (locked for the sales
   // role) → SKIP the section entirely (no Save): it is not required for Submit.
-  if (!(await clickSection('Family History'))) { out.error = 'Family History did not open'; return out; }
+  if (!(await openSection('Family History', 'input[name*="family_history_confirm_has_family"]'))) { out.error = 'Family History body stuck on "Loading…" after 3 bounce attempts'; return out; }
   const fam = CFG.family_history.has_family_medical_history; // "Yes" | "No"
   const radio = page.locator('input[name*="family_history_confirm_has_family"][value="' + fam + '"]');
   if (await radio.first().isDisabled().catch(() => true)) {

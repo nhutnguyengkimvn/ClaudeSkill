@@ -80,6 +80,14 @@ share the same app).
 
 ### PSS-view quirks (learned on the 2026-07-10 calibration run — encoded in scripts)
 
+- **A section body can hang on "Loading… ⟳" — bounce, don't wait** (user-reported
+  2026-08-07). The heading renders before the form body mounts, and the body can
+  stick on `Loading... ⟳` indefinitely; every input poll then reads an EMPTY form
+  and the run aborts with a misleading "answers did not take effect". **Rule: if
+  the body is still "Loading…" after ~2s, click another section, wait ~1s, click
+  back** — the remount loads instantly. Encoded as `openSection(name, bounceTo)`
+  in pss-02 (3 attempts). Same helper lives in fast-02 and prov-02.
+
 - **A JS `el.click()` does NOT register with Form.io — values REVERT** (hit
   2026-07-30, the worst kind of failure because it reports success). All 15
   Compliance radios read back `checked: true` right after the JS clicks, then

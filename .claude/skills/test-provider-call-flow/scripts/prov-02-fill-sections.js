@@ -32,17 +32,44 @@ async (page) => {
   }, ls);
   const sectionOpen = (name) => provPage.evaluate((n) =>
     !![...document.querySelectorAll('h1,h2,h3')].find(e => e.textContent.trim() === n && e.offsetParent), name);
+  const clickHeading = (name) => provPage.evaluate((n) => {
+    const es = [...document.querySelectorAll('strong')].filter(s => s.textContent.trim() === n && s.offsetParent);
+    es[es.length - 1]?.click();
+  }, name);
+  // ---- STUCK "Loading… ⟳" SECTION BODY (user-reported 2026-08-07) ----
+  // The heading renders immediately; the body is a separate async mount that can
+  // hang on "Loading... ⟳" forever, so every input poll reads an EMPTY form and
+  // the section is reported as "answers did not take effect". Waiting longer does
+  // NOT help — BOUNCE to another sidebar section for ~1s and come back; the
+  // remount loads instantly.
+  const bodyReady = () => provPage.evaluate(() => {
+    if (/Loading\.\.\./.test(document.body.innerText)) return false;
+    return !![...document.querySelectorAll('.formio-form')]
+      .find(f => f.offsetParent && f.querySelectorAll('input, select, textarea').length);
+  });
+  const bounceOff = async (name) => {
+    const other = await provPage.evaluate((n) => {
+      const s = [...document.querySelectorAll('.card-header strong')]
+        .map(e => e.textContent.trim()).find(t => t && t !== n);
+      return s || null;
+    }, name);
+    if (!other) return;
+    await clickHeading(other);
+    await provPage.waitForTimeout(1000);
+  };
   const clickSection = async (name) => {
     // the app auto-advances after each Save, so the wanted section is often
     // already on screen — check first, click only if needed.
-    if (await sectionOpen(name)) return true;
-    for (let i = 0; i < 3; i++) {
-      await provPage.evaluate((n) => {
-        const es = [...document.querySelectorAll('strong')].filter(s => s.textContent.trim() === n && s.offsetParent);
-        es[es.length - 1]?.click();
-      }, name);
-      await jsClickSwal(['OK']); // unsaved-data navigation guard
-      if (await until(() => sectionOpen(name), 4000)) return true;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      let open = await sectionOpen(name);
+      for (let i = 0; i < 3 && !open; i++) {
+        await clickHeading(name);
+        await jsClickSwal(['OK']); // unsaved-data navigation guard
+        open = await until(() => sectionOpen(name), 4000);
+      }
+      if (!open) return false;
+      if (await until(bodyReady, 2500, 150)) return true;
+      await bounceOff(name);   // body stuck on "Loading…" → bounce and retry
     }
     return false;
   };

@@ -181,6 +181,13 @@ form landmines if it is ever needed again:
 All selectors/keys are recorded in `data/captured-keys.json` — READ IT before
 driving anything. Top lessons (also see captured-keys.json):
 
+- **A section body can hang on "Loading… ⟳" — bounce, don't wait** (user-reported
+  2026-08-07): the heading renders before the body mounts, and the body can stick
+  on `Loading... ⟳` forever. Waiting longer never resolves it — every input poll
+  reads an EMPTY form and the section is falsely reported as failed/incomplete.
+  **Rule: if the body is still "Loading…" after ~2s, click another sidebar
+  section, wait ~1s, click back** — the remount loads instantly. `clickSection()`
+  in prov-02 now does this automatically (3 bounce attempts).
 - **Ticking a Form.io checkbox needs THREE things at once** (2026-07-30 — this
   single bug cost five repair rounds on CA-QI3GSKRF): `scrollIntoView` (the
   attestation boxes sit ~1500px down, outside the 1000px viewport, so a click

@@ -61,6 +61,19 @@ Path: `.claude/skills/test-core-flow/state/report.json` (relative to repo root).
 }
 ```
 
+## Cross-skill landmine — stuck "Loading… ⟳" section body
+
+Applies to EVERY sub-skill (same dashboard): a case section's heading renders
+before its form body mounts, and the body can hang on `Loading... ⟳`
+indefinitely. Waiting longer never resolves it — every input-level poll reads an
+EMPTY form, so the run aborts with a misleading message ("answers did not take
+effect", "radio never took the value", `got: []`).
+
+**Rule: body still "Loading…" after ~2s → click ANOTHER section, wait ~1s, click
+back.** The remount loads instantly. Encoded as `openSection()` / `clickSection()`
+in `fast-02`, `pss-02` and `prov-02` (3 bounce attempts, then a clear
+`body stuck on "Loading…"` error). Never "fix" this by raising timeouts.
+
 ## Environment rule (IMPORTANT)
 
 - **From `/test-core-flow`**: the orchestrator asks the environment ONCE

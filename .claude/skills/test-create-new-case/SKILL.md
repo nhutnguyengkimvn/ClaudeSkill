@@ -78,6 +78,19 @@ Task List sidebar makes snapshots huge and slow.
 
 ### Known quirks (already handled inside the scripts)
 
+- **A section body can hang on "Loading… ⟳" — bounce, don't wait** (user-reported
+  2026-08-07, hit on Opt-In Consent of CA-UU68DKAH). The section HEADING renders
+  immediately; the form body is a separate async mount. When it sticks on
+  `Loading... ⟳`, **waiting longer never resolves it** — every input-level poll
+  reads an EMPTY form and the script aborts with a misleading message
+  (`Opt-In answer mismatch before save — got: []`, or "radio never took the
+  value"). **Rule: if the body is still "Loading…" after ~2s, click ANOTHER
+  section, wait ~1s, then click back** — the remount loads instantly. Encoded as
+  `openSection(name, probe)` in fast-02 (3 bounce attempts, then a clear
+  `body stuck on "Loading…"` error); same helper is in pss-02 and prov-02.
+  Symptom to recognise: sidebar shows the section selected with a red `*` while
+  the panel shows only the title + spinner (see screenshot in the 2026-08-07 run).
+
 - The account MUST be a **sale** account. A Doctor/provider login shows a
   red "+ Busy Time" button and NO "+ Create case" → script 01 aborts with a
   clear error. Fix `sale_account` in the JSON, re-run script 01.
