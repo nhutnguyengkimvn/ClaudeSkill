@@ -79,18 +79,25 @@ async (page) => {
   const provPage = provCtx.pages()[0] || await provCtx.newPage();
   provPage.removeAllListeners('dialog');
   provPage.on('dialog', d => d.accept().catch(() => {}));
+  // `document.body` is NULL for a moment while the SPA re-renders after login —
+  // an unguarded `document.body.innerText` THROWS, waitForFunction rejects, the
+  // .catch() swallows it and the script reports a bogus "provider login failed"
+  // on a session that logged in perfectly (hit 2026-08-07). Always guard body.
   const provLoggedIn = (ms) => provPage.waitForFunction(() =>
-    [...document.querySelectorAll('.nav-title')].some(e => e.textContent.trim() === 'Result Dashboard')
-    || /\+ Busy Time/.test(document.body.innerText), null, { timeout: ms }).then(() => true).catch(() => false);
+    !!document.body && ([...document.querySelectorAll('.nav-title')].some(e => e.textContent.trim() === 'Result Dashboard')
+    || /\+ Busy Time/.test(document.body.innerText)), null, { timeout: ms, polling: 500 })
+    .then(() => true).catch(() => false);
   if (!(await provLoggedIn(3000))) {
     await provPage.setViewportSize({ width: 1600, height: 1000 });
     await provPage.goto(CFG.url);
-    await provPage.waitForTimeout(2000);
+    // poll for the login form instead of a fixed 2s — a slow render made the
+    // fill() run against a not-yet-mounted form and the login silently no-op'd
+    await provPage.getByRole('textbox', { name: 'Username *' })
+      .waitFor({ state: 'visible', timeout: 20000 }).catch(() => {});
     await login(provPage, CFG.provEmail, CFG.provPassword);
-    await provPage.waitForTimeout(2000);
-    await dismiss(provPage);
+    await dismiss(provPage).catch(() => {});
   }
-  out.providerLoggedIn = await provLoggedIn(20000);
+  out.providerLoggedIn = await provLoggedIn(30000);
   if (!out.providerLoggedIn) { out.error = 'provider login failed'; return out; }
   // From here on the provider page must sit UNTOUCHED on the dashboard —
   // prov-01b relies on this websocket for both presence and the pop-call.
@@ -104,32 +111,41 @@ async (page) => {
   if (!(await overlayOpen())) { await openOverlay(); await page.waitForTimeout(4000); }
   if (!(await overlayOpen())) { out.error = 'call overlay did not open'; return out; }
 
-  // the Online badge sits OUTSIDE the name element — walk UP from the name
-  // until an ancestor's text contains both (row is < ~600 chars)
-  const providerOnline = () => page.evaluate(() => {
-    let el = [...document.querySelectorAll('div, li, tr, span')]
-      .filter(e => /DR VU/i.test(e.textContent) && e.textContent.length < 200)
+  // ---- The prerequisite is the ROW, not the "Online" badge ----
+  // CORRECTED 2026-08-07 (user screenshots): the per-row **Call** button appears
+  // on HOVER even while the badge reads **Offline**, and ringing an "Offline"
+  // DR VU Doctor still delivers the pop. The old hard gate polled 90s for
+  // "Online", never saw it, and aborted a run that would have worked — that was
+  // the 2026-07-15 "BLOCKED at ring-provider" failure. Presence is INFORMATIONAL
+  // only; never block on it.
+  // scan ALL tags: the provider name is a LEAF element whose tag varies (it was
+  // not a div/li/tr/span on 2026-08-07, so the old scoped scan reported "row
+  // never appeared" while the row was plainly on screen and Online).
+  const rowPresence = () => page.evaluate(() => {
+    let el = [...document.querySelectorAll('*')]
+      .filter(e => e.offsetParent && /DR VU/i.test(e.textContent) && e.textContent.length < 200)
       .sort((a, b) => a.textContent.length - b.textContent.length)[0];
+    if (!el) return null;
     for (let i = 0; el && i < 6; i++, el = el.parentElement) {
-      if (/Online/i.test(el.textContent) && el.textContent.length < 600) return true;
+      const t = el.textContent;
+      if (t.length < 600 && /Online|Offline/i.test(t)) return /(\bOnline\b)/i.test(t) ? 'Online' : 'Offline';
     }
-    return false;
+    return 'row-present-no-badge';
   });
-  out.providerOnline = await providerOnline();
-  for (let i = 0; i < 18 && !out.providerOnline; i++) {  // poll ≤90s — presence can take a while to register
-    await page.waitForTimeout(5000);
-    if (i === 8) { // halfway: the provider list may be a snapshot — reopen the overlay once
-      await page.keyboard.press('Escape').catch(() => {});
-      await page.waitForTimeout(1500);
-      if (!(await overlayOpen())) { await openOverlay(); await page.waitForTimeout(3000); }
-    }
-    out.providerOnline = await providerOnline();
+  // wait only for the row to EXIST (the provider list loads async), ≤20s
+  const rowExists = () => page.evaluate(() =>
+    [...document.querySelectorAll('*')].some(e => e.offsetParent && /DR VU/i.test(e.textContent) && e.textContent.length < 200));
+  out.providerRowVisible = await rowExists();
+  for (let i = 0; i < 10 && !out.providerRowVisible; i++) {
+    await page.waitForTimeout(2000);
+    out.providerRowVisible = await rowExists();
   }
-  if (!out.providerOnline) {
-    out.error = 'provider row never showed Online — wait and re-run 01a; do NOT reload the provider page';
-    await page.screenshot({ path: './prov01a-offline.jpeg', type: 'jpeg', quality: 80 });
+  if (!out.providerRowVisible) {
+    out.error = 'DR VU Doctor row never appeared in the call overlay provider list';
+    await page.screenshot({ path: './prov01a-norow.jpeg', type: 'jpeg', quality: 80 });
     return out;
   }
+  out.providerPresence = await rowPresence();   // informational — Offline is FINE
   out.ok = true;
   return out;
 }

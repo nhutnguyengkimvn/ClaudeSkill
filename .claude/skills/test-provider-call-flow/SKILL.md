@@ -242,6 +242,38 @@ driving anything. Top lessons (also see captured-keys.json):
   case stays on screen (and a "Document Review & Sign off" modal can block
   clicks). Close the modal, then goto + reload. Only safe when the call is not
   in play — navigation kills the presence websocket.
+- **CALL-OVERLAY UI MAP** (user screenshots 2026-08-07 — the authoritative one):
+  1. Case header phone icon → overlay. LEFT = patient card (avatar, name, address,
+     `(804) 222-1111`, `DNA Insights`) with **[Call Mobile |v]** and
+     **[Send Invite |v]**; RIGHT = provider list: *"No dedicated providers with
+     matching states"*, **MATCHING STATES: (1 provider)**, **Ring selected
+     Providers**, *Select all*, and the row **DR VU Doctor / 8 States** with a
+     presence badge. Bottom bar: Reschedule / Open Case / Call History / Mic /
+     Camera / **Leave call**.
+  2. **Start the patient call via the CARET next to Call Mobile** → menu
+     `Call Mobile` / `Call Landline` (disabled) / `Open Dialer` → pick
+     **Call Mobile**.
+  3. Ringing screen = `+1 804 222 1111` + **"Calling..."**.
+  4. Connected = timer **`00:17/ 20 mins`**, waveform, **Switch to Digital**,
+     bottom-left **`Patient: +1 804 222 1111`**.
+  5. **Ring the provider: CLICK the DR VU Doctor row** (on the name area, not the
+     leading checkbox) → the row highlights and **`Call`** appears on its right →
+     click `Call` → menu `Voice` / `Video` → pick **Voice**.
+     - Hovering alone is NOT enough — the row must be CLICKED (user-corrected
+       2026-08-07).
+     - The blue **`Ring selected Providers`** button is NOT this path: pressing it
+       with no provider ticked only pops **"Please select provider to call list"**
+       with a **`Got it`** button. prov-01b clears that dialog and treats it as a
+       hard failure of the row selection rather than retrying blindly.
+  6. Provider side: pop card `PSTN Call` / `PSS` / `VU PSS` / `Patient ID: PT-…`
+     / `Case ID: CA-…` / Service / Reason of Visit, with a RED and a GREEN round
+     button → click the **GREEN** one to answer.
+- **"Offline" DOES NOT BLOCK THE CALL** (corrected 2026-08-07): the row's `Call`
+  button is hover-revealed and works while the badge reads **Offline**, and the
+  pop still arrives. The old prov-01a gated on an `Online` badge, polled 90s,
+  never saw it and aborted — that was the "BLOCKED at ring-provider" failure.
+  Presence is now recorded as `providerPresence` for information only; 01a waits
+  only for the ROW to exist. Never re-add an Online gate.
 - **CALL SEQUENCE IS MANDATORY AND ORDERED** (user-confirmed): patient call
   FIRST → the moment it connects, ring the provider (Call → **Voice** in the
   dropdown) with ZERO pause → provider ANSWERS the pop right away → poll the
