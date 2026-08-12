@@ -91,6 +91,16 @@ Task List sidebar makes snapshots huge and slow.
   Symptom to recognise: sidebar shows the section selected with a red `*` while
   the panel shows only the title + spinner (see screenshot in the 2026-08-07 run).
 
+- **PROD: radios/checkboxes are styled `opacity: 0`** (first prod run,
+  2026-08-12). A forced Playwright click on the `<input>` itself silently
+  no-ops, every retry burns the deadline, and fast-02 then aborts with
+  `Opt-In answer mismatch before save … got: []` — which looks exactly like
+  the stuck-"Loading…" landmine but is NOT it (the radios were present and
+  enabled). Fix already in `setInput`: click the **wrapping label**, then the
+  input, then a JS click as last resort. Never simplify it back.
+- **PROD: Family History is editable for the sales role** (on dev its radios
+  are DOM-disabled and the section is skipped). Both outcomes are fine —
+  report whichever happened.
 - The account MUST be a **sale** account. A Doctor/provider login shows a
   red "+ Busy Time" button and NO "+ Create case" → script 01 aborts with a
   clear error. Fix `sale_account` in the JSON, re-run script 01.
@@ -189,6 +199,10 @@ All patient info and the sale account credentials live in:
 .claude/skills/test-create-new-case/data/case-data.json
 ```
 
+- `sale_account` is keyed by environment: `sale_account.dev` and
+  `sale_account.prod`, each `{ email, password }`. Always pick the block that
+  matches the environment of the run.
+
 - The skill **only reads** this file. It must **NEVER create or regenerate** a
   new JSON file.
 - If the file is missing or still contains placeholder values
@@ -230,7 +244,10 @@ Record the answer as `<MEDICARE_ID>`. Do not proceed without it.
 
 1. Read `data/case-data.json` (path above).
 2. Validate it contains:
-   - `sale_account.email` and `sale_account.password` (non-placeholder)
+   - `sale_account.<env>.email` and `sale_account.<env>.password`
+     (non-placeholder), where `<env>` is the environment chosen in Phase 0
+     (`dev` or `prod`) — credentials are **per environment**, a dev account
+     does not exist on prod and vice versa. Missing env block → STOP.
    - `patient.*` fields (first/last name, phone, DOB, state, zip, …)
    - `additional_information.*` (reason of visit, RPM service)
 3. If anything required is missing → report exactly what is missing and STOP.
@@ -242,8 +259,8 @@ Record the answer as `<MEDICARE_ID>`. Do not proceed without it.
 
 1. Open the browser (Playwright MCP tools): `browser_navigate` to
    `<DASHBOARD_URL>`.
-2. If a login form appears, fill it with `sale_account.email` /
-   `sale_account.password` and submit.
+2. If a login form appears, fill it with `sale_account.<env>.email` /
+   `sale_account.<env>.password` and submit.
 3. Wait until the dashboard loads — success looks like the **Task List**
    sidebar with a blue **+ Create case** button and the
    "Welcome back to DNAInsights!" panel.

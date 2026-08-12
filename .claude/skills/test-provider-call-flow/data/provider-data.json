@@ -1,7 +1,13 @@
 {
   "provider_account": {
-    "email": "vu.bui.provider@gkim.vn",
-    "password": "Vuvit@123456"
+    "dev": {
+      "email": "vu.bui.provider@gkim.vn",
+      "password": "Vuvit@123456"
+    },
+    "prod": {
+      "email": "vu.bui.provider@gkxim.com",
+      "password": "Gkimtlh@2026"
+    }
   },
   "sections": {
     "medications": {

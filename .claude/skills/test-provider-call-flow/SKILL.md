@@ -22,14 +22,22 @@ the provider, the provider answers and completes the clinical encounter.
 
 ## Accounts & data
 
-- **PSS**: from `../test-submit-case-to-pending/data/pss-data.json` (session
-  is usually still logged in — that skill does not log out).
-- **PROVIDER**: `data/provider-data.json` → `provider_account`
-  (`vu.bui.provider@gkim.vn`). Section answer sets + fabricated clinical data
-  also live in `provider-data.json`; keys captured on calibration runs are in
+- **PSS**: from `../test-submit-case-to-pending/data/pss-data.json` →
+  `pss_account.<env>` (session is usually still logged in — that skill does
+  not log out).
+- **PROVIDER**: `data/provider-data.json` → `provider_account.<env>`
+  (dev `vu.bui.provider@gkim.vn`, prod `vu.bui.provider@gkxim.com`). Both
+  account blocks are keyed by environment — never mix a dev account into a
+  prod run. Section answer sets + fabricated clinical data also live in
+  `provider-data.json`; keys captured on calibration runs are in
   `data/captured-keys.json`.
 - **Patient phone** must be `804-222-1111` (test number that answers) — set
-  in test-create-new-case's case-data.json since 2026-07-13.
+  in test-create-new-case's case-data.json since 2026-07-13. This auto-answer
+  number is **dev-only**; on prod it is unverified, so the patient-call step
+  may not connect.
+- **Provider display name** on dev is `DR VU Doctor` (used to find the row to
+  Ring). On prod the prod provider account's display name is unverified —
+  read it from the provider list instead of assuming.
 
 ## Inputs & environment rule (same as the other sub-skills)
 

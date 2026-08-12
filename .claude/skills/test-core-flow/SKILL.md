@@ -19,9 +19,9 @@ pick for which job.
 
 | # | Sub-skill | Account (role) | What it does | Key inputs |
 |---|-----------|----------------|--------------|------------|
-| 1 | `/test-create-new-case` | SALES (`vu.bui.sales@…`) | Login → Create case wizard → save sections → Submit → case **Draft → New** → logout | `medicare_id` (ask user), env |
-| 2 | `/test-submit-case-to-pending` | PSS (`vu.bui.pss@…`) | Login → search & open the case → fill **Compliance** + **Medications** (skip disabled) → case reaches **Pending** (no logout — PSS stays logged in) | `case_id` (from report.json, or ask if standalone), env |
-| 3 | `/test-provider-call-flow` | PSS + PROVIDER (`vu.bui.provider@…`, dual browser contexts) | PSS calls patient (804-222-1111) + rings provider → provider answers, opens case, completes clinical sections + Orders + Care Plan + Diagnosis → waits for Master Encounter Report | `case_id` (from report.json, or ask if standalone), env |
+| 1 | `/test-create-new-case` | SALES (dev `vu.bui.sales@gkim.vn` / prod `nhutsaletest@gkxim.com`) | Login → Create case wizard → save sections → Submit → case **Draft → New** → logout | `medicare_id` (ask user), env |
+| 2 | `/test-submit-case-to-pending` | PSS (dev `vu.bui.pss@gkim.vn` / prod `nhuttestpss@gkxim.com`) | Login → search & open the case → fill **Compliance** + **Medications** (skip disabled) → case reaches **Pending** (no logout — PSS stays logged in) | `case_id` (from report.json, or ask if standalone), env |
+| 3 | `/test-provider-call-flow` | PSS + PROVIDER (dev `vu.bui.provider@gkim.vn` / prod `vu.bui.provider@gkxim.com`, dual browser contexts) | PSS calls patient (804-222-1111) + rings provider → provider answers, opens case, completes clinical sections + Orders + Care Plan + Diagnosis → waits for Master Encounter Report | `case_id` (from report.json, or ask if standalone), env |
 
 More sub-skills will be appended here as the flow grows (e.g. provider
 consult, result delivery). When the user asks for a specific step only, invoke
@@ -81,6 +81,16 @@ in `fast-02`, `pss-02` and `prov-02` (3 bounce attempts, then a clear
   flow MUST NOT ask the environment again — they read it from the report.
 - **Standalone**: a sub-skill invoked on its own asks dev/prod itself, then
   still merges its results into `state/report.json`.
+- **Credentials are per environment.** Every account block in the sub-skill
+  data files is keyed by env — `sale_account.dev` / `sale_account.prod`
+  (case-data.json), `pss_account.dev` / `.prod` (pss-data.json),
+  `provider_account.dev` / `.prod` (provider-data.json). Pick the block that
+  matches `environment`; dev accounts (`@gkim.vn`) do not exist on prod
+  (`@gkxim.com`) and vice versa. Missing block for the chosen env → STOP and
+  ask the user for that account.
+- **Prod caveats (not yet exercised):** the patient auto-answer number
+  `804-222-1111` and the provider display name `DR VU Doctor` are dev facts.
+  On prod, verify both before relying on step 3.
 
 ## Flow
 

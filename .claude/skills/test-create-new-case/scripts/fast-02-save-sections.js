@@ -89,13 +89,25 @@ async (page) => {
   //    dropdown unrendered → a 30s locator timeout).
   // So: TRUSTED click (force, short timeout), then read the value back, retry
   // until it sticks. Never swap this for a JS click.
+  //  - Invisible input (hit on PROD 2026-08-12): the real <input> is styled
+  //    `opacity: 0` under a custom label, and clicking the INPUT silently does
+  //    nothing — every retry no-ops until the deadline, then `got: []` aborts
+  //    the run ("Opt-In answer mismatch before save"). Clicking the WRAPPING
+  //    LABEL registers immediately. Same 3-strategy ladder as pss-02.
   const setInput = async (selector, timeoutMs = 8000) => {
     const loc = page.locator(selector).first();
     const isSet = () => loc.evaluate((el) => !!el.checked).catch(() => false);
     const deadline = Date.now() + timeoutMs;
     for (;;) {
       if (await isSet()) return true;
-      await loc.click({ force: true, timeout: 2000 }).catch(() => {});
+      await loc.click({ force: true, timeout: 1500 }).catch(() => {});      // 1. the input itself
+      if (await isSet()) return true;
+      const lbl = loc.locator('xpath=ancestor::label[1]');                  // 2. its wrapping label
+      if (await lbl.count()) {
+        await lbl.first().click({ force: true, timeout: 1500 }).catch(() => {});
+        if (await isSet()) return true;
+      }
+      await page.evaluate((s) => document.querySelector(s)?.click(), selector).catch(() => {}); // 3. last resort
       if (await isSet()) return true;
       if (Date.now() >= deadline) return false;
       await page.waitForTimeout(200);

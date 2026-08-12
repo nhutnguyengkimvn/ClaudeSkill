@@ -88,6 +88,16 @@ single checkbox hiding other *fields*, not an option that unchecks sibling
   `https://dev-rce-dashboard.firebaseio.com/forms/<formId>/schema/components/<n>.json`
   — used for components too complex for the row format (grids, PHQ-9 blocks).
 
+  **These are shared component libraries, not per-template forms.** Verified
+  2026-08-11: `Wellness_HRA` and `Wellness Lite_HRA` both point at the same four
+  form ids (`-Oh4h22S2yE5Fakz-mWJ` for HRA questionnaires, `-OpfJQ0WR7u-NxU_I3lv`
+  for MER, plus `-OsQZ460f1v1FdlX-1r4` and `-Oj4VAW6XjwWNICjyldM`), and the two
+  tabs pull *different* component indexes out of the same form — Wellness_HRA
+  uses components 0–4 of `-Oh4h22S2yE5Fakz-mWJ`, Wellness Lite_HRA only
+  component 4. So moving a `JSON`-backed field between templates needs **no**
+  Form.io copy: carrying the URL on the row is the whole job. Do not plan a
+  "copy the component into the target form" step — check the form ids first.
+
 ## field_key naming convention
 
 `<section_prefix>_<subject>`, and a **dependent field appends its trigger**:
@@ -122,11 +132,81 @@ Section `Functional Status & Safety` (`Wellness_HRA`, 28 rows):
 - `functional_safety_fall_risk_statement` — checkbox attestation, Provider `RES`
 - `functional_safety_screening_adls`, `functional_safety_screening_IADL` — radio, schema in `JSON`
 
+## How the HRA tabs do conditionals, per-option values and scoring
+
+**Resolved 2026-08-11.** The HRA tabs don't use the suffixed trigger types at
+all — they carry raw Form.io config in two columns that the summary view hides.
+
+**Which column takes which property** (got this wrong on 2026-08-12 — see
+`learned-rules.md`; the boundary is strict):
+
+| Column | Header | Holds |
+|---|---|---|
+| **AD** (30) | `additional_component_props JSON` | `conditional {show,when,eq}`, per-option `values`, `customClass` |
+| **AE** (31) | `customFormIOfield` | `append_logic`, `clearOnHide`, `customConditional`, `calculateValue`, `recalculateOn`, `validate`, `defaultValue`, `tooltip` |
+
+AE is frequently already populated (`customClass: formio-column-50`,
+`validate {min,max}`) — merge into it, never overwrite.
+
+**`additional_component_props JSON`** — merged into the component definition.
+Two uses seen:
+
+- *Per-option values*, when the label a provider sees differs from the value
+  stored. This is how a scored questionnaire declares its weights:
+  ```json
+  {"values": [{"label": "Not at all", "value": "0", "shortcut": ""},
+              {"label": "Several days", "value": "1", "shortcut": ""}]}
+  ```
+  (`test_requirements_depression_screening_things_phq2`). The `Values` column
+  still holds the `;`-separated labels; this column overrides the values.
+  **So scoring weights ARE expressible in the sheet** — earlier note saying they
+  are not was wrong.
+- *Conditional show/hide*, the HRA equivalent of `Related Fields`:
+  ```json
+  {"conditional": {"show": true, "when": "social_history_screening_alcohol", "eq": "Yes"}}
+  ```
+  (`social_history_screening_alcohol_score`).
+
+**`customFormIOfield`** — the heavier hooks:
+
+- `calculateValue` — a JS string that computes a field from others. This is how
+  every screening total is built; both `social_history_screening_alcohol_score`
+  (CAGE) and `test_requirements_depression_screening_score` (PHQ) sum
+  `Number(data.<key>)` across their question keys.
+- `append_logic` — named action blocks with a `javascript` trigger, used to
+  hide/clear a field on case age (`moment(window.currentCase.created_at)`) or on
+  provider group (`window.currentCase?.provider?.group?.id`) plus
+  `window.role == 'doctor'`. `test_requirements_content_PERSONAL_PLAN` carries
+  such a gate — a copied row brings its gate with it.
+- `defaultValue`, `clearOnHide`.
+
+**The scored-questionnaire pattern**, reusable verbatim: N `radio` rows carrying
+weights in `additional_component_props JSON` → one `textfield` `..._score`
+(Provider `VIEW`) whose `customFormIOfield.calculateValue` sums them → one
+`content` `..._score_table` holding an interpretation table as an HTML
+`<table class="table table-bordered">` → optional `content` rows for the
+positive/negative summary sentences.
+
+## Section placement is the `Display priority` column
+
+Every row of a section shares one integer. `Wellness Lite_HRA`:
+`opt_in_consent`=2 · `medication`=6 · `test_requirements`=8 · `general_health`=10
+· `screening_questionnaire_depression`=11 · `social_history_screening`=12 ·
+`advance_care_planning`=16 · `mer`=22. `Wellness_HRA` adds `preventive_care`=13
+and `functional_safety_screening`=15.
+
+Note the trap: Depression Screening (11) renders **before** Social History (12),
+which is not the order `--sections` prints. Inserting between two adjacent
+integers means renumbering the sections below.
+
+Within a section, order is `Field's display priority`, 1..N — duplicates exist
+and are tolerated.
+
 ## Open questions — ask the user, do not guess
 
-1. **Are the suffixed trigger types available in the HRA tabs?** They are used
-   only in `Wellness` / `Wellness Lite`. Every conditional field this kind of
-   ticket asks for lands in `_HRA`, so this gates the whole approach.
+1. ~~Are the suffixed trigger types available in the HRA tabs?~~ **Resolved:**
+   no — the HRA tabs declare conditionals in `additional_component_props JSON`
+   instead. See the section above.
 2. **How should an exclusive option ("None" unchecks the rest) be built?** No
    precedent anywhere in the sheet.
 3. **Does editing the sheet drive the platform, or does it document it?** i.e.

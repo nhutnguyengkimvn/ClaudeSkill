@@ -1,7 +1,13 @@
 {
   "pss_account": {
-    "email": "vu.bui.pss@gkim.vn",
-    "password": "Vuvit@123456"
+    "dev": {
+      "email": "vu.bui.pss@gkim.vn",
+      "password": "Vuvit@123456"
+    },
+    "prod": {
+      "email": "nhuttestpss@gkxim.com",
+      "password": "Gkim@12345"
+    }
   },
   "compliance": {
     "default_answer": "Yes",

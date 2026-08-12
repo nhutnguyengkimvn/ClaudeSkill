@@ -1,43 +1,53 @@
 {
   "flow": "test-core-flow",
-  "environment": "dev",
-  "dashboard_url": "https://dev-dashboard.dnainsights.ai/#/",
-  "started_at": "2026-07-13T16:00:00+07:00",
+  "environment": "prod",
+  "dashboard_url": "https://dashboard.dnainsights.ai/#/",
+  "started_at": "2026-08-12T09:41:26+07:00",
+  "scope": "steps 1-2 only (stop at Pending) — per user request",
+  "medicare_id": "3EG4CE5NH85",
   "steps": {
     "test-create-new-case": {
       "status": "done",
-      "environment": "dev",
-      "case_id": "CA-HFZ4SYJ5",
-      "patient_id": "PT-43341283",
-      "medicare_id": "3EG4CE5MK99",
+      "environment": "prod",
+      "case_id": "CA-5115F6LB",
+      "patient_id": "PT-92209356",
+      "cid": "e79129a8-39e2-4ef9-aba5-2218617984cb",
+      "medicare_id": "3EG4CE5NH85",
       "patient": "Gkim test",
       "phone": "804-222-1111",
-      "cid": "6c60aad8-8864-465b-8bf3-32db485e23e9",
+      "sale_account": "nhutsaletest@gkxim.com (prod)",
+      "sections": {
+        "patient_information": "saved",
+        "opt_in_consent": "saved (No)",
+        "primary_care_provider": "saved",
+        "family_history": "saved (No) — editable on prod, not locked like dev"
+      },
       "case_status": "New",
       "logout": true,
-      "note": "previous case CA-VOWXT6JN no longer active -> new case creation allowed"
+      "screenshot": "case-submitted-fast-run.jpeg",
+      "note": "first prod run. fast-02 aborted once on Opt-In ('got: []'): prod radios/checkboxes are styled opacity:0, so the forced click on the INPUT no-ops. Fixed by adding the wrapping-label click ladder to setInput in fast-02 (pss-02 already had it).",
+      "finished_at": "2026-08-12T09:47:00+07:00"
     },
     "test-submit-case-to-pending": {
       "status": "done",
-      "case_id": "CA-HFZ4SYJ5",
+      "environment": "prod",
+      "case_id": "CA-5115F6LB",
+      "pss_account": "nhuttestpss@gkxim.com (prod)",
       "sections": {
-        "compliance": "saved (15/15, 2 disabled skipped)",
-        "medications": "saved"
+        "compliance": "saved (15/15, 2 disabled skipped, audio-only reason set, 4 verification checkboxes ticked)",
+        "medications": "saved (allergies No, meds No; confirm checkbox not present on prod build)",
+        "medical_history": "saved — EXTRA on prod: had to tick 'Past surgical history was reviewed and documented *' (data[patient_personal_history_progress_note_reviewed_document]) before Pending was allowed"
       },
       "case_status": "Pending",
-      "session": "PSS logged in"
-    },
-    "test-provider-call-flow": {
-      "status": "BLOCKED at ring-provider (root cause found 2026-07-15, scripts fixed, ready to re-run)",
-      "case_id": "CA-HFZ4SYJ5",
-      "done": {
-        "dual_login": true,
-        "patient_call_804_222_1111": "answered (live)",
-        "provider_rung": "FAILED - row showed Offline, Call button never appeared"
-      },
-      "root_cause": "every retry re-ran the monolithic prov-01 which goto'd the provider page; navigation kills the presence websocket -> provider Offline -> no Call button -> no pop. The pop DOES arrive in Playwright (websocket, not FCM) when the provider page is left untouched.",
-      "fix": "prov-01 split into prov-01a-dual-login-online.js (login both + poll provider Online <=90s, navigates only dead sessions) and prov-01b-call-answer-open-case.js (patient connect -> ring provider IMMEDIATELY, zero pause -> answer pop -> poll CA-link <=45s). Retries re-run 01b only.",
-      "next": "re-run: prov-01a -> prov-01b -> prov-02 -> prov-03 (case may need to be back in Pending first)"
+      "mark_as_pending": "clicked (prod does NOT auto-transition after Compliance save like dev)",
+      "session": "PSS logged in (no logout)",
+      "screenshot": "pss-case-marked-pending.jpeg",
+      "finished_at": "2026-08-12T09:56:00+07:00"
     }
-  }
+  },
+  "prod_landmines_found": [
+    "Radios/checkboxes on prod are styled opacity:0 — a forced click on the INPUT no-ops silently. Must click the wrapping LABEL (fast-02 setInput patched; pss-02 already had the ladder).",
+    "Prod does not auto-transition New -> Pending on Compliance save. 'Mark as Pending' is blocked by 'Please complete all required fields first' until MEDICAL HISTORY is saved (its required checkbox ticked). Medical History is not in pss-data.json answer sets.",
+    "Family History is editable for the sales role on prod (on dev it is DOM-disabled and skipped)."
+  ]
 }

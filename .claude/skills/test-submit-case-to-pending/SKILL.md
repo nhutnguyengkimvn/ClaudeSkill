@@ -21,7 +21,9 @@ to **Pending** using the **PSS** account.
 ## Data sources
 
 - **Account + answer sets (READ-ONLY):** `data/pss-data.json`
-  - `pss_account` — PSS credentials.
+  - `pss_account` — PSS credentials, keyed by environment:
+    `pss_account.dev` / `pss_account.prod`, each `{ email, password }`. Use
+    the block matching the run's `environment`; a missing block → STOP.
   - `compliance` — default answer **Yes**, overrides (hospice → **No**,
     video/audio → **Audio Only**), reason for audio-only, and check all
     verification checkboxes.
@@ -52,7 +54,8 @@ Run the pre-built scripts via `mcp__playwright__browser_run_code_unsafe`
 "Known quirks" + "Run-log lessons"; they apply to this dashboard everywhere.
 
 1. **Read `scripts/pss-01-login-open-case.js`**, replace `__CONFIG__` with
-   `{ url, email, password, caseId }` → run. Logs in as PSS (hard-logout +
+   `{ url, email, password, caseId }` (email/password from
+   `pss_account.<env>`) → run. Logs in as PSS (hard-logout +
    retry if a stale session has the wrong role), searches the case, opens the
    first result and **verifies the header Case ID equals the expected one**
    (wrong case → abort).
@@ -121,7 +124,31 @@ share the same app).
   clicking. It is required; Save stays disabled until it is set.
 - **The case auto-transitions New → Pending as soon as Compliance is saved
   completely** — clicking "Mark as Pending" is usually unnecessary; pss-03's
-  `alreadyPending` path handles this.
+  `alreadyPending` path handles this. **DEV ONLY** — see the prod quirk below.
+
+### PROD-only quirks (first prod run, 2026-08-12, CA-5115F6LB)
+
+- **No auto-transition on prod, and `Mark as Pending` is blocked until
+  MEDICAL HISTORY is saved.** pss-03 returns
+  `Mark as Pending blocked: "complete all required fields"` while every
+  section pss-02 touches is green. Diagnosis: read the sidebar icons — the
+  blocking section is the one carrying `svg.gk-section-valid-icon` (red
+  `#D82636`); a section with NO icon is merely optional (Primary Care
+  Provider / Family History / Social History all show no icon and do not
+  block). On the prod run only **Medical History** blocked, and it needs one
+  required checkbox ticked:
+  `data[patient_personal_history_progress_note_reviewed_document]`
+  ("Past surgical history was reviewed and documented *"). Tick it (trusted
+  label click) → visible Save → the section goes green → re-run pss-03, which
+  then clicks Mark as Pending and reaches **Pending**. The
+  "Current Medical Complaint *" textarea can stay empty — it does not block.
+  Medical History is NOT in `pss-data.json`; it is filled ad-hoc for now.
+- **Radios/checkboxes are styled `opacity: 0` on prod** — a forced click on
+  the `<input>` silently does nothing. pss-02's `setInput` already falls back
+  to the wrapping label, which is what makes it work; never simplify that
+  ladder back to an input-only click.
+- The **Medications "I confirm that I have verified…" checkbox does not exist**
+  on the prod build (`confirm: "not found"`), and the save succeeds anyway.
 - **Compliance has REQUIRED "Verified Patient Gender / DOB / Address / Phone"
   checkboxes** (`data[compliance_verification_verified_patient_*]`). The
   empty-`.formio-form`-wrapper quirk applies to CHECKBOXES too, not just
