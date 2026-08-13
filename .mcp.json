@@ -11,6 +11,10 @@
         "/Users/nhut/.cache/import-lab-recform/pw-profile",
         "--allow-unrestricted-file-access"
       ]
+    },
+    "figma": {
+      "type": "http",
+      "url": "http://127.0.0.1:3845/mcp"
     }
   }
 }

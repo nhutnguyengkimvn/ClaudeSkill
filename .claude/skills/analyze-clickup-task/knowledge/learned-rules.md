@@ -293,3 +293,39 @@ rendered as `v` with no number and the row link fell back to the file root inste
 **Rule:** never trust a gviz header row alone. Map by name where the name is present, fall back to
 the writer's canonical column order, and check whether row 1 actually is the header before
 slicing it off. Verify a numeric column by reading a known-nonzero value end to end.
+
+## 2026-08-13 — Not every ClickUp ticket is a sheet ticket; and code work goes in the PROD repos
+
+**Was:** TLH-2083 turned out to be a FE/BE dashboard ticket, not a field-mapping one. I found
+the code by grepping `~/Documents/GKIM` and landed in `staging-telehealth-provider-dashboard` /
+`staging-telehealth-platform`, then branched off `origin/tms/dev` and `origin/dev`.
+**Correct:** user: *"chỉ có 2 source này BE và FE … và luôn tách từ prod ra tạo feature prod
+trước … hồi này là làm sai flow -> tách từ dev ra là bị sai."*
+**Rule going forward:**
+1. When the ticket names a screen, a table, an export or an API rather than a form field, say so
+   in one line and switch to the code repos — the sheet flow does not apply.
+2. The code lives in exactly two checkouts, and branches come off prod. See
+   `.claude/rules/telehealth-repos-and-branching.md`. Never pick a repo by grepping the disk;
+   several stale clones of the same remotes exist and grep will find the wrong one.
+3. Confirm repo + base branch BEFORE the first edit, not after the work is pushed.
+
+## 2026-08-13 — "Playwright can't write to the sheet" was WRONG; the bug was one call per step
+
+**Was:** after `⌘V`, synthetic `ClipboardEvent`, the async Clipboard API and a bare keypress
+all failed, I concluded the canvas grid made Playwright writing "not viable" and pushed the
+user toward an Apps Script instead — twice, after they had already said it used to work.
+**Correct:** user: *"hôm qa bạn chỉ cần mở playwright lên và import từng dòng và là đc"*.
+They were right. Grepping my own transcripts for the sheet id found the working recipe from
+2026-08-11/12: `mcp__playwright__browser_run_code_unsafe`, `#t-name-box`, `.click()` then
+`keyboard.type()`, **entire sequence inside a single tool call**. Re-run verbatim, it wrote
+2 rows x 12 cells first try.
+**Rule going forward:**
+1. The full recipe and the list of dead ends now live in `.claude/rules/sheet-edit-policy.md`
+   ("HOW to write"). Read it before touching the sheet; do not re-derive it.
+2. Focus does not survive between MCP tool calls in Sheets. Any select-then-type sequence
+   belongs in ONE `browser_run_code_unsafe` call. Splitting it is what made every attempt
+   fail, not the canvas and not `isTrusted`.
+3. **When the user says "it worked before", search the transcripts before arguing.**
+   `~/.claude/projects/*/*.jsonl` holds every prior tool call; grepping for the artifact id
+   (here the sheet id) and classifying calls as read vs write found the answer in one command.
+   Three rounds of "it's technically impossible" cost more than that grep would have.

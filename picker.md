@@ -1,0 +1,267 @@
+- application [ref=f39e1]:
+  - iframe [ref=f39e2]:
+    
+  - iframe [ref=f39e3]:
+    
+  - banner [ref=f39e739]:
+    - generic [ref=f39e7]:
+      - link [ref=f39e740] [cursor=pointer]:
+        - /url: https://docs.google.com/spreadsheets/u/0/?authuser=0&usp=sheets_web
+      - generic [ref=f39e16]:
+        - generic [ref=f39e741]:
+          - generic [ref=f39e19]:
+            - generic: DNAi Sheet
+            - textbox [ref=f39e742]: DNAi Sheet
+          - generic [ref=f39e22]:
+            - checkbox [ref=f39e743] [cursor=pointer]
+            - button [ref=f39e744] [cursor=pointer]
+            - button [ref=f39e745]:
+              - generic [ref=f39e29] [cursor=pointer]
+        - generic [ref=f39e36]:
+          - button [ref=f39e746] [cursor=pointer]
+          - button [ref=f39e747] [cursor=pointer]
+          - button [ref=f39e748] [cursor=pointer]
+          - generic [ref=f39e51]:
+            - button [ref=f39e749] [cursor=pointer]: Share
+            - button [ref=f39e750] [cursor=pointer]
+          - generic [ref=f39e708]:
+            - link [ref=f39e751] [cursor=pointer]:
+              - generic [ref=f39e712]: Upgrade
+            - tooltip [ref=f39e713]: Upgrade for premium features
+          - generic [ref=f39e58]:
+            - button [ref=f39e752] [cursor=pointer]
+            - tooltip [ref=f39e68]: Try Gemini
+          - button [ref=f39e753] [cursor=pointer]
+    - generic [ref=f39e73]:
+      - menubar [ref=f39e75]:
+        - menuitem [ref=f39e754] [cursor=pointer]: File
+        - menuitem [ref=f39e755] [cursor=pointer]: Edit
+        - menuitem [ref=f39e756] [cursor=pointer]: View
+        - menuitem [ref=f39e757] [cursor=pointer]: Insert
+        - menuitem [ref=f39e758] [cursor=pointer]: Format
+        - menuitem [ref=f39e759] [cursor=pointer]: Data
+        - menuitem [ref=f39e760] [cursor=pointer]: Tools
+        - menuitem [ref=f39e761] [cursor=pointer]: Extensions
+        - menuitem [ref=f39e762] [cursor=pointer]: Help
+      - generic [ref=f39e85]:
+        - generic [ref=f39e86]:
+          - toolbar [ref=f39e763]:
+            - combobox [ref=f39e764]
+          - toolbar [ref=f39e765]:
+            - button [ref=f39e766] [cursor=pointer]
+            - button [ref=f39e767] [cursor=pointer]
+            - button [ref=f39e768] [cursor=pointer]
+            - button [ref=f39e769] [cursor=pointer]
+            - combobox [ref=f39e770] [cursor=pointer]:
+              - option [selected] [ref=f39e771]:
+                - textbox [ref=f39e772]: 100%
+            - separator [disabled] [ref=f39e119]
+            - button [ref=f39e773] [cursor=pointer]:
+              - generic [ref=f39e121]: $
+            - button [ref=f39e774] [cursor=pointer]:
+              - generic [ref=f39e124]: "%"
+            - button [ref=f39e775] [cursor=pointer]
+            - button [ref=f39e776] [cursor=pointer]
+            - button [ref=f39e777] [cursor=pointer]:
+              - generic [ref=f39e137]: "123"
+            - separator [disabled] [ref=f39e140]
+            - listbox [ref=f39e778] [cursor=pointer]:
+              - option [selected] [ref=f39e779]: Arial
+            - separator [disabled] [ref=f39e148]
+            - button [ref=f39e780] [cursor=pointer]
+            - combobox [ref=f39e781] [cursor=pointer]:
+              - option [selected] [ref=f39e782]:
+                - textbox [ref=f39e783]: "10"
+            - button [ref=f39e784] [cursor=pointer]
+            - separator [disabled] [ref=f39e164]
+            - button [pressed] [ref=f39e785] [cursor=pointer]
+            - button [ref=f39e786] [cursor=pointer]
+            - button [ref=f39e787] [cursor=pointer]
+            - button [ref=f39e788] [cursor=pointer]
+            - separator [disabled] [ref=f39e187]
+            - button [ref=f39e789] [cursor=pointer]
+            - button [ref=f39e790] [cursor=pointer]
+            - button [disabled] [ref=f39e791]
+            - button [disabled] [ref=f39e792]
+            - separator [disabled] [ref=f39e212]
+            - button [ref=f39e793] [cursor=pointer]
+            - button [ref=f39e794] [cursor=pointer]
+            - button [ref=f39e795] [cursor=pointer]
+            - button [ref=f39e796] [cursor=pointer]
+            - separator [disabled] [ref=f39e249]
+            - button [ref=f39e797] [cursor=pointer]
+            - button [ref=f39e798] [cursor=pointer]
+            - button [ref=f39e799] [cursor=pointer]
+            - button [ref=f39e800] [cursor=pointer]
+            - button [ref=f39e801] [cursor=pointer]
+            - button [ref=f39e802] [cursor=pointer]
+        - toolbar [ref=f39e803]:
+          - button [ref=f39e804] [cursor=pointer]
+    - generic:
+      - button:
+        - generic [ref=f39e291] [cursor=pointer]
+    - generic [ref=f39e297]:
+      - generic [ref=f39e805]:
+        - textbox [ref=f39e299]: A1
+        - button [ref=f39e806] [cursor=pointer]
+      - textbox [ref=f39e317]
+  - navigation [ref=f39e807]:
+    - toolbar [ref=f39e351]:
+      - button [ref=f39e808] [cursor=pointer]
+      - button [ref=f39e809] [cursor=pointer]
+    - toolbar [ref=f39e366]:
+      - button [ref=f39e810] [cursor=pointer]:
+        - generic [ref=f39e368]: Wellness
+      - button [ref=f39e811] [cursor=pointer]:
+        - generic [ref=f39e376]: Wellness Lite
+      - button [ref=f39e812] [cursor=pointer]:
+        - generic [ref=f39e384]: Wellness Standard Patient Info
+      - button [ref=f39e813]:
+        - generic [ref=f39e392]: Wellness_HRA
+      - button [ref=f39e814] [cursor=pointer]:
+        - generic [ref=f39e400]: Wellness Lite_HRA
+      - button [ref=f39e815] [cursor=pointer]:
+        - generic [ref=f39e408]: BACKUP Wellness Lite_HRA 2026-08-11
+      - button [ref=f39e816] [cursor=pointer]:
+        - generic [ref=f39e416]: GENETICS
+      - button [ref=f39e817] [cursor=pointer]:
+        - generic [ref=f39e424]: UTI Knuck
+      - button [ref=f39e818] [cursor=pointer]:
+        - generic [ref=f39e432]: PGx Knuck
+      - button [ref=f39e819] [cursor=pointer]:
+        - generic [ref=f39e440]: PGX Hightech
+      - button [ref=f39e820] [cursor=pointer]:
+        - generic [ref=f39e448]: PGX PDL
+      - button [ref=f39e821] [cursor=pointer]:
+        - generic [ref=f39e456]: ISACARE PDL
+      - button [ref=f39e822] [cursor=pointer]:
+        - generic [ref=f39e464]: METABOLIC PDL
+      - button [ref=f39e823] [cursor=pointer]:
+        - generic [ref=f39e472]: IMMUNO PDL
+      - button [ref=f39e824] [cursor=pointer]:
+        - generic [ref=f39e480]: CGX PDL
+      - button [ref=f39e825] [cursor=pointer]:
+        - generic [ref=f39e488]: DIABETES PDL
+      - button [ref=f39e826] [cursor=pointer]:
+        - generic [ref=f39e496]: NEURO Alpha Dera
+      - button [ref=f39e827] [cursor=pointer]:
+        - generic [ref=f39e504]: PGX Alpha Dera
+      - button [ref=f39e828] [cursor=pointer]:
+        - generic [ref=f39e512]: CGX Alpha Dera
+      - button [ref=f39e829] [cursor=pointer]:
+        - generic [ref=f39e520]: IMMUNO Alpha Dera
+      - button [ref=f39e830] [cursor=pointer]:
+        - generic [ref=f39e528]: IMMUNO Hightech
+      - button [ref=f39e831] [cursor=pointer]:
+        - generic [ref=f39e536]: NEURO Hightech
+      - button [ref=f39e832] [cursor=pointer]:
+        - generic [ref=f39e544]: RPM - CGM/BGM
+      - button [ref=f39e833] [cursor=pointer]:
+        - generic [ref=f39e552]: Copy of RPM - CGM/BGM
+      - button [ref=f39e834] [cursor=pointer]:
+        - generic [ref=f39e560]: IMMUNO Amedix
+      - button [ref=f39e835] [cursor=pointer]:
+        - generic [ref=f39e568]: PGx Amedix
+      - button [ref=f39e836] [cursor=pointer]:
+        - generic [ref=f39e576]: NEURO Amedix
+      - button [ref=f39e837] [cursor=pointer]:
+        - generic [ref=f39e584]: CGX Amedix
+      - button [ref=f39e838] [cursor=pointer]:
+        - generic [ref=f39e592]: Metabolic Amedix
+      - button [ref=f39e839] [cursor=pointer]:
+        - generic [ref=f39e600]: Diabetes Amedix
+      - button [ref=f39e840] [cursor=pointer]:
+        - generic [ref=f39e608]: tt Wellness
+      - button [ref=f39e841] [cursor=pointer]:
+        - generic [ref=f39e616]: tt NEURO
+      - button [ref=f39e842] [cursor=pointer]:
+        - generic [ref=f39e624]: tt Metabolic
+      - button [ref=f39e843] [cursor=pointer]:
+        - generic [ref=f39e632]: tt DIABETES
+      - button [ref=f39e844] [cursor=pointer]:
+        - generic [ref=f39e640]: tt RPM 2026
+      - button [ref=f39e845] [cursor=pointer]:
+        - generic [ref=f39e648]: tt CGX
+      - button [ref=f39e846] [cursor=pointer]:
+        - generic [ref=f39e656]: tt PGX
+      - button [ref=f39e847] [cursor=pointer]:
+        - generic [ref=f39e664]: tt UTI
+      - button [ref=f39e848] [cursor=pointer]:
+        - generic [ref=f39e672]: tt IMMUNO
+    - toolbar [ref=f39e679]:
+      - button [disabled] [ref=f39e849]
+      - button [ref=f39e850] [cursor=pointer]
+  - link [ref=f39e851] [cursor=pointer]:
+    - /url: "#"
+    - text: Turn on screen reader support
+  - textbox [ref=f39e692]
+  - generic [ref=f39e693]: Banner hidden
+  - region [ref=f39e694]: To enable screen reader support, press ⌘+Option+Z To learn about keyboard shortcuts, press ⌘slash
+  - iframe [ref=f39e852]:
+    
+  - dialog "Select a spreadsheet" [ref=f39e854]:
+    - iframe [active] [ref=f39e858]:
+      - generic [ref=f49e1]:
+        - generic [ref=f49e2]:
+          - heading
+          - dialog "Select a spreadsheet" [ref=f49e3]:
+            - generic [ref=f49e4]:
+              - banner [ref=f49e10]:
+                - heading "Select a spreadsheet" [level=2] [ref=f49e13]
+                - search [ref=f49e15]:
+                  - generic [ref=f49e16]:
+                    - generic [ref=f49e23]:
+                      - textbox [disabled] [ref=f49e24]
+                      - combobox "Search in Drive or paste URL" [ref=f49e25]
+                    - generic [ref=f49e28]:
+                      - button "Filter" [ref=f49e29] [cursor=pointer]
+                      - tooltip [ref=f49e35]: Filter
+                - generic [ref=f49e36]:
+                  - button "Close picker Select a spreadsheet" [ref=f49e37] [cursor=pointer]
+                  - tooltip [ref=f49e44]: Close
+              - generic [ref=f49e45]:
+                - tooltip [ref=f49e46]: Scroll left to view more
+                - tooltip [ref=f49e47]: Scroll right to view more
+                - tablist [ref=f49e48]:
+                  - generic [ref=f49e51]:
+                    - tab "My Drive" [selected] [ref=f49e53] [cursor=pointer]
+                    - tab "Shared with me" [ref=f49e54] [cursor=pointer]
+                    - tab "Recent" [ref=f49e55] [cursor=pointer]
+            - tabpanel [ref=f49e8]:
+              - generic [ref=f49e58]:
+                - radiogroup "List or Grid layout" [ref=f49e62]:
+                  - generic [ref=f49e63]:
+                    - generic [ref=f49e64]:
+                      - radio "List View" [ref=f49e65] [cursor=pointer]
+                      - tooltip [ref=f49e74]: List
+                    - generic [ref=f49e75]:
+                      - radio "Grid View" [checked] [ref=f49e76] [cursor=pointer]
+                      - tooltip [ref=f49e85]: Grid
+                - generic [ref=f49e87]:
+                  - region
+                  - generic [ref=f49e89]:
+                    - generic [ref=f49e91]:
+                      - button "Sort by name" [ref=f49e92] [cursor=pointer]:
+                        - generic [ref=f49e93]: Name
+                      - button "Reverse sort direction" [ref=f49e96] [cursor=pointer]
+                    - listbox "Files and folders grid view." [ref=f49e101]:
+                      - group [ref=f49e102]:
+                        - heading "Files" [level=4] [ref=f49e103]
+                        - generic [ref=f49e106]: .
+                        - option [active] [ref=f49e108]:
+                          - generic "Backup Shared Google Sheets Not selected" [ref=f49e115] [cursor=pointer]:
+                            - img "Google Sheets" [ref=f49e119]
+                            - generic "Backup" [ref=f49e120]
+                        - option [ref=f49e121]:
+                          - generic "case reported Shared Google Sheets Not selected" [ref=f49e128] [cursor=pointer]:
+                            - img "Google Sheets" [ref=f49e132]
+                            - generic "case reported" [ref=f49e133]
+                        - option [ref=f49e134]:
+                          - generic "Check List Đám Cưới Shared Google Sheets Not selected" [ref=f49e141] [cursor=pointer]:
+                            - img "Google Sheets" [ref=f49e145]
+                            - generic "Check List Đám Cưới" [ref=f49e146]
+                        - option [ref=f49e147]:
+                          - generic "DNAi Sheet Shared Google Sheets Not selected" [ref=f49e154] [cursor=pointer]:
+                            - img "Google Sheets" [ref=f49e158]
+                            - generic "DNAi Sheet" [ref=f49e159]
+        - generic [ref=f49e160]: Select a spreadsheet picker opened.

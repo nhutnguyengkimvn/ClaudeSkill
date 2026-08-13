@@ -37,6 +37,64 @@ to be restored.
 5. If it ever gets to writing: snapshot the old values to a file too, and verify every cell
    after writing.
 
+## HOW to write, once all five conditions above are met
+
+The grid is a **canvas** — there are no DOM cells to click, read, or fill. Everything below
+was established by trial on 2026-08-13; do not re-derive it.
+
+**Use `mcp__playwright__browser_run_code_unsafe`, and put the whole interaction in ONE call.**
+That is the single most important part: between two separate MCP calls Sheets hands focus
+back to some other element, so the next keystroke is swallowed as a global shortcut instead
+of reaching the grid (a stray `X` opened File → Import on the production config sheet).
+
+```js
+async (page) => {
+  await page.goto('https://docs.google.com/spreadsheets/d/<id>/edit?gid=<gid>#gid=<gid>');
+  await page.waitForTimeout(6000);
+
+  const goto = async (ref) => {
+    const nb = page.locator('#t-name-box');   // NOT input.docs-omnibox-input
+    await nb.click();                          // a real click first — this is what wires focus
+    await page.keyboard.press('ControlOrMeta+a');
+    await page.keyboard.type(ref);             // keyboard.type, not per-key press
+    await page.keyboard.press('Enter');
+    await page.waitForTimeout(700);
+  };
+
+  await goto('A3');
+  for (const value of row) {                   // one row, left to right
+    await page.keyboard.type(value);
+    await page.waitForTimeout(70);
+    await page.keyboard.press('Tab');          // commits the cell and steps right
+    await page.waitForTimeout(70);
+  }
+  await page.keyboard.press('Enter');
+}
+```
+
+**Verify by re-reading the CSV export**, never by inspecting the DOM — the canvas holds no
+cell state. `…/export?format=csv&gid=<gid>`, then diff cell by cell.
+
+### What does NOT work — stop trying these
+
+| Attempt | Outcome |
+|---|---|
+| `navigator.clipboard.writeText` | hangs ~120s on a permission prompt; had to be killed |
+| `execCommand('copy')` + `⌘V` | copy returns `true`, paste never lands |
+| synthetic `ClipboardEvent('paste')` | ignored — Sheets filters on `isTrusted` |
+| Name box + type across separate MCP calls | focus drifts; keys become global shortcuts |
+| `fill()` on `#waffle-rich-text-editor` | the editor only exists while a cell is being edited |
+| `Shift+Space` then `⌘⌥=` to insert rows | silently does nothing |
+
+## The backup file
+
+`1rAmnKxYGxW27X2lpxDsA2FxnhwyzqXj-7rD9Ldpog3U` ("Backup"). Its first sheet is named `Menu`
+and holds the index. As of 2026-08-13 its **"Sheet backup" Apps Script menu is not
+installed**, so the documented clone route is unavailable; the substitute that worked is
+Sheets → right-click tab → **Copy to → Existing spreadsheet** → rename to `<tab>__v<N>` →
+append the index row with the recipe above. Verify a clone by diffing the SHA-256 of both
+CSV exports — they must be byte-identical.
+
 ## Restoring one tab
 
 Never restore the whole FILE from Google's version history — that discards everyone else's
