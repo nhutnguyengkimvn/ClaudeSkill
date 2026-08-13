@@ -229,3 +229,32 @@ Then `mer_clinical_encounter_notes_*`, `mer_letter_of_medical_necessity_*`,
 Still unconfirmed: whether a new HRA input surfaces in the note automatically or
 whether one of these textareas has to be edited by hand — ask before promising
 either.
+
+## `__json__` rows — how to RECOGNISE a row that uses the `JSON` column
+
+Added 2026-08-12 (user pointed it out) on top of the `JSON` note above — that note knew
+column V holds a URL but missed three things that matter:
+
+1. **The marker lives in column A** (`__skip__`, index **0**): the row has
+   **`A == '__json__'`**. The header row itself reads `__skip__`. Without that marker it is
+   not a JSON-backed row.
+2. **`Field Type` (N) and `field_key` (O) are usually EMPTY on a `__json__` row** — type,
+   key and label come from the fetched JSON. **This is not a data gap**; do not report
+   "missing Field Type" for these rows (reported it wrongly once — see `learned-rules.md`,
+   2026-08-12).
+3. **AD and AE still apply and are merged ON TOP of the fetched component** — order is
+   fetched JSON → AD → AE, with `append_logic` appended to any `logic` the JSON already has.
+   Example: `mer_progress_notes_subjective` carries
+   `AD = {"attributes": {"panel-key": "mer_progress_notes"}}`.
+
+The Firebase endpoint returns `access-control-allow-origin: *`, so a browser can read it with
+plain `fetch()` (unlike Google's gviz, which needs JSONP).
+
+Example payload: `.../-Oh4h22S2yE5Fakz-mWJ/schema/components/1.json` →
+`type: datagrid`, `key: preventive_past_immunization`, three children (`vaccine` textfield,
+`status` radio Yes/No, `date` datetime) and 6 `defaultValue` rows (Influenza, Tdap, Zoster,
+Pneumococcal, Hepatitis B, COVID-19).
+
+`Wellness Lite_HRA` (gid 314943004) has **13 `__json__` rows**: `mer` (5),
+`opt_in_consent` (2), `preventive_care` (2), `medication` (2),
+`screening_questionnaire_depression` (1).

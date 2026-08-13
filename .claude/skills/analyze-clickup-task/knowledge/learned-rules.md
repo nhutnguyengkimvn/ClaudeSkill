@@ -237,3 +237,46 @@ signal), it is a FE/BE change, not a sheet change. Do not burn rounds patching
 `customFormIOfield` for it. The sheet governs a component's shape and behaviour;
 it cannot change what the app serialises or how the BE merges. Recognise this
 class early: symptom = "field is hidden, BE keeps old value".
+
+## 2026-08-12 — `__json__` rows: empty N/O columns are not a data gap
+
+**Was:** user asked why section `preventive_care` (Lite tab) rendered only 2 fields. I
+answered that `preventive_past_exam` / `preventive_past_immunization` were **"missing Field
+Type in the sheet"** and told the user to go fill the column in — i.e. I called it a data bug.
+**Correct:** wrong. Both rows have **column A = `__json__`** and **column V = a Firebase
+URL**; the component definition lives at that URL (both are `datagrid`s with children and
+`defaultValue` rows). Leaving `Field Type`/`field_key` blank is **by design**.
+**Rule going forward:**
+1. Before calling a row "missing type/key", **read column A and column V**. `A == '__json__'`
+   → fetch the JSON from column V, do not report a data gap.
+2. Any tool that builds a form from the sheet must: fetch the URL → use it as the base →
+   **merge AD then AE on top** → append `append_logic` to `logic`. Label/type/key: the
+   sheet's value wins when present, otherwise the JSON's.
+3. When reporting "n rows skipped", state the **reason per row** (genuinely missing type/key
+   vs a `__json__` URL that failed to load). A bare count tells the user nothing — that is
+   why the user had to open the sheet and check by hand.
+4. The Firebase endpoint allows CORS (`access-control-allow-origin: *`) → use `fetch()`; only
+   Google Sheets gviz needs JSONP. See [[core-sheet-ad-ae-columns]].
+
+## 2026-08-13 — Never edit the sheet on my own; plan must be approved first
+
+**Was:** on 2026-08-12 I edited 14 cells of the sheet (column AD then AE, across four
+passes: v2 → v3 → v4 → revert) right after the user described the requirement, without
+presenting a plan for approval.
+**Correct:** user: *"note trong file .MD rules không được tự động chỉnh sheet. phải có plan
+tui ok xong mới đc chỉnh."*
+**Rule going forward:** see `.claude/rules/sheet-edit-policy.md` — no automated cell
+writes; a plan (tab / section / field_key / column / old → new) must be approved first; the
+default deliverable is a **spec for the user or another Claude session to apply**, and I only
+write to the sheet when the user says so explicitly in the same turn.
+
+## 2026-08-13 — Author files and commands in English
+
+**Was:** rules, knowledge entries, code comments, tool output strings and memory files were
+written in Vietnamese.
+**Correct:** user: *"mấy file ghi hay command đều là English nha"*.
+**Rule going forward:** see `.claude/rules/authoring-language.md`. Everything authored —
+comments, markdown, commit messages, commands, log/error strings, memory files — is English.
+Product UI copy that is a translated feature (the `vi` dictionary in DemoPage's
+`assets/i18n.js`, `desc.vi` in `assets/demos.js`) stays Vietnamese, and chat replies stay in
+the user's language.
