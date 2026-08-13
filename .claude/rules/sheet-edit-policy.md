@@ -25,8 +25,24 @@ to be restored.
 3. Even after approval, the default is to **emit a spec for the user (or another Claude
    session) to apply**. Only write to the sheet directly if the user says so explicitly in
    that same turn.
-4. If it ever gets to writing: snapshot the old values to a file first so the change is
-   reversible, and verify every cell after writing.
+4. **A tab backup must exist before anything is written.** Version history is file-level, so
+   the only way to revert one tab is a clone of that tab taken beforehand. The clone is made by
+   the user from the **"Sheet backup" menu inside the backup spreadsheet** — as `<tab>__v<N>`,
+   indexed on that file's first sheet: `sheet_name, version, backup_tab, backup_gid,
+   source_gid, source_sheet_id, reason, task_id, rows, cols, created, by`. `/formio-preview` →
+   backup only READS that index, links each row to its clone, and stamps the chosen version
+   into the spec. A spec emitted without a
+   backup carries `backup: null` plus a rule telling the applier to refuse — honour it, do not
+   apply such a spec.
+5. If it ever gets to writing: snapshot the old values to a file too, and verify every cell
+   after writing.
+
+## Restoring one tab
+
+Never restore the whole FILE from Google's version history — that discards everyone else's
+newer edits in other tabs (that is exactly how the 2026-08-12 loss got worse). Instead:
+copy the backup tab back in the Google UI, or diff the backup tab against the live tab and
+apply the **inverse spec** through the same reviewed path as any other change.
 
 ## Allowed without asking
 
@@ -39,3 +55,6 @@ emitting specs/changesets, reporting data errors. All read-only.
   what AD/AE mean, `__json__` rows.
 - `.claude/skills/analyze-clickup-task/knowledge/learned-rules.md` — wrong conclusions
   previously drawn about this sheet and the rules that came out of them.
+- `/Users/nhut/Documents/MyProject/DemoPage` — `tools/sheet-backup-webapp.gs` (the Apps Script
+  that clones a tab; it only ever writes to the BACKUP file) and `assets/sheet-backup.js`
+  (its browser client). Deploy steps are in the header of the `.gs` file.

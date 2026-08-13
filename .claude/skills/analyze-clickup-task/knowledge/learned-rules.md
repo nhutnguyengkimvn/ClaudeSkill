@@ -280,3 +280,16 @@ comments, markdown, commit messages, commands, log/error strings, memory files �
 Product UI copy that is a translated feature (the `vi` dictionary in DemoPage's
 `assets/i18n.js`, `desc.vi` in `assets/demos.js`) stays Vietnamese, and chat replies stay in
 the user's language.
+
+## gviz blanks a header cell when the column is typed as a number (2026-08-13)
+
+Reading the backup index (`sheet_name, version, backup_tab, backup_gid, …`) over gviz returned
+the header row with **empty cells exactly under the numeric columns** — `version`, `backup_gid`,
+`source_gid`. gviz assigns a type per column and a text label in a number-typed column comes back
+as null, so mapping "column name -> index" silently dropped those three fields: `version: 0`
+rendered as `v` with no number and the row link fell back to the file root instead of
+`#gid=<backup_gid>`. gviz may ALSO decide row 1 is a header and hand back data rows only.
+
+**Rule:** never trust a gviz header row alone. Map by name where the name is present, fall back to
+the writer's canonical column order, and check whether row 1 actually is the header before
+slicing it off. Verify a numeric column by reading a known-nonzero value end to end.
